@@ -40,3 +40,8 @@ waitForPort = 5000
 
 [agent]
 integrations = ["javascript_openai_ai_integrations:2.0.0"]
+
+[userenv]
+
+[userenv.shared]
+OPENAI_API_KEY = "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"
