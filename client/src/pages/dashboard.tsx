@@ -1,0 +1,543 @@
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { queryClient, apiRequest } from "@/lib/queryClient";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
+import type { LessonDay } from "@shared/schema";
+import {
+  Play,
+  Pause,
+  Image,
+  Video,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Loader2,
+  Zap,
+  BarChart3,
+  Grid3X3,
+  List,
+  RefreshCw,
+  Eye,
+  Upload,
+} from "lucide-react";
+import { useState, useMemo } from "react";
+import { MediaViewer } from "@/components/media-viewer";
+import { FileUpload } from "@/components/file-upload";
+
+type Stats = {
+  totalDays: number;
+  imagesCompleted: number;
+  videosCompleted: number;
+  imagesFailed: number;
+  videosFailed: number;
+  imagesGenerating: number;
+  videosGenerating: number;
+  imagesPending: number;
+  videosPending: number;
+};
+
+function StatCard({
+  title,
+  value,
+  total,
+  icon: Icon,
+  color,
+}: {
+  title: string;
+  value: number;
+  total: number;
+  icon: any;
+  color: string;
+}) {
+  const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+  return (
+    <Card>
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <span className="text-sm text-muted-foreground">{title}</span>
+          <div className={`w-8 h-8 rounded-md flex items-center justify-center ${color}`}>
+            <Icon className="w-4 h-4" />
+          </div>
+        </div>
+        <div className="text-2xl font-semibold tracking-tight">
+          {value}
+          <span className="text-sm text-muted-foreground font-normal ml-1">/ {total}</span>
+        </div>
+        <Progress value={percentage} className="mt-2 h-1.5" />
+        <span className="text-xs text-muted-foreground mt-1 block">{percentage}% complete</span>
+      </CardContent>
+    </Card>
+  );
+}
+
+function StatusBadge({ status }: { status: string }) {
+  switch (status) {
+    case "completed":
+      return (
+        <Badge variant="default" className="bg-emerald-600 text-white">
+          <CheckCircle2 className="w-3 h-3 mr-1" />
+          Done
+        </Badge>
+      );
+    case "generating":
+      return (
+        <Badge variant="secondary">
+          <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+          Generating
+        </Badge>
+      );
+    case "failed":
+      return (
+        <Badge variant="destructive">
+          <XCircle className="w-3 h-3 mr-1" />
+          Failed
+        </Badge>
+      );
+    default:
+      return (
+        <Badge variant="outline">
+          <Clock className="w-3 h-3 mr-1" />
+          Pending
+        </Badge>
+      );
+  }
+}
+
+function DayCard({ day, onView }: { day: LessonDay; onView: (day: LessonDay) => void }) {
+  const isComplete = day.imageStatus === "completed" && day.videoStatus === "completed";
+  const isGenerating = day.imageStatus === "generating" || day.videoStatus === "generating";
+  const hasFailed = day.imageStatus === "failed" || day.videoStatus === "failed";
+
+  return (
+    <Card
+      className={`transition-all duration-200 cursor-pointer ${
+        isComplete ? "border-emerald-200 dark:border-emerald-900"
+        : hasFailed ? "border-red-200 dark:border-red-900"
+        : isGenerating ? "border-blue-200 dark:border-blue-900"
+        : ""
+      }`}
+      onClick={() => onView(day)}
+      data-testid={`card-day-${day.id}`}
+    >
+      <CardContent className="p-3">
+        <div className="flex items-start justify-between gap-1 mb-2">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="text-xs font-semibold text-primary">Day {day.id}</span>
+              {isComplete && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />}
+            </div>
+            <h4 className="text-sm font-medium truncate">{day.topic}</h4>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-1">
+            <Image className="w-3 h-3 text-muted-foreground" />
+            <StatusBadge status={day.imageStatus} />
+          </div>
+          <div className="flex items-center gap-1">
+            <Video className="w-3 h-3 text-muted-foreground" />
+            <StatusBadge status={day.videoStatus} />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function DayRow({ day, onView }: { day: LessonDay; onView: (day: LessonDay) => void }) {
+  return (
+    <div
+      className="flex items-center gap-4 p-3 border rounded-md cursor-pointer hover-elevate"
+      onClick={() => onView(day)}
+      data-testid={`row-day-${day.id}`}
+    >
+      <div className="w-16 text-center">
+        <span className="text-sm font-semibold text-primary">Day {day.id}</span>
+      </div>
+      <div className="flex-1 min-w-0">
+        <h4 className="text-sm font-medium truncate">{day.topic}</h4>
+        <p className="text-xs text-muted-foreground truncate">{day.description}</p>
+      </div>
+      <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-1.5">
+          <Image className="w-3.5 h-3.5 text-muted-foreground" />
+          <StatusBadge status={day.imageStatus} />
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Video className="w-3.5 h-3.5 text-muted-foreground" />
+          <StatusBadge status={day.videoStatus} />
+        </div>
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={(e) => { e.stopPropagation(); onView(day); }}
+          data-testid={`button-view-day-${day.id}`}
+        >
+          <Eye className="w-4 h-4" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default function Dashboard() {
+  const { toast } = useToast();
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [filter, setFilter] = useState<"all" | "pending" | "completed" | "generating" | "failed">("all");
+  const [selectedDay, setSelectedDay] = useState<LessonDay | null>(null);
+  const [activeTab, setActiveTab] = useState("upload");
+
+  const { data: stats, isLoading: statsLoading } = useQuery<Stats>({
+    queryKey: ["/api/stats"],
+    refetchInterval: 5000,
+  });
+
+  const { data: days = [], isLoading: daysLoading } = useQuery<LessonDay[]>({
+    queryKey: ["/api/lesson-days"],
+    refetchInterval: 5000,
+  });
+
+  const { data: jobStatus } = useQuery<{ isRunning: boolean; job: any }>({
+    queryKey: ["/api/generation/status"],
+    refetchInterval: 3000,
+  });
+
+  const startGeneration = useMutation({
+    mutationFn: () => apiRequest("POST", "/api/generation/start"),
+    onSuccess: () => {
+      toast({ title: "Generation started", description: "The AI agent is now generating media for all lesson days." });
+      queryClient.invalidateQueries({ queryKey: ["/api/generation/status"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
+    },
+    onError: (err: any) => {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    },
+  });
+
+  const stopGeneration = useMutation({
+    mutationFn: () => apiRequest("POST", "/api/generation/stop"),
+    onSuccess: () => {
+      toast({ title: "Generation stopped", description: "The generation process has been paused." });
+      queryClient.invalidateQueries({ queryKey: ["/api/generation/status"] });
+    },
+  });
+
+  const retryFailed = useMutation({
+    mutationFn: () => apiRequest("POST", "/api/generation/retry-failed"),
+    onSuccess: () => {
+      toast({ title: "Retrying failed items", description: "Failed generations will be retried." });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/lesson-days"] });
+    },
+  });
+
+  const filteredDays = useMemo(() => {
+    if (filter === "all") return days;
+    return days.filter((d) => {
+      if (filter === "completed") return d.imageStatus === "completed" && d.videoStatus === "completed";
+      if (filter === "pending") return d.imageStatus === "pending" || d.videoStatus === "pending";
+      if (filter === "generating") return d.imageStatus === "generating" || d.videoStatus === "generating";
+      if (filter === "failed") return d.imageStatus === "failed" || d.videoStatus === "failed";
+      return true;
+    });
+  }, [days, filter]);
+
+  const totalMedia = (stats?.totalDays ?? 0) * 2;
+  const completedMedia = (stats?.imagesCompleted ?? 0) + (stats?.videosCompleted ?? 0);
+  const overallProgress = totalMedia > 0 ? Math.round((completedMedia / totalMedia) * 100) : 0;
+  const isRunning = jobStatus?.isRunning ?? false;
+  const hasLessons = (stats?.totalDays ?? 0) > 0;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2">
+                <Zap className="w-5 h-5 text-primary" />
+                AI Media Generation Agent
+              </h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                Upload lessons, generate images & videos automatically
+              </p>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              {isRunning ? (
+                <Button
+                  onClick={() => stopGeneration.mutate()}
+                  variant="destructive"
+                  disabled={stopGeneration.isPending}
+                  data-testid="button-stop-generation"
+                >
+                  {stopGeneration.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Pause className="w-4 h-4 mr-2" />
+                  )}
+                  Stop Generation
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => startGeneration.mutate()}
+                  disabled={startGeneration.isPending || overallProgress === 100 || !hasLessons}
+                  data-testid="button-start-generation"
+                >
+                  {startGeneration.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Play className="w-4 h-4 mr-2" />
+                  )}
+                  {!hasLessons ? "Upload Lessons First" : overallProgress === 100 ? "All Complete" : "Start Generation"}
+                </Button>
+              )}
+              {hasLessons && (
+                <Button
+                  variant="outline"
+                  onClick={() => retryFailed.mutate()}
+                  disabled={retryFailed.isPending || ((stats?.imagesFailed ?? 0) + (stats?.videosFailed ?? 0)) === 0}
+                  data-testid="button-retry-failed"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Retry Failed
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="mb-6">
+            <TabsTrigger value="upload" data-testid="tab-upload">
+              <Upload className="w-4 h-4 mr-1.5" />
+              Upload Lessons
+            </TabsTrigger>
+            <TabsTrigger value="overview" data-testid="tab-overview">
+              <BarChart3 className="w-4 h-4 mr-1.5" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="days" data-testid="tab-days">
+              <Grid3X3 className="w-4 h-4 mr-1.5" />
+              All Days ({stats?.totalDays ?? 0})
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="upload" className="space-y-6">
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-6">
+                <h2 className="text-lg font-semibold">Upload Your Lesson Plan</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Upload a document containing your lessons. The AI will analyze it, extract each lesson day,
+                  and then generate unique images and videos for every single lesson.
+                </p>
+              </div>
+              <FileUpload />
+
+              {hasLessons && (
+                <Card className="mt-6">
+                  <CardContent className="p-4 text-center">
+                    <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
+                    <p className="text-sm font-medium">{stats?.totalDays} lessons loaded</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Switch to the "Overview" tab and click "Start Generation" to begin creating media.
+                    </p>
+                    <Button
+                      className="mt-3"
+                      size="sm"
+                      onClick={() => setActiveTab("overview")}
+                      data-testid="button-go-to-overview"
+                    >
+                      Go to Overview
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="overview" className="space-y-6">
+            {!hasLessons ? (
+              <div className="text-center py-20">
+                <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                <h3 className="text-lg font-medium">No lessons yet</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Upload a lesson document to get started.
+                </p>
+                <Button className="mt-4" onClick={() => setActiveTab("upload")} data-testid="button-upload-lessons">
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload Lessons
+                </Button>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <h2 className="text-sm font-medium text-muted-foreground">Overall Progress</h2>
+                    <span className="text-sm font-semibold">{completedMedia} / {totalMedia} media files</span>
+                  </div>
+                  <Progress value={overallProgress} className="h-3" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">{overallProgress}% complete</span>
+                    {isRunning && (
+                      <Badge variant="secondary">
+                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                        Generating...
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <StatCard
+                    title="Images Done"
+                    value={stats?.imagesCompleted ?? 0}
+                    total={stats?.totalDays ?? 0}
+                    icon={Image}
+                    color="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400"
+                  />
+                  <StatCard
+                    title="Videos Done"
+                    value={stats?.videosCompleted ?? 0}
+                    total={stats?.totalDays ?? 0}
+                    icon={Video}
+                    color="bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400"
+                  />
+                  <StatCard
+                    title="In Progress"
+                    value={(stats?.imagesGenerating ?? 0) + (stats?.videosGenerating ?? 0)}
+                    total={totalMedia}
+                    icon={Loader2}
+                    color="bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400"
+                  />
+                  <StatCard
+                    title="Failed"
+                    value={(stats?.imagesFailed ?? 0) + (stats?.videosFailed ?? 0)}
+                    total={totalMedia}
+                    icon={XCircle}
+                    color="bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400"
+                  />
+                </div>
+
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base">Recent Activity</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-[400px]">
+                      <div className="space-y-2">
+                        {days
+                          .filter(d => d.imageStatus !== "pending" || d.videoStatus !== "pending")
+                          .sort((a, b) => {
+                            const aTime = Math.max(
+                              a.imageGeneratedAt ? new Date(a.imageGeneratedAt).getTime() : 0,
+                              a.videoGeneratedAt ? new Date(a.videoGeneratedAt).getTime() : 0
+                            );
+                            const bTime = Math.max(
+                              b.imageGeneratedAt ? new Date(b.imageGeneratedAt).getTime() : 0,
+                              b.videoGeneratedAt ? new Date(b.videoGeneratedAt).getTime() : 0
+                            );
+                            return bTime - aTime;
+                          })
+                          .slice(0, 20)
+                          .map(day => (
+                            <DayRow key={day.id} day={day} onView={setSelectedDay} />
+                          ))}
+                        {days.filter(d => d.imageStatus !== "pending" || d.videoStatus !== "pending").length === 0 && (
+                          <div className="text-center py-12 text-muted-foreground">
+                            <Zap className="w-8 h-8 mx-auto mb-3 opacity-50" />
+                            <p className="text-sm">No media generated yet. Click "Start Generation" to begin.</p>
+                          </div>
+                        )}
+                      </div>
+                    </ScrollArea>
+                  </CardContent>
+                </Card>
+              </>
+            )}
+          </TabsContent>
+
+          <TabsContent value="days" className="space-y-4">
+            {!hasLessons ? (
+              <div className="text-center py-20">
+                <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                <h3 className="text-lg font-medium">No lessons yet</h3>
+                <p className="text-sm text-muted-foreground mt-1">Upload a lesson document to see all days here.</p>
+                <Button className="mt-4" onClick={() => setActiveTab("upload")}>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload Lessons
+                </Button>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Button variant={filter === "all" ? "default" : "outline"} size="sm" onClick={() => setFilter("all")} data-testid="filter-all">
+                      All ({days.length})
+                    </Button>
+                    <Button variant={filter === "pending" ? "default" : "outline"} size="sm" onClick={() => setFilter("pending")} data-testid="filter-pending">
+                      <Clock className="w-3 h-3 mr-1" />
+                      Pending ({stats?.imagesPending ?? 0})
+                    </Button>
+                    <Button variant={filter === "generating" ? "default" : "outline"} size="sm" onClick={() => setFilter("generating")} data-testid="filter-generating">
+                      <Loader2 className="w-3 h-3 mr-1" />
+                      Generating
+                    </Button>
+                    <Button variant={filter === "completed" ? "default" : "outline"} size="sm" onClick={() => setFilter("completed")} data-testid="filter-completed">
+                      <CheckCircle2 className="w-3 h-3 mr-1" />
+                      Completed ({stats?.imagesCompleted ?? 0})
+                    </Button>
+                    <Button variant={filter === "failed" ? "default" : "outline"} size="sm" onClick={() => setFilter("failed")} data-testid="filter-failed">
+                      <XCircle className="w-3 h-3 mr-1" />
+                      Failed ({(stats?.imagesFailed ?? 0) + (stats?.videosFailed ?? 0)})
+                    </Button>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Button variant={viewMode === "grid" ? "default" : "ghost"} size="icon" onClick={() => setViewMode("grid")} data-testid="button-grid-view">
+                      <Grid3X3 className="w-4 h-4" />
+                    </Button>
+                    <Button variant={viewMode === "list" ? "default" : "ghost"} size="icon" onClick={() => setViewMode("list")} data-testid="button-list-view">
+                      <List className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                {daysLoading ? (
+                  <div className="flex items-center justify-center py-20">
+                    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                  </div>
+                ) : viewMode === "grid" ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                    {filteredDays.map(day => (
+                      <DayCard key={day.id} day={day} onView={setSelectedDay} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {filteredDays.map(day => (
+                      <DayRow key={day.id} day={day} onView={setSelectedDay} />
+                    ))}
+                  </div>
+                )}
+
+                {filteredDays.length === 0 && !daysLoading && (
+                  <div className="text-center py-20 text-muted-foreground">
+                    <p className="text-sm">No lesson days match this filter.</p>
+                  </div>
+                )}
+              </>
+            )}
+          </TabsContent>
+        </Tabs>
+      </main>
+
+      {selectedDay && <MediaViewer day={selectedDay} onClose={() => setSelectedDay(null)} />}
+    </div>
+  );
+}
