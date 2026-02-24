@@ -12,23 +12,44 @@ export interface ParsedLesson {
   description: string;
 }
 
-export async function parseDocumentToLessons(content: string): Promise<ParsedLesson[]> {
-  const maxChunkSize = 12000;
-  const chunks: string[] = [];
-
+function splitByDayBoundaries(content: string, maxChunkSize: number): string[] {
   if (content.length <= maxChunkSize) {
-    chunks.push(content);
-  } else {
-    for (let i = 0; i < content.length; i += maxChunkSize) {
-      chunks.push(content.slice(i, i + maxChunkSize));
+    return [content];
+  }
+
+  const chunks: string[] = [];
+  const dayPattern = /(?=\nDay\s+\d+[\s—\-–:])/gi;
+  const parts = content.split(dayPattern);
+
+  let currentChunk = "";
+  for (const part of parts) {
+    if (currentChunk.length + part.length > maxChunkSize && currentChunk.length > 0) {
+      chunks.push(currentChunk);
+      currentChunk = part;
+    } else {
+      currentChunk += part;
     }
   }
+  if (currentChunk.length > 0) {
+    chunks.push(currentChunk);
+  }
+
+  return chunks;
+}
+
+export async function parseDocumentToLessons(content: string): Promise<ParsedLesson[]> {
+  const maxChunkSize = 50000;
+  const chunks = splitByDayBoundaries(content, maxChunkSize);
+
+  console.log(`Document parsing: ${content.length} chars split into ${chunks.length} chunks`);
 
   const allLessons: ParsedLesson[] = [];
 
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
     const chunkInfo = chunks.length > 1 ? ` (Part ${i + 1} of ${chunks.length})` : "";
+
+    console.log(`Parsing chunk ${i + 1}/${chunks.length} (${chunk.length} chars)...`);
 
     try {
       const response = await openai.chat.completions.create({
@@ -38,18 +59,18 @@ export async function parseDocumentToLessons(content: string): Promise<ParsedLes
             role: "system",
             content: `You are a document parser that extracts lesson information from educational documents. 
 Extract each lesson/day from the document and return a JSON array of lessons.
-Each lesson must have: dayNumber (integer), topic (short title), description (1-2 sentence summary).
+Each lesson must have: dayNumber (integer), topic (short title, max 80 chars), description (1-2 sentence summary, max 200 chars).
 If the document has numbered days/lessons, preserve those numbers.
 If not numbered, assign sequential day numbers starting from 1.
 Be thorough - extract EVERY lesson mentioned in the document.
-Return ONLY valid JSON array, no other text.`
+Return ONLY a valid JSON array, no markdown code fences, no other text.`
           },
           {
             role: "user",
             content: `Extract all lessons from this document${chunkInfo}:\n\n${chunk}`
           }
         ],
-        max_completion_tokens: 8192,
+        max_completion_tokens: 16384,
       });
 
       const responseText = response.choices[0]?.message?.content || "[]";
@@ -62,15 +83,20 @@ Return ONLY valid JSON array, no other text.`
             if (lesson.dayNumber && lesson.topic) {
               allLessons.push({
                 dayNumber: Number(lesson.dayNumber),
-                topic: String(lesson.topic),
-                description: String(lesson.description || lesson.topic),
+                topic: String(lesson.topic).substring(0, 100),
+                description: String(lesson.description || lesson.topic).substring(0, 500),
               });
             }
           }
         }
+        console.log(`Chunk ${i + 1}: extracted ${parsed.length} lessons`);
+      } else {
+        console.error(`Chunk ${i + 1}: no JSON array found in response`);
+        console.error(`Response preview: ${responseText.substring(0, 200)}`);
       }
     } catch (error: any) {
       console.error(`Error parsing chunk ${i + 1}:`, error.message);
+      if (error.status) console.error(`HTTP status: ${error.status}`);
     }
   }
 
@@ -83,6 +109,7 @@ Return ONLY valid JSON array, no other text.`
     return true;
   });
 
+  console.log(`Total unique lessons extracted: ${unique.length}`);
   return unique;
 }
 

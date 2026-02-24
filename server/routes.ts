@@ -159,6 +159,40 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/uploads/:id/reparse", async (req, res) => {
+    const id = parseInt(req.params.id);
+    const docs = await storage.getUploadedDocuments();
+    const doc = docs.find(d => d.id === id);
+    if (!doc) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    await storage.updateUploadedDocument(doc.id, { status: "processing", parsedLessonsCount: 0 });
+    res.json({ message: "Re-parsing started" });
+
+    parseDocumentToLessons(doc.originalContent)
+      .then(async (lessons) => {
+        if (lessons.length > 0) {
+          await storage.clearAllLessonDays();
+          const lessonData = lessons.map(l => ({
+            id: l.dayNumber,
+            topic: l.topic,
+            description: l.description,
+          }));
+          await storage.insertLessonDays(lessonData);
+        }
+        await storage.updateUploadedDocument(doc.id, {
+          parsedLessonsCount: lessons.length,
+          status: "completed",
+        });
+        console.log(`Document re-parsed: ${lessons.length} lessons extracted`);
+      })
+      .catch(async (error) => {
+        console.error("Document re-parsing error:", error);
+        await storage.updateUploadedDocument(doc.id, { status: "failed" });
+      });
+  });
+
   app.get("/api/uploads", async (_req, res) => {
     const docs = await storage.getUploadedDocuments();
     res.json(docs);
