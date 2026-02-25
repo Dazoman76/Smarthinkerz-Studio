@@ -30,12 +30,18 @@ import {
 import { useState, useEffect } from "react";
 
 const sampleImages = [
-  "/generated/images/day_1.png",
-  "/generated/images/day_2.png",
-  "/generated/images/day_3.png",
-  "/generated/images/day_4.png",
-  "/generated/images/day_5.png",
-  "/generated/images/day_6.png",
+  { src: "/generated/images/day_1.png", style: "Photorealistic" },
+  { src: "/generated/images/day_3.png", style: "Illustrated" },
+  { src: "/generated/images/day_5.png", style: "Photorealistic" },
+  { src: "/generated/images/day_7.png", style: "Illustrated" },
+  { src: "/generated/images/day_9.png", style: "Photorealistic" },
+  { src: "/generated/images/day_11.png", style: "Illustrated" },
+  { src: "/generated/images/day_2.png", style: "Photorealistic" },
+  { src: "/generated/images/day_4.png", style: "Illustrated" },
+  { src: "/generated/images/day_6.png", style: "Photorealistic" },
+  { src: "/generated/images/day_8.png", style: "Illustrated" },
+  { src: "/generated/images/day_10.png", style: "Photorealistic" },
+  { src: "/generated/images/day_12.png", style: "Illustrated" },
 ];
 
 function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
@@ -111,11 +117,11 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                 </span>
               </div>
               <div className="relative aspect-video bg-muted">
-                {sampleImages.map((src, i) => (
+                {sampleImages.map((img, i) => (
                   <img
-                    key={src}
-                    src={src}
-                    alt={`AI generated sample ${i + 1}`}
+                    key={img.src}
+                    src={img.src}
+                    alt={`${img.style} sample ${i + 1}`}
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
                       i === currentImage ? "opacity-100" : "opacity-0"
                     }`}
@@ -125,7 +131,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                   <div className="flex items-center gap-2">
                     <Badge className="bg-primary text-primary-foreground">
-                      Sample {currentImage + 1}
+                      {sampleImages[currentImage]?.style || "Sample"}
                     </Badge>
                     <span className="text-white text-sm font-medium">
                       AI-Generated Visual
@@ -136,7 +142,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
               <div className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="flex -space-x-1">
-                    {[0, 1, 2, 3, 4, 5].map((i) => (
+                    {sampleImages.slice(0, 6).map((img, i) => (
                       <div
                         key={i}
                         className={`w-8 h-8 rounded-md border-2 border-card overflow-hidden cursor-pointer transition-all ${
@@ -147,7 +153,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                         onClick={() => setCurrentImage(i)}
                       >
                         <img
-                          src={sampleImages[i]}
+                          src={img.src}
                           alt=""
                           className="w-full h-full object-cover"
                         />
@@ -456,21 +462,21 @@ function ShowcaseSection() {
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {sampleImages.map((src, i) => (
+          {sampleImages.map((img, i) => (
             <div
               key={i}
               className="group relative aspect-video rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-shadow duration-300"
             >
               <img
-                src={src}
-                alt={`AI Generated - Sample ${i + 1}`}
+                src={img.src}
+                alt={`${img.style} - Sample ${i + 1}`}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 data-testid={`img-showcase-${i}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-3 left-3">
-                  <Badge className="bg-white/90 text-black">
-                    Sample {i + 1}
+                  <Badge className={img.style === "Photorealistic" ? "bg-cyan-500/90 text-white" : "bg-purple-500/90 text-white"}>
+                    {img.style}
                   </Badge>
                 </div>
               </div>
@@ -538,17 +544,22 @@ function CapabilitiesSection() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            {sampleImages.slice(0, 4).map((src, i) => (
+            {sampleImages.slice(0, 4).map((img, i) => (
               <div
                 key={i}
-                className="aspect-video rounded-lg overflow-hidden border shadow-md"
+                className="relative aspect-video rounded-lg overflow-hidden border shadow-md"
               >
                 <img
-                  src={src}
-                  alt={`Sample ${i + 1}`}
+                  src={img.src}
+                  alt={`${img.style} ${i + 1}`}
                   className="w-full h-full object-cover"
                   data-testid={`img-capability-sample-${i}`}
                 />
+                <div className="absolute top-2 left-2">
+                  <Badge className={`text-[10px] ${img.style === "Photorealistic" ? "bg-cyan-500/90 text-white" : "bg-purple-500/90 text-white"}`}>
+                    {img.style}
+                  </Badge>
+                </div>
               </div>
             ))}
           </div>
