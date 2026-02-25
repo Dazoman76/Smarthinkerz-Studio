@@ -139,6 +139,15 @@ export async function registerRoutes(
         contentLength: textContent.length,
       });
 
+      const imagesDir = path.join(process.cwd(), "generated", "images");
+      const videosDir = path.join(process.cwd(), "generated", "videos");
+      if (fs.existsSync(imagesDir)) {
+        for (const f of fs.readdirSync(imagesDir)) fs.unlinkSync(path.join(imagesDir, f));
+      }
+      if (fs.existsSync(videosDir)) {
+        for (const f of fs.readdirSync(videosDir)) fs.unlinkSync(path.join(videosDir, f));
+      }
+
       parseDocumentToLessons(textContent)
         .then(async (lessons) => {
           if (lessons.length > 0) {

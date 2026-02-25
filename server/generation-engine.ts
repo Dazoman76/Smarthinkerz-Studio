@@ -169,7 +169,24 @@ class GenerationEngine {
 
       const prompt = `Professional educational illustration for "Day ${day.id}: ${day.topic}". ${day.description}. The label "Day ${day.id}" must be prominently displayed. High quality, detailed, photorealistic, modern educational design, vibrant colors, clean composition. 16:9 widescreen.`;
 
-      const imageBuffer = await generateImageBuffer(prompt, "1536x1024");
+      let imageBuffer: Buffer | null = null;
+      const maxRetries = 3;
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          imageBuffer = await generateImageBuffer(prompt, "1536x1024");
+          break;
+        } catch (err: any) {
+          if (attempt < maxRetries && (err.status === 429 || err.status === 500 || err.status === 503)) {
+            const waitTime = attempt * 10000;
+            console.log(`Image gen rate limited for Day ${day.id}, waiting ${waitTime / 1000}s (attempt ${attempt})...`);
+            await new Promise(r => setTimeout(r, waitTime));
+          } else {
+            throw err;
+          }
+        }
+      }
+
+      if (!imageBuffer) throw new Error("Failed to generate image after retries");
 
       const outputPath = path.join(process.cwd(), "generated", "images", `day_${day.id}.png`);
       fs.writeFileSync(outputPath, imageBuffer);
@@ -180,6 +197,8 @@ class GenerationEngine {
         `/generated/images/day_${day.id}.png`
       );
       console.log(`Image generated for Day ${day.id}: ${day.topic}`);
+
+      await new Promise(r => setTimeout(r, 1000));
     } catch (error: any) {
       console.error(`Image generation failed for Day ${day.id}:`, error.message);
       await storage.updateLessonDayImageStatus(

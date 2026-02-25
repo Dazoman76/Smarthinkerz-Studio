@@ -1,42 +1,54 @@
 # AI Media Generation Agent
 
 ## Overview
-A full-stack web application that serves as an AI-powered media generation agent. Users upload lesson plan documents (PDF, DOCX, TXT, CSV, MD), and the AI parses them to extract individual lessons. Then it generates unique 16:9 images and videos for each lesson day.
+A full-stack web application that serves as an AI-powered media generation agent. Users upload lesson plan documents (PDF, DOCX, TXT, CSV, MD), and the AI parses them to extract individual lessons. Then it generates unique 16:9 images and videos for each lesson day. Supports documents of any size (tested with 220+ lessons, designed for 600+).
 
 ## Architecture
 - **Frontend**: React + Vite + TailwindCSS + shadcn/ui components
 - **Backend**: Express.js with TypeScript
 - **Database**: PostgreSQL via Drizzle ORM
-- **AI**: OpenAI via Replit AI Integrations (no API key required)
+- **AI**: OpenAI API (user's own OPENAI_API_KEY) - gpt-4o-mini for parsing, gpt-image-1 for images
+- **Video**: ffmpeg with Ken Burns zoom effect, text overlays for day label and topic
 - **File Upload**: Multer for multipart form handling
 - **Document Parsing**: pdf-parse (PDF), mammoth (DOCX), native text (TXT/CSV/MD)
+- **Downloads**: Individual file downloads + bulk zip via archiver
 
 ## Key Features
 1. **Document Upload & AI Parsing**: Upload lesson plan documents; AI extracts lesson topics and descriptions
-2. **Batch Media Generation**: Generates images using OpenAI's gpt-image-1 model
+2. **Batch Media Generation**: Generates 1536x1024 images using gpt-image-1, videos via ffmpeg
 3. **Progress Dashboard**: Real-time tracking of generation progress with grid/list views
-4. **Media Viewer**: View generated images and videos per lesson day
-5. **Generation Controls**: Start/stop/retry failed generation jobs
+4. **Media Viewer**: View generated images and videos per lesson day with individual download buttons
+5. **Generation Controls**: Start/Pause/Resume/Stop generation, retry failed items
+6. **Downloads**: Individual image/video download with Day+Topic filenames, bulk Download All as zip
+7. **Scalability**: Rate limit handling with retries, chunk-based parsing for large documents
 
 ## File Structure
 - `shared/schema.ts` - Database schema (lesson_days, generation_jobs, uploaded_documents)
-- `server/routes.ts` - API endpoints including upload and generation
+- `server/routes.ts` - API endpoints including upload, generation, and downloads
 - `server/storage.ts` - Database storage layer
-- `server/generation-engine.ts` - Handles batch image/video generation
-- `server/document-parser.ts` - AI-powered document parsing using OpenAI
+- `server/generation-engine.ts` - Handles batch image/video generation with pause/resume/stop
+- `server/document-parser.ts` - AI-powered document parsing with chunking and retry logic
 - `server/db.ts` - Database connection
 - `server/replit_integrations/` - AI integration code (OpenAI, image generation)
 - `client/src/pages/dashboard.tsx` - Main dashboard page
 - `client/src/components/file-upload.tsx` - File upload with drag & drop
-- `client/src/components/media-viewer.tsx` - Image/video viewer dialog
+- `client/src/components/media-viewer.tsx` - Image/video viewer dialog with download buttons
 - `generated/` - Output directory for generated images and videos
 
 ## Database Tables
-- `lesson_days` - Stores each lesson with topic, description, and generation status
+- `lesson_days` - Stores each lesson with topic, description, and generation status (field: originalContent)
 - `generation_jobs` - Tracks batch generation job progress
 - `uploaded_documents` - Records of uploaded files and parsing status
+
+## Important Notes
+- Image size: 1536x1024 (OpenAI supported landscape format)
+- Video: 6-second MP4 with Ken Burns zoom, day label overlay, topic overlay
+- Document parser splits by Day boundaries (max 40,000 chars per chunk) with retry on rate limits
+- Image generation has retry logic (3 attempts) with exponential backoff for rate limits
+- Uploading a new document clears previous generated files and lesson data
+- Download filenames: Day_{N}_{Sanitized_Topic}.png/mp4
 
 ## Dependencies
 - multer, pdf-parse, mammoth - File upload and document parsing
 - openai - AI integration for document parsing and image generation
-- p-limit, p-retry - Rate limiting and retry logic for batch processing
+- archiver - Zip file creation for bulk downloads

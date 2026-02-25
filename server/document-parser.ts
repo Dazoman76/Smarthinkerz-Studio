@@ -38,7 +38,7 @@ function splitByDayBoundaries(content: string, maxChunkSize: number): string[] {
 }
 
 export async function parseDocumentToLessons(content: string): Promise<ParsedLesson[]> {
-  const maxChunkSize = 50000;
+  const maxChunkSize = 40000;
   const chunks = splitByDayBoundaries(content, maxChunkSize);
 
   console.log(`Document parsing: ${content.length} chars split into ${chunks.length} chunks`);
@@ -51,52 +51,64 @@ export async function parseDocumentToLessons(content: string): Promise<ParsedLes
 
     console.log(`Parsing chunk ${i + 1}/${chunks.length} (${chunk.length} chars)...`);
 
-    try {
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content: `You are a document parser that extracts lesson information from educational documents. 
+    const maxRetries = 3;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await openai.chat.completions.create({
+          model: "gpt-4o-mini",
+          messages: [
+            {
+              role: "system",
+              content: `You are a document parser that extracts lesson information from educational documents. 
 Extract each lesson/day from the document and return a JSON array of lessons.
 Each lesson must have: dayNumber (integer), topic (short title, max 80 chars), description (1-2 sentence summary, max 200 chars).
-If the document has numbered days/lessons, preserve those numbers.
+If the document has numbered days/lessons/units/chapters/modules/sessions, preserve those numbers.
 If not numbered, assign sequential day numbers starting from 1.
-Be thorough - extract EVERY lesson mentioned in the document.
+Be thorough - extract EVERY lesson mentioned in the document. Do not skip any.
 Return ONLY a valid JSON array, no markdown code fences, no other text.`
-          },
-          {
-            role: "user",
-            content: `Extract all lessons from this document${chunkInfo}:\n\n${chunk}`
-          }
-        ],
-        max_completion_tokens: 16384,
-      });
+            },
+            {
+              role: "user",
+              content: `Extract all lessons from this document${chunkInfo}:\n\n${chunk}`
+            }
+          ],
+          max_completion_tokens: 16384,
+        });
 
-      const responseText = response.choices[0]?.message?.content || "[]";
+        const responseText = response.choices[0]?.message?.content || "[]";
 
-      const jsonMatch = responseText.match(/\[[\s\S]*\]/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        if (Array.isArray(parsed)) {
-          for (const lesson of parsed) {
-            if (lesson.dayNumber && lesson.topic) {
-              allLessons.push({
-                dayNumber: Number(lesson.dayNumber),
-                topic: String(lesson.topic).substring(0, 100),
-                description: String(lesson.description || lesson.topic).substring(0, 500),
-              });
+        const jsonMatch = responseText.match(/\[[\s\S]*\]/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0]);
+          if (Array.isArray(parsed)) {
+            for (const lesson of parsed) {
+              if (lesson.dayNumber && lesson.topic) {
+                allLessons.push({
+                  dayNumber: Number(lesson.dayNumber),
+                  topic: String(lesson.topic).substring(0, 100),
+                  description: String(lesson.description || lesson.topic).substring(0, 500),
+                });
+              }
             }
           }
+          console.log(`Chunk ${i + 1}: extracted ${parsed.length} lessons`);
+          break;
+        } else {
+          console.error(`Chunk ${i + 1}: no JSON array found in response (attempt ${attempt})`);
+          console.error(`Response preview: ${responseText.substring(0, 200)}`);
+          if (attempt === maxRetries) break;
         }
-        console.log(`Chunk ${i + 1}: extracted ${parsed.length} lessons`);
-      } else {
-        console.error(`Chunk ${i + 1}: no JSON array found in response`);
-        console.error(`Response preview: ${responseText.substring(0, 200)}`);
+      } catch (error: any) {
+        console.error(`Error parsing chunk ${i + 1} (attempt ${attempt}):`, error.message);
+        if (error.status) console.error(`HTTP status: ${error.status}`);
+        if (attempt < maxRetries && (error.status === 429 || error.status === 500 || error.status === 503)) {
+          const waitTime = attempt * 5000;
+          console.log(`Rate limited or server error, waiting ${waitTime / 1000}s before retry...`);
+          await new Promise(r => setTimeout(r, waitTime));
+        } else if (attempt === maxRetries) {
+          break;
+        }
       }
-    } catch (error: any) {
-      console.error(`Error parsing chunk ${i + 1}:`, error.message);
-      if (error.status) console.error(`HTTP status: ${error.status}`);
     }
   }
 
