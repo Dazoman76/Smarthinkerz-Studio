@@ -20,6 +20,12 @@ import {
   GraduationCap,
   Briefcase,
   Sparkles,
+  Megaphone,
+  BookOpen,
+  PenTool,
+  Target,
+  BarChart3,
+  Shield,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -53,12 +59,11 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
               AI-Powered Media Generation
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-              Turn Lessons into{" "}
-              <span className="text-primary">Media Instantly</span>
+              Turn Any Content into{" "}
+              <span className="text-primary">Stunning Visuals</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed">
-              Upload lessons, generate images & videos automatically — scale
-              your content effortlessly with AI.
+              Upload documents, generate images & videos automatically. For educators, creators, businesses, marketers, and publishers.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
@@ -91,7 +96,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                10 free images/month
+                7 visual styles
               </div>
             </div>
           </div>
@@ -103,7 +108,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                 <div className="w-3 h-3 rounded-full bg-yellow-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
                 <span className="ml-2 text-xs text-muted-foreground">
-                  AI Media Generation Agent
+                  AI Media Agent
                 </span>
               </div>
               <div className="relative aspect-video bg-muted">
@@ -111,7 +116,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                   <img
                     key={src}
                     src={src}
-                    alt={`Sample lesson Day ${i + 1}`}
+                    alt={`Sample generated media ${i + 1}`}
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
                       i === currentImage ? "opacity-100" : "opacity-0"
                     }`}
@@ -121,10 +126,10 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                   <div className="flex items-center gap-2">
                     <Badge className="bg-primary text-primary-foreground">
-                      Day {currentImage + 1}
+                      Sample {currentImage + 1}
                     </Badge>
                     <span className="text-white text-sm font-medium">
-                      AI-Generated Lesson Image
+                      AI-Generated Visual
                     </span>
                   </div>
                 </div>
@@ -164,33 +169,131 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   );
 }
 
+function UseCasesSection() {
+  const useCases = [
+    {
+      icon: GraduationCap,
+      title: "Education",
+      subtitle: "Lessons & Courses",
+      description: "Upload lesson plans and curricula. AI generates images and videos for every lesson day — perfect for LMS, slides, and classroom materials.",
+      examples: ["Lesson visuals", "Course thumbnails", "Study guide illustrations"],
+      color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+    },
+    {
+      icon: PenTool,
+      title: "Content Creators",
+      subtitle: "Social & Explainers",
+      description: "Create social media posts, explainer video frames, and infographics from your content briefs or scripts.",
+      examples: ["Social media posts", "Explainer videos", "Infographics"],
+      color: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+    },
+    {
+      icon: Briefcase,
+      title: "Businesses",
+      subtitle: "Training & Onboarding",
+      description: "Turn training manuals, onboarding guides, and product tutorials into professional visual content at scale.",
+      examples: ["Training modules", "Onboarding guides", "Product tutorials"],
+      color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+    },
+    {
+      icon: Megaphone,
+      title: "Marketers",
+      subtitle: "Campaigns & Ads",
+      description: "Generate campaign visuals, ad creatives, and branded video snippets from marketing briefs and copy.",
+      examples: ["Ad creatives", "Campaign visuals", "Branded snippets"],
+      color: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
+    },
+    {
+      icon: BookOpen,
+      title: "Authors & Publishers",
+      subtitle: "Books & Guides",
+      description: "Create illustrated chapters, visual summaries, and study guides from your manuscripts and outlines.",
+      examples: ["Chapter illustrations", "Visual summaries", "Study guides"],
+      color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+    },
+  ];
+
+  return (
+    <section id="use-cases" className="py-20 bg-muted/30">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            Built for Every Industry
+          </h2>
+          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+            One platform, endless possibilities. Upload your content and let AI handle the visuals.
+          </p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {useCases.map((uc) => (
+            <Card key={uc.title} className="hover-elevate transition-all duration-200">
+              <CardContent className="p-6 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${uc.color}`}>
+                    <uc.icon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">{uc.title}</h3>
+                    <p className="text-xs text-muted-foreground">{uc.subtitle}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {uc.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {uc.examples.map((ex) => (
+                    <Badge key={ex} variant="secondary" className="text-xs">
+                      {ex}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          <Card className="hover-elevate transition-all duration-200 border-dashed">
+            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-3 h-full">
+              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold">Your Use Case</h3>
+              <p className="text-sm text-muted-foreground">
+                Any structured document can become visual content. Upload and let AI figure out the rest.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function HowItWorksSection() {
   const steps = [
     {
       step: "1",
-      title: "Upload Your Lessons",
+      title: "Upload Your Content",
       description:
-        "Upload your lesson plan document — PDF, DOCX, TXT, CSV, or Markdown. Any format works.",
+        "Upload any document — lesson plans, training manuals, marketing briefs, manuscripts. Supports PDF, DOCX, TXT, CSV, and Markdown.",
       icon: Upload,
     },
     {
       step: "2",
       title: "AI Extracts & Generates",
       description:
-        "Our AI analyzes your document, extracts every lesson, and generates unique images and videos for each one.",
+        "Our AI analyzes your document, extracts each section, and generates unique images and videos in your chosen style.",
       icon: Sparkles,
     },
     {
       step: "3",
       title: "Download & Use",
       description:
-        "Download individually or bulk export as a zip. Use in your LMS, presentations, or social media.",
+        "Download individually or bulk export as a zip. Use in your LMS, social media, presentations, or marketing campaigns.",
       icon: Download,
     },
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -225,53 +328,52 @@ function FeaturesSection() {
   const features = [
     {
       icon: Upload,
-      title: "Bulk Lesson Upload",
+      title: "Bulk Document Upload",
       description:
-        "Upload documents with hundreds of lessons at once. Supports PDF, DOCX, TXT, CSV, and Markdown.",
+        "Upload documents with hundreds of sections at once. Supports PDF, DOCX, TXT, CSV, and Markdown.",
     },
     {
       icon: Image,
-      title: "Automatic Image Generation",
+      title: "AI Image Generation",
       description:
-        "AI generates unique, professional-quality 1536x1024 images for every lesson day.",
+        "Generates unique, professional-quality 1536x1024 images for every section of your content.",
     },
     {
       icon: Video,
       title: "HD Video Generation",
       description:
-        "Automatically creates animated HD videos with Ken Burns effects, day labels, and topic overlays.",
+        "Automatically creates animated HD videos with Ken Burns effects, labels, and topic overlays.",
     },
     {
       icon: Palette,
-      title: "Branding Options",
+      title: "7 Visual Styles",
       description:
-        "Add your logo, custom overlays, and color palettes to match your brand identity.",
-      badge: "Coming Soon",
+        "Choose from Photorealistic, Illustration, Cartoon, 3D Render, Watercolor, Minimalist, or Cinematic.",
     },
     {
       icon: PlugZap,
       title: "Integration-Ready",
       description:
-        "Export media for your LMS, presentations, or social platforms. API access for automation.",
+        "Export media for your LMS, social platforms, presentations, or ad networks. API access for automation.",
       badge: "Coming Soon",
     },
     {
       icon: Download,
       title: "Flexible Downloads",
       description:
-        "Download individual files or bulk export everything as a zip — files named with day and topic.",
+        "Download individual files or bulk export everything as a zip — files named with section and topic.",
     },
   ];
 
   return (
-    <section className="py-20">
+    <section className="py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
             Powerful Features
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Everything you need to turn lesson plans into professional media at
+            Everything you need to turn any content into professional media at
             scale.
           </p>
         </div>
@@ -305,6 +407,51 @@ function FeaturesSection() {
   );
 }
 
+function ShowcaseSection() {
+  return (
+    <section className="py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            See What AI Creates
+          </h2>
+          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+            Real examples generated from uploaded content. Every image is
+            unique and tailored to the topic.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {sampleImages.map((src, i) => (
+            <div
+              key={i}
+              className="group relative aspect-video rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-shadow duration-300"
+            >
+              <img
+                src={src}
+                alt={`AI Generated - Sample ${i + 1}`}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                data-testid={`img-showcase-${i}`}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-3 left-3">
+                  <Badge className="bg-white/90 text-black">
+                    Sample {i + 1}
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-8">
+          <p className="text-sm text-muted-foreground">
+            Generated using gpt-image-1 at 1536x1024 resolution
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CapabilitiesSection() {
   return (
     <section className="py-20 bg-muted/30">
@@ -315,18 +462,18 @@ function CapabilitiesSection() {
               Built for Scale
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Whether you have 10 lessons or 600, our engine handles it all with
+              Whether you have 10 sections or 600+, our engine handles it all with
               smart chunking, retry logic, and rate limit management.
             </p>
             <div className="space-y-4">
               {[
                 {
                   icon: Layers,
-                  text: "Handles hundreds of lessons at once",
+                  text: "Handles hundreds of content sections at once",
                 },
                 {
                   icon: Zap,
-                  text: "Generates both images and videos per lesson",
+                  text: "Generates both images and videos per section",
                 },
                 {
                   icon: DollarSign,
@@ -339,6 +486,10 @@ function CapabilitiesSection() {
                 {
                   icon: Play,
                   text: "Pause, resume, or stop generation anytime",
+                },
+                {
+                  icon: Palette,
+                  text: "7 distinct visual styles to match your brand",
                 },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-3">
@@ -359,7 +510,7 @@ function CapabilitiesSection() {
               >
                 <img
                   src={src}
-                  alt={`Sample Day ${i + 1}`}
+                  alt={`Sample ${i + 1}`}
                   className="w-full h-full object-cover"
                   data-testid={`img-capability-sample-${i}`}
                 />
@@ -373,106 +524,451 @@ function CapabilitiesSection() {
 }
 
 function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
-  const plans = [
-    {
-      name: "Free",
-      price: "$0",
-      period: "forever",
-      description: "Test the platform and explore",
-      features: [
-        "10 images per month",
-        "2 videos per month",
-        "Illustration style only",
-        "Single document upload",
-        "Individual downloads",
-      ],
-      cta: "Start Free",
-      variant: "outline" as const,
-      popular: false,
-    },
-    {
-      name: "Pro",
-      price: "$19",
-      period: "/month",
-      description: "For mid-tier creators",
-      features: [
-        "200 images per month",
-        "50 videos per month",
-        "Illustration, Cartoon & Minimalist styles",
-        "Bulk uploads",
-        "Bulk zip downloads",
-        "Priority generation",
-      ],
-      cta: "Start Pro Trial",
-      variant: "default" as const,
-      popular: true,
-    },
-    {
-      name: "Business",
-      price: "$49",
-      period: "/month",
-      description: "For professional content creators",
-      features: [
-        "500 images per month",
-        "100 videos per month",
-        "Unlock Photorealistic & Watercolor styles",
-        "All Pro styles included",
-        "Bulk uploads & downloads",
-        "Priority support",
-      ],
-      cta: "Start Business Trial",
-      variant: "outline" as const,
-      popular: false,
-    },
-    {
-      name: "Premium",
-      price: "$99",
-      period: "/month",
-      description: "For schools and training companies",
-      features: [
-        "1,000 images per month",
-        "200 videos per month",
-        "All styles unlocked",
-        "Photorealistic, 3D Render & Cinematic",
-        "Team accounts",
-        "Analytics dashboard",
-        "Priority support",
-      ],
-      cta: "Start Premium Trial",
-      variant: "outline" as const,
-      popular: false,
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      period: "pricing",
-      description: "For large institutions",
-      features: [
-        "Unlimited images & videos",
-        "All styles unlocked",
-        "Unlimited bulk uploads",
-        "API access",
-        "White-label solution",
-        "Team accounts & analytics",
-        "Dedicated support & SLA",
-      ],
-      cta: "Contact Sales",
-      variant: "outline" as const,
-      popular: false,
-    },
+  const [selectedCategory, setSelectedCategory] = useState("education");
+
+  const categories = [
+    { id: "education", label: "Education", icon: GraduationCap },
+    { id: "creators", label: "Creators", icon: PenTool },
+    { id: "business", label: "Business", icon: Briefcase },
+    { id: "marketers", label: "Marketers", icon: Megaphone },
+    { id: "publishers", label: "Publishers", icon: BookOpen },
   ];
+
+  const plansByCategory: Record<string, Array<{
+    name: string;
+    price: string;
+    period: string;
+    description: string;
+    features: string[];
+    cta: string;
+    variant: "outline" | "default";
+    popular: boolean;
+  }>> = {
+    education: [
+      {
+        name: "Free",
+        price: "$0",
+        period: "forever",
+        description: "Test the platform",
+        features: [
+          "10 images + 2 videos/month",
+          "Illustration style only",
+          "Single document upload",
+          "Individual downloads",
+        ],
+        cta: "Start Free",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Pro",
+        price: "$19",
+        period: "/month",
+        description: "For mid-tier creators",
+        features: [
+          "200 images + 50 videos/month",
+          "Illustration, Cartoon & Minimalist",
+          "Bulk uploads",
+          "Bulk zip downloads",
+          "Priority generation",
+        ],
+        cta: "Start Pro Trial",
+        variant: "default",
+        popular: true,
+      },
+      {
+        name: "Business",
+        price: "$49",
+        period: "/month",
+        description: "Professional content creators",
+        features: [
+          "500 images + 100 videos/month",
+          "Unlock Photorealistic & Watercolor",
+          "All Pro styles included",
+          "Bulk uploads & downloads",
+          "Priority support",
+        ],
+        cta: "Start Business Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Premium",
+        price: "$99",
+        period: "/month",
+        description: "Schools & training companies",
+        features: [
+          "1,000 images + 200 videos/month",
+          "All 7 styles unlocked",
+          "3D Render & Cinematic included",
+          "Team accounts & analytics",
+          "Priority support",
+        ],
+        cta: "Start Premium Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Enterprise",
+        price: "Custom",
+        period: "pricing",
+        description: "Large institutions",
+        features: [
+          "Unlimited images & videos",
+          "All styles unlocked",
+          "API access & white-label",
+          "Team accounts & analytics",
+          "Dedicated support & SLA",
+        ],
+        cta: "Contact Sales",
+        variant: "outline",
+        popular: false,
+      },
+    ],
+    creators: [
+      {
+        name: "Free",
+        price: "$0",
+        period: "forever",
+        description: "Try it out",
+        features: [
+          "10 posts (Illustration/Cartoon)",
+          "Single document upload",
+          "Individual downloads",
+        ],
+        cta: "Start Free",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Pro",
+        price: "$19",
+        period: "/month",
+        description: "Growing creators",
+        features: [
+          "200 posts + 50 explainer videos",
+          "Illustration & Cartoon styles",
+          "Bulk uploads & downloads",
+          "Priority generation",
+        ],
+        cta: "Start Pro Trial",
+        variant: "default",
+        popular: true,
+      },
+      {
+        name: "Business",
+        price: "$49",
+        period: "/month",
+        description: "Pro content creators",
+        features: [
+          "500 posts + 100 videos",
+          "Photorealistic & Watercolor",
+          "All Pro styles included",
+          "Priority support",
+        ],
+        cta: "Start Business Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Premium",
+        price: "$99",
+        period: "/month",
+        description: "Full-time creators",
+        features: [
+          "1,000 posts + 200 videos",
+          "All 7 styles unlocked",
+          "Cinematic & 3D Render",
+          "Analytics dashboard",
+          "Priority support",
+        ],
+        cta: "Start Premium Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Enterprise",
+        price: "Custom",
+        period: "pricing",
+        description: "Agencies & teams",
+        features: [
+          "Unlimited posts & videos",
+          "API + team accounts",
+          "White-label solution",
+          "Dedicated support",
+        ],
+        cta: "Contact Sales",
+        variant: "outline",
+        popular: false,
+      },
+    ],
+    business: [
+      {
+        name: "Free",
+        price: "$0",
+        period: "forever",
+        description: "Evaluate the platform",
+        features: [
+          "1 training module (Illustration)",
+          "Single document upload",
+          "Individual downloads",
+        ],
+        cta: "Start Free",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Pro",
+        price: "$19",
+        period: "/month",
+        description: "Small teams",
+        features: [
+          "10 training modules",
+          "Branded visuals",
+          "Illustration & Cartoon styles",
+          "Bulk downloads",
+        ],
+        cta: "Start Pro Trial",
+        variant: "default",
+        popular: true,
+      },
+      {
+        name: "Business",
+        price: "$49",
+        period: "/month",
+        description: "Growing companies",
+        features: [
+          "25 training modules",
+          "Onboarding guides included",
+          "Photorealistic & Watercolor",
+          "Branding options",
+          "Priority support",
+        ],
+        cta: "Start Business Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Premium",
+        price: "$99",
+        period: "/month",
+        description: "Training companies",
+        features: [
+          "50 training modules",
+          "Product tutorials",
+          "All 7 styles unlocked",
+          "Team accounts & analytics",
+          "Priority support",
+        ],
+        cta: "Start Premium Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Enterprise",
+        price: "Custom",
+        period: "pricing",
+        description: "Large organizations",
+        features: [
+          "Unlimited training content",
+          "White-label solution",
+          "API access",
+          "Team accounts & analytics",
+          "Dedicated support & SLA",
+        ],
+        cta: "Contact Sales",
+        variant: "outline",
+        popular: false,
+      },
+    ],
+    marketers: [
+      {
+        name: "Free",
+        price: "$0",
+        period: "forever",
+        description: "Test campaigns",
+        features: [
+          "5 ad creatives (Minimalist only)",
+          "Single document upload",
+          "Individual downloads",
+        ],
+        cta: "Start Free",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Pro",
+        price: "$19",
+        period: "/month",
+        description: "Solo marketers",
+        features: [
+          "50 ad creatives/month",
+          "Cartoon & Minimalist styles",
+          "Bulk uploads & downloads",
+          "Priority generation",
+        ],
+        cta: "Start Pro Trial",
+        variant: "default",
+        popular: true,
+      },
+      {
+        name: "Business",
+        price: "$49",
+        period: "/month",
+        description: "Marketing teams",
+        features: [
+          "100 ad creatives/month",
+          "Photorealistic & Watercolor",
+          "All Pro styles included",
+          "Campaign organization",
+          "Priority support",
+        ],
+        cta: "Start Business Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Premium",
+        price: "$99",
+        period: "/month",
+        description: "Agencies",
+        features: [
+          "200 ad creatives/month",
+          "All styles incl. Cinematic",
+          "Video ad snippets",
+          "Analytics dashboard",
+          "Priority support",
+        ],
+        cta: "Start Premium Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Enterprise",
+        price: "Custom",
+        period: "pricing",
+        description: "Large campaigns",
+        features: [
+          "Unlimited campaigns",
+          "API + dedicated support",
+          "White-label solution",
+          "Team accounts & SLA",
+        ],
+        cta: "Contact Sales",
+        variant: "outline",
+        popular: false,
+      },
+    ],
+    publishers: [
+      {
+        name: "Free",
+        price: "$0",
+        period: "forever",
+        description: "Try it out",
+        features: [
+          "1 chapter visual (Illustration)",
+          "Single document upload",
+          "Individual downloads",
+        ],
+        cta: "Start Free",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Pro",
+        price: "$19",
+        period: "/month",
+        description: "Indie authors",
+        features: [
+          "10 chapters illustrated",
+          "Illustration & Minimalist styles",
+          "Bulk downloads",
+          "Priority generation",
+        ],
+        cta: "Start Pro Trial",
+        variant: "default",
+        popular: true,
+      },
+      {
+        name: "Business",
+        price: "$49",
+        period: "/month",
+        description: "Small publishers",
+        features: [
+          "25 chapters illustrated",
+          "Photorealistic & Watercolor",
+          "All Pro styles included",
+          "Priority support",
+        ],
+        cta: "Start Business Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Premium",
+        price: "$99",
+        period: "/month",
+        description: "Publishing houses",
+        features: [
+          "50 chapters with all styles",
+          "Visual summaries & study guides",
+          "All 7 styles unlocked",
+          "Analytics dashboard",
+          "Priority support",
+        ],
+        cta: "Start Premium Trial",
+        variant: "outline",
+        popular: false,
+      },
+      {
+        name: "Enterprise",
+        price: "Custom",
+        period: "pricing",
+        description: "Large publishers",
+        features: [
+          "Unlimited book/guide visuals",
+          "White-label solution",
+          "API access",
+          "Team accounts & SLA",
+          "Dedicated support",
+        ],
+        cta: "Contact Sales",
+        variant: "outline",
+        popular: false,
+      },
+    ],
+  };
+
+  const plans = plansByCategory[selectedCategory] || plansByCategory.education;
 
   return (
     <section id="pricing" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-14">
+        <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
             Simple, Transparent Pricing
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Choose the plan that fits your needs. Scale up anytime.
+            Choose the plan that fits your needs. Pricing tailored to your industry.
           </p>
         </div>
+
+        <div className="flex flex-wrap justify-center gap-2 mb-10">
+          {categories.map((cat) => (
+            <Button
+              key={cat.id}
+              variant={selectedCategory === cat.id ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedCategory(cat.id)}
+              className="gap-1.5"
+              data-testid={`pricing-tab-${cat.id}`}
+            >
+              <cat.icon className="w-4 h-4" />
+              {cat.label}
+            </Button>
+          ))}
+        </div>
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           {plans.map((plan) => (
             <Card
@@ -538,22 +1034,40 @@ function TestimonialsSection() {
       color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
     },
     {
-      icon: Users,
+      icon: PenTool,
       role: "Content Creators",
       quote:
         "Save hours of editing and design work. Upload your content and let AI generate professional media instantly.",
-      name: "For YouTubers & Course Creators",
+      name: "For YouTubers & Influencers",
       color:
         "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
     },
     {
       icon: Briefcase,
-      role: "Enterprises",
+      role: "Businesses",
       quote:
         "Scale your training media production across hundreds of modules. Consistent quality, fraction of the cost.",
-      name: "For L&D Teams",
+      name: "For L&D & HR Teams",
       color:
         "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+    },
+    {
+      icon: Megaphone,
+      role: "Marketers",
+      quote:
+        "Generate campaign-ready visuals and ad creatives from your marketing copy in minutes, not days.",
+      name: "For Marketing Teams & Agencies",
+      color:
+        "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
+    },
+    {
+      icon: BookOpen,
+      role: "Authors & Publishers",
+      quote:
+        "Create beautiful chapter illustrations and visual summaries that bring your books to life.",
+      name: "For Writers & Publishing Houses",
+      color:
+        "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
     },
   ];
 
@@ -565,70 +1079,24 @@ function TestimonialsSection() {
             Built for Everyone
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Whether you're an educator, content creator, or enterprise — we've
-            got you covered.
+            From educators to enterprises, marketers to publishers — trusted by professionals across industries.
           </p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           {testimonials.map((item) => (
             <Card key={item.role} className="hover-elevate transition-all duration-200">
-              <CardContent className="p-6 space-y-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${item.color}`}>
-                  <item.icon className="w-6 h-6" />
+              <CardContent className="p-5 space-y-3">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
+                  <item.icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-semibold">{item.role}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed italic">
+                <h3 className="text-base font-semibold">{item.role}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed italic">
                   "{item.quote}"
                 </p>
                 <p className="text-xs font-medium text-primary">{item.name}</p>
               </CardContent>
             </Card>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ShowcaseSection() {
-  return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            See What AI Creates
-          </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Real examples generated from actual lesson plans. Every image is
-            unique and tailored to the topic.
-          </p>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {sampleImages.map((src, i) => (
-            <div
-              key={i}
-              className="group relative aspect-video rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-shadow duration-300"
-            >
-              <img
-                src={src}
-                alt={`AI Generated - Day ${i + 1}`}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                data-testid={`img-showcase-${i}`}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-3 left-3">
-                  <Badge className="bg-white/90 text-black">
-                    Day {i + 1}
-                  </Badge>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="text-center mt-8">
-          <p className="text-sm text-muted-foreground">
-            Generated using gpt-image-1 at 1536x1024 resolution
-          </p>
         </div>
       </div>
     </section>
@@ -646,16 +1114,16 @@ function FooterSection() {
               <span className="font-semibold">AI Media Agent</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Turn lesson plans into professional images and videos with the
-              power of AI.
+              Turn any content into professional images and videos with the
+              power of AI. For educators, creators, businesses, and more.
             </p>
           </div>
           <div className="space-y-3">
             <h4 className="font-semibold text-sm">Product</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="#" className="hover:text-foreground transition-colors" data-testid="link-features">
-                  Features
+                <a href="#use-cases" className="hover:text-foreground transition-colors" data-testid="link-use-cases">
+                  Use Cases
                 </a>
               </li>
               <li>
@@ -708,7 +1176,7 @@ function FooterSection() {
         </div>
         <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            Trusted by educators & creators worldwide
+            Trusted by educators, creators & businesses worldwide
           </p>
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} AI Media Agent. All rights
@@ -737,6 +1205,13 @@ export default function Landing() {
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
+              href="#use-cases"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              data-testid="nav-link-use-cases"
+            >
+              Use Cases
+            </a>
+            <a
               href="#pricing"
               className="text-muted-foreground hover:text-foreground transition-colors"
               data-testid="nav-link-pricing"
@@ -763,6 +1238,7 @@ export default function Landing() {
       </nav>
 
       <HeroSection onGetStarted={handleGetStarted} />
+      <UseCasesSection />
       <HowItWorksSection />
       <FeaturesSection />
       <ShowcaseSection />

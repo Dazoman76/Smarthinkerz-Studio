@@ -1,7 +1,7 @@
 # AI Media Generation Agent
 
 ## Overview
-A full-stack web application that serves as an AI-powered media generation agent. Users upload lesson plan documents (PDF, DOCX, TXT, CSV, MD), and the AI parses them to extract individual lessons. Then it generates unique 16:9 images and videos for each lesson day. Supports documents of any size (tested with 220+ lessons, designed for 600+).
+A full-stack web application that serves as an AI-powered media generation agent. Users upload content documents (PDF, DOCX, TXT, CSV, MD) — lesson plans, training manuals, marketing briefs, manuscripts, or guides — and the AI parses them to extract sections. Then it generates unique 16:9 images and videos for each section. Supports documents of any size (tested with 220+ sections, designed for 600+). Serves 5 industries: Education, Content Creators, Businesses, Marketers, and Authors/Publishers.
 
 ## Architecture
 - **Frontend**: React + Vite + TailwindCSS + shadcn/ui components
@@ -18,15 +18,16 @@ A full-stack web application that serves as an AI-powered media generation agent
 - `/dashboard` - Main app dashboard (upload, generate, manage media)
 
 ## Key Features
-1. **Landing Page**: Professional marketing page with hero, features, pricing tiers, image showcase, testimonials
-2. **Document Upload & AI Parsing**: Upload lesson plan documents; AI extracts lesson topics and descriptions
+1. **Landing Page**: Multi-industry marketing page with use cases (Education, Creators, Business, Marketers, Publishers), tabbed pricing, testimonials
+2. **Document Upload & AI Parsing**: Upload any content documents; AI extracts sections and descriptions
 3. **Batch Media Generation**: Generates 1536x1024 images using gpt-image-1, videos via ffmpeg
 4. **Media Style Selection**: Choose from 7 styles for images and videos: Photorealistic, Illustration, Cartoon, 3D Render, Watercolor, Minimalist, Cinematic
 5. **Progress Dashboard**: Real-time tracking of generation progress with grid/list views
-6. **Media Viewer**: View generated images and videos per lesson day with individual download buttons
+6. **Media Viewer**: View generated images and videos per section with individual download buttons
 7. **Generation Controls**: Start/Pause/Resume/Stop generation, retry failed items
 8. **Downloads**: Individual image/video download with Day+Topic filenames, bulk Download All as zip
 9. **Scalability**: Rate limit handling with retries, chunk-based parsing for large documents
+10. **Multi-Industry Support**: Pricing and messaging tailored for 5 industries with tabbed pricing selector
 
 ## File Structure
 - `shared/schema.ts` - Database schema (lesson_days, generation_jobs, uploaded_documents)
@@ -57,12 +58,13 @@ A full-stack web application that serves as an AI-powered media generation agent
 - Download filenames: Day_{N}_{Sanitized_Topic}.png/mp4
 - Landing page showcases real generated images from /generated/images/
 
-## Pricing Tiers (Landing Page - Not Yet Enforced)
-- Free: 10 images + 2 videos/month, Illustration style only
-- Pro ($19/mo): 200 images + 50 videos, Illustration/Cartoon/Minimalist styles
-- Business ($49/mo): 500 images + 100 videos, adds Photorealistic/Watercolor
-- Premium ($99/mo): 1000 images + 200 videos, all styles including 3D Render/Cinematic
-- Enterprise: Custom pricing, unlimited, API access, white-label, team accounts
+## Pricing Tiers (Landing Page - Not Yet Enforced, Tabbed by Industry)
+- Free ($0): Entry-level, limited outputs, basic styles (varies by industry)
+- Pro ($19/mo): Mid-tier, more outputs, Illustration/Cartoon/Minimalist
+- Business ($49/mo): Professional, adds Photorealistic/Watercolor
+- Premium ($99/mo): All 7 styles, high volume, team accounts
+- Enterprise (Custom): Unlimited, API, white-label, SLA
+- Industries: Education, Content Creators, Businesses, Marketers, Authors/Publishers
 
 ## Dependencies
 - multer, pdf-parse, mammoth - File upload and document parsing

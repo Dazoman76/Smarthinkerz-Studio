@@ -302,7 +302,7 @@ export default function Dashboard() {
                 </h1>
               </Link>
               <p className="text-sm text-muted-foreground mt-0.5">
-                Upload lessons, generate images & videos automatically
+                Upload content, generate images & videos automatically
               </p>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -423,10 +423,10 @@ export default function Dashboard() {
           <TabsContent value="upload" className="space-y-6">
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-6">
-                <h2 className="text-lg font-semibold">Upload Your Lesson Plan</h2>
+                <h2 className="text-lg font-semibold">Upload Your Document</h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Upload a document containing your lessons. The AI will analyze it, extract each lesson day,
-                  and then generate unique images and videos for every single lesson.
+                  Upload any content document — lesson plans, training manuals, marketing briefs, manuscripts, or guides. 
+                  The AI will analyze it, extract each section, and generate unique images and videos.
                 </p>
               </div>
               <FileUpload />
