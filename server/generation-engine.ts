@@ -253,7 +253,7 @@ class GenerationEngine {
         throw new Error(`Image for Day ${day.id} not found. Generate images first.`);
       }
 
-      await this.createVideoFromImage(imagePath, videoPath, `Day ${day.id}`, day.topic);
+      await this.createVideoFromImage(imagePath, videoPath, `Day ${day.id}`, day.topic, day.id);
 
       await storage.updateLessonDayVideoStatus(
         day.id,
@@ -272,22 +272,78 @@ class GenerationEngine {
     }
   }
 
+  private getMotionPreset(dayId: number): { zoompan: string; name: string } {
+    const presets = [
+      {
+        name: "sweep-left-to-right",
+        zoompan: "zoompan=z='1.3':x='(iw*0.3)*(1-on/180)':y='ih/2-(ih/zoom/2)':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "sweep-right-to-left",
+        zoompan: "zoompan=z='1.3':x='iw*0.7*on/180':y='ih/2-(ih/zoom/2)':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "zoom-in-top-left",
+        zoompan: "zoompan=z='min(zoom+0.002,1.5)':x='iw*0.2':y='ih*0.2':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "zoom-out-reveal",
+        zoompan: "zoompan=z='if(eq(on,1),1.6,max(zoom-0.004,1.0))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "diagonal-drift-down",
+        zoompan: "zoompan=z='min(zoom+0.0012,1.25)':x='iw*0.15+iw*0.15*(on/180)':y='ih*0.1+ih*0.15*(on/180)':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "diagonal-drift-up",
+        zoompan: "zoompan=z='min(zoom+0.0012,1.25)':x='iw*0.3-iw*0.15*(on/180)':y='ih*0.35-ih*0.15*(on/180)':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "pan-up-zoom",
+        zoompan: "zoompan=z='min(zoom+0.0018,1.35)':x='iw/2-(iw/zoom/2)':y='ih*0.4-ih*0.25*(on/180)':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "pan-down-zoom",
+        zoompan: "zoompan=z='min(zoom+0.0018,1.35)':x='iw/2-(iw/zoom/2)':y='ih*0.05+ih*0.25*(on/180)':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "zoom-in-center-fast",
+        zoompan: "zoompan=z='min(zoom+0.003,1.6)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=180:s=1536x1024:fps=30",
+      },
+      {
+        name: "sweep-bottom-right",
+        zoompan: "zoompan=z='min(zoom+0.0015,1.3)':x='iw*0.1+iw*0.25*(on/180)':y='ih*0.1+ih*0.2*(on/180)':d=180:s=1536x1024:fps=30",
+      },
+    ];
+
+    return presets[dayId % presets.length];
+  }
+
   private createVideoFromImage(
     imagePath: string,
     outputPath: string,
     dayLabel: string,
-    topic: string
+    topic: string,
+    dayId: number = 0
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       const escapedDay = dayLabel.replace(/'/g, "'\\''");
       const escapedTopic = topic.replace(/'/g, "'\\''").substring(0, 60);
+      const motion = this.getMotionPreset(dayId);
+
+      const dayText = `drawtext=text='${escapedDay}':fontsize=72:fontcolor=white:borderw=3:bordercolor=black:x='if(lt(t,0.5),-text_w,if(lt(t,1.2),(-text_w)+((w/2-text_w/2)+text_w)*((t-0.5)/0.7),(w-text_w)/2))':y=h*0.08`;
+      const topicText = `drawtext=text='${escapedTopic}':fontsize=36:fontcolor=white:borderw=2:bordercolor=black:x='if(lt(t,1.2),w+text_w,if(lt(t,2.0),(w+text_w)-((w+text_w)-(w-text_w)/2)*((t-1.2)/0.8),(w-text_w)/2))':y=h*0.88`;
+      const fadeIn = `fade=t=in:st=0:d=0.8`;
+      const fadeOut = `fade=t=out:st=5.2:d=0.8`;
+
+      const vf = `scale=1536:1024,${motion.zoompan},${fadeIn},${fadeOut},${dayText},${topicText}`;
 
       const cmd = [
         "ffmpeg", "-y",
         "-loop", "1",
         "-i", `"${imagePath}"`,
         "-t", "6",
-        "-vf", `"scale=1536:1024,zoompan=z='min(zoom+0.0015,1.3)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=180:s=1536x1024:fps=30,drawtext=text='${escapedDay}':fontsize=72:fontcolor=white:borderw=3:bordercolor=black:x=(w-text_w)/2:y=h*0.08:enable='gte(t,0.5)',drawtext=text='${escapedTopic}':fontsize=36:fontcolor=white:borderw=2:bordercolor=black:x=(w-text_w)/2:y=h*0.88:enable='gte(t,1)'"`,
+        "-vf", `"${vf}"`,
         "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
         "-preset", "fast",
@@ -295,7 +351,8 @@ class GenerationEngine {
         `"${outputPath}"`
       ].join(" ");
 
-      exec(cmd, { timeout: 60000 }, (error, _stdout, stderr) => {
+      console.log(`Video motion: ${motion.name} for ${dayLabel}`);
+      exec(cmd, { timeout: 90000 }, (error, _stdout, stderr) => {
         if (error) {
           reject(new Error(`ffmpeg error: ${stderr || error.message}`));
         } else {
