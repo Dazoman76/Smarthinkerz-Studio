@@ -25,6 +25,7 @@ import {
   RefreshCw,
   Eye,
   Upload,
+  Download,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { MediaViewer } from "@/components/media-viewer";
@@ -358,15 +359,25 @@ export default function Dashboard() {
                 </Button>
               )}
               {hasLessons && (
-                <Button
-                  variant="outline"
-                  onClick={() => retryFailed.mutate()}
-                  disabled={retryFailed.isPending || ((stats?.imagesFailed ?? 0) + (stats?.videosFailed ?? 0)) === 0}
-                  data-testid="button-retry-failed"
-                >
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Retry Failed
-                </Button>
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={() => retryFailed.mutate()}
+                    disabled={retryFailed.isPending || ((stats?.imagesFailed ?? 0) + (stats?.videosFailed ?? 0)) === 0}
+                    data-testid="button-retry-failed"
+                  >
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Retry Failed
+                  </Button>
+                  {completedMedia > 0 && (
+                    <a href="/api/download/all" download>
+                      <Button variant="outline" data-testid="button-download-all">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download All
+                      </Button>
+                    </a>
+                  )}
+                </>
               )}
             </div>
           </div>

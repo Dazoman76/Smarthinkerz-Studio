@@ -7,6 +7,7 @@ import * as path from "path";
 import * as fs from "fs";
 import express from "express";
 import multer from "multer";
+import archiver from "archiver";
 
 const upload = multer({
   dest: path.join(process.cwd(), "uploads"),
@@ -218,6 +219,54 @@ export async function registerRoutes(
       return res.status(404).json({ message: "Document not found" });
     }
     res.json(doc);
+  });
+
+  app.get("/api/download/image/:dayId", async (req, res) => {
+    const dayId = parseInt(req.params.dayId);
+    const imagePath = path.join(process.cwd(), "generated", "images", `day_${dayId}.png`);
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).json({ message: "Image not found" });
+    }
+    res.download(imagePath, `day_${dayId}.png`);
+  });
+
+  app.get("/api/download/video/:dayId", async (req, res) => {
+    const dayId = parseInt(req.params.dayId);
+    const videoPath = path.join(process.cwd(), "generated", "videos", `day_${dayId}.mp4`);
+    if (!fs.existsSync(videoPath)) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+    res.download(videoPath, `day_${dayId}.mp4`);
+  });
+
+  app.get("/api/download/all", async (_req, res) => {
+    const imagesDir = path.join(process.cwd(), "generated", "images");
+    const videosDir = path.join(process.cwd(), "generated", "videos");
+
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader("Content-Disposition", "attachment; filename=all_media.zip");
+
+    const archive = archiver("zip", { zlib: { level: 5 } });
+    archive.on("error", (err) => {
+      console.error("Archive error:", err);
+      res.status(500).end();
+    });
+    archive.pipe(res);
+
+    if (fs.existsSync(imagesDir)) {
+      const imageFiles = fs.readdirSync(imagesDir).filter(f => f.endsWith(".png"));
+      for (const file of imageFiles) {
+        archive.file(path.join(imagesDir, file), { name: `images/${file}` });
+      }
+    }
+    if (fs.existsSync(videosDir)) {
+      const videoFiles = fs.readdirSync(videosDir).filter(f => f.endsWith(".mp4"));
+      for (const file of videoFiles) {
+        archive.file(path.join(videosDir, file), { name: `videos/${file}` });
+      }
+    }
+
+    await archive.finalize();
   });
 
   return httpServer;

@@ -1,8 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { LessonDay } from "@shared/schema";
-import { Image, Video, CheckCircle2, XCircle, Clock, Loader2 } from "lucide-react";
+import { Image, Video, CheckCircle2, XCircle, Clock, Loader2, Download } from "lucide-react";
 
 function StatusDisplay({ status, error }: { status: string; error?: string | null }) {
   switch (status) {
@@ -75,7 +76,17 @@ export function MediaViewer({
 
           <TabsContent value="image" className="mt-4">
             <div className="space-y-3">
-              <StatusDisplay status={day.imageStatus} error={day.imageError} />
+              <div className="flex items-center justify-between">
+                <StatusDisplay status={day.imageStatus} error={day.imageError} />
+                {day.imageStatus === "completed" && (
+                  <a href={`/api/download/image/${day.id}`} download>
+                    <Button size="sm" variant="outline" data-testid={`button-download-image-${day.id}`}>
+                      <Download className="w-4 h-4 mr-1.5" />
+                      Download Image
+                    </Button>
+                  </a>
+                )}
+              </div>
               {day.imageStatus === "completed" && day.imagePath ? (
                 <div className="aspect-video rounded-md overflow-hidden bg-muted">
                   <img
@@ -118,7 +129,17 @@ export function MediaViewer({
 
           <TabsContent value="video" className="mt-4">
             <div className="space-y-3">
-              <StatusDisplay status={day.videoStatus} error={day.videoError} />
+              <div className="flex items-center justify-between">
+                <StatusDisplay status={day.videoStatus} error={day.videoError} />
+                {day.videoStatus === "completed" && (
+                  <a href={`/api/download/video/${day.id}`} download>
+                    <Button size="sm" variant="outline" data-testid={`button-download-video-${day.id}`}>
+                      <Download className="w-4 h-4 mr-1.5" />
+                      Download Video
+                    </Button>
+                  </a>
+                )}
+              </div>
               {day.videoStatus === "completed" && day.videoPath ? (
                 <div className="aspect-video rounded-md overflow-hidden bg-muted">
                   <video
