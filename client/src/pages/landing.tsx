@@ -28,6 +28,12 @@ import {
   Quote,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import educationImg from "@assets/lesson_upload_image_1772017417412.jpg";
+import contentCreatorImg from "@assets/content_creator_image_1772017417411.jpg";
+import businessesImg from "@assets/Businesses_1772017417410.jpg";
+import marketersImg from "@assets/Marketers_1772017417409.jpg";
+import publishingImg from "@assets/creative_publishing_1772017389803.jpg";
+import yourUseCaseImg from "@assets/Your_Use_Case_1772017417407.jpg";
 
 const sampleImages = [
   { src: "/generated/images/day_1.png", style: "Photorealistic" },
@@ -183,6 +189,7 @@ function UseCasesSection() {
       description: "Upload lesson plans and curricula. AI generates images and videos for every lesson day — perfect for LMS, slides, and classroom materials.",
       examples: ["Lesson visuals", "Course thumbnails", "Study guides"],
       color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+      image: educationImg,
     },
     {
       icon: PenTool,
@@ -191,6 +198,7 @@ function UseCasesSection() {
       description: "Create social media posts, explainer video frames, and infographics from your content briefs or scripts.",
       examples: ["Social media posts", "Explainer videos", "Infographics"],
       color: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+      image: contentCreatorImg,
     },
     {
       icon: Briefcase,
@@ -199,6 +207,7 @@ function UseCasesSection() {
       description: "Turn training manuals, onboarding guides, and product tutorials into professional visual content at scale.",
       examples: ["Training modules", "Onboarding guides", "Product tutorials"],
       color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+      image: businessesImg,
     },
     {
       icon: Megaphone,
@@ -207,6 +216,7 @@ function UseCasesSection() {
       description: "Generate campaign visuals, ad creatives, and branded video snippets from marketing briefs and copy.",
       examples: ["Ad creatives", "Campaign visuals", "Branded snippets"],
       color: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
+      image: marketersImg,
     },
     {
       icon: BookOpen,
@@ -215,6 +225,7 @@ function UseCasesSection() {
       description: "Create illustrated chapters, visual summaries, and study guides from your manuscripts and outlines.",
       examples: ["Chapter illustrations", "Visual summaries", "Study guides"],
       color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+      image: publishingImg,
     },
     {
       icon: Sparkles,
@@ -223,6 +234,7 @@ function UseCasesSection() {
       description: "Any structured document can become visual content. Flexible workflows adapt to any content type you throw at it.",
       examples: ["Custom content", "Any document", "Any format"],
       color: "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400",
+      image: yourUseCaseImg,
       dashed: true,
     },
   ];
@@ -240,17 +252,24 @@ function UseCasesSection() {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {useCases.map((uc) => (
-            <Card key={uc.title} className={`hover-elevate transition-all duration-200 ${uc.dashed ? "border-dashed" : ""}`}>
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${uc.color}`}>
-                    <uc.icon className="w-6 h-6" />
+            <Card key={uc.title} className={`hover-elevate transition-all duration-200 overflow-hidden ${uc.dashed ? "border-dashed" : ""}`}>
+              <div className="relative aspect-[16/10] overflow-hidden">
+                <img
+                  src={uc.image}
+                  alt={uc.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  data-testid={`img-usecase-${uc.title.toLowerCase().replace(/\s+/g, "-")}`}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${uc.color}`}>
+                    <uc.icon className="w-4 h-4" />
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">{uc.title}</h3>
-                    <p className="text-xs text-muted-foreground">{uc.subtitle}</p>
-                  </div>
+                  <span className="text-white font-semibold text-sm drop-shadow-md">{uc.subtitle}</span>
                 </div>
+              </div>
+              <CardContent className="p-5 space-y-3">
+                <h3 className="text-lg font-semibold">{uc.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {uc.description}
                 </p>
