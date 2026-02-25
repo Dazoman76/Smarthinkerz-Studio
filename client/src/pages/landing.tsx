@@ -27,7 +27,7 @@ import {
   BarChart3,
   Quote,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import educationImg from "@assets/lesson_upload_image_1772019754863.jpg";
 import contentCreatorImg from "@assets/content_creator_image_1772019754862.jpg";
 import businessesImg from "@assets/Training_and_onboarding_1772019754860.jpg";
@@ -180,6 +180,75 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   );
 }
 
+function UseCaseCard({ uc }: { uc: { icon: any; title: string; subtitle: string; description: string; examples: string[]; color: string; image: string; video?: string; dashed?: boolean } }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleMouseEnter = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.muted = false;
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.muted = true;
+    }
+  }, []);
+
+  return (
+    <Card
+      className={`hover-elevate transition-all duration-200 overflow-hidden ${uc.dashed ? "border-dashed" : ""}`}
+      onMouseEnter={uc.video ? handleMouseEnter : undefined}
+      onMouseLeave={uc.video ? handleMouseLeave : undefined}
+    >
+      <div className="relative aspect-[16/10] overflow-hidden">
+        {uc.video ? (
+          <video
+            ref={videoRef}
+            src={uc.video}
+            poster={uc.image}
+            muted
+            playsInline
+            loop
+            className="w-full h-full object-cover"
+            data-testid={`video-usecase-${uc.title.toLowerCase().replace(/\s+/g, "-")}`}
+          />
+        ) : (
+          <img
+            src={uc.image}
+            alt={uc.title}
+            className="w-full h-full object-cover"
+            data-testid={`img-usecase-${uc.title.toLowerCase().replace(/\s+/g, "-")}`}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+        <div className="absolute bottom-3 left-3 flex items-center gap-2">
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${uc.color}`}>
+            <uc.icon className="w-4 h-4" />
+          </div>
+          <span className="text-white font-semibold text-sm drop-shadow-md">{uc.subtitle}</span>
+        </div>
+      </div>
+      <CardContent className="p-5 space-y-3">
+        <h3 className="text-lg font-semibold">{uc.title}</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {uc.description}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {uc.examples.map((ex) => (
+            <Badge key={ex} variant="secondary" className="text-xs">
+              {ex}
+            </Badge>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 function UseCasesSection() {
   const useCases = [
     {
@@ -208,6 +277,7 @@ function UseCasesSection() {
       examples: ["Training modules", "Onboarding guides", "Product tutorials"],
       color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
       image: businessesImg,
+      video: "/generated/media/onboarding_business.mp4",
     },
     {
       icon: Megaphone,
@@ -252,36 +322,7 @@ function UseCasesSection() {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {useCases.map((uc) => (
-            <Card key={uc.title} className={`hover-elevate transition-all duration-200 overflow-hidden ${uc.dashed ? "border-dashed" : ""}`}>
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <img
-                  src={uc.image}
-                  alt={uc.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  data-testid={`img-usecase-${uc.title.toLowerCase().replace(/\s+/g, "-")}`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${uc.color}`}>
-                    <uc.icon className="w-4 h-4" />
-                  </div>
-                  <span className="text-white font-semibold text-sm drop-shadow-md">{uc.subtitle}</span>
-                </div>
-              </div>
-              <CardContent className="p-5 space-y-3">
-                <h3 className="text-lg font-semibold">{uc.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {uc.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {uc.examples.map((ex) => (
-                    <Badge key={ex} variant="secondary" className="text-xs">
-                      {ex}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <UseCaseCard key={uc.title} uc={uc} />
           ))}
         </div>
       </div>
