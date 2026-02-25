@@ -85,6 +85,8 @@ export const users = pgTable("users", {
   userType: userTypeEnum("user_type").default("client").notNull(),
   subscription: subscriptionEnum("subscription_tier").default("free").notNull(),
   status: userStatusEnum("status").default("active").notNull(),
+  notificationEmail: text("notification_email"),
+  notifyOnComplete: boolean("notify_on_complete").default(false).notNull(),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
