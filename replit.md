@@ -13,14 +13,19 @@ A full-stack web application that serves as an AI-powered media generation agent
 - **Document Parsing**: pdf-parse (PDF), mammoth (DOCX), native text (TXT/CSV/MD)
 - **Downloads**: Individual file downloads + bulk zip via archiver
 
+## Pages & Routing
+- `/` - Landing page (marketing, pricing, feature showcase with real generated images)
+- `/dashboard` - Main app dashboard (upload, generate, manage media)
+
 ## Key Features
-1. **Document Upload & AI Parsing**: Upload lesson plan documents; AI extracts lesson topics and descriptions
-2. **Batch Media Generation**: Generates 1536x1024 images using gpt-image-1, videos via ffmpeg
-3. **Progress Dashboard**: Real-time tracking of generation progress with grid/list views
-4. **Media Viewer**: View generated images and videos per lesson day with individual download buttons
-5. **Generation Controls**: Start/Pause/Resume/Stop generation, retry failed items
-6. **Downloads**: Individual image/video download with Day+Topic filenames, bulk Download All as zip
-7. **Scalability**: Rate limit handling with retries, chunk-based parsing for large documents
+1. **Landing Page**: Professional marketing page with hero, features, pricing tiers, image showcase, testimonials
+2. **Document Upload & AI Parsing**: Upload lesson plan documents; AI extracts lesson topics and descriptions
+3. **Batch Media Generation**: Generates 1536x1024 images using gpt-image-1, videos via ffmpeg
+4. **Progress Dashboard**: Real-time tracking of generation progress with grid/list views
+5. **Media Viewer**: View generated images and videos per lesson day with individual download buttons
+6. **Generation Controls**: Start/Pause/Resume/Stop generation, retry failed items
+7. **Downloads**: Individual image/video download with Day+Topic filenames, bulk Download All as zip
+8. **Scalability**: Rate limit handling with retries, chunk-based parsing for large documents
 
 ## File Structure
 - `shared/schema.ts` - Database schema (lesson_days, generation_jobs, uploaded_documents)
@@ -30,6 +35,8 @@ A full-stack web application that serves as an AI-powered media generation agent
 - `server/document-parser.ts` - AI-powered document parsing with chunking and retry logic
 - `server/db.ts` - Database connection
 - `server/replit_integrations/` - AI integration code (OpenAI, image generation)
+- `client/src/App.tsx` - Router setup (landing at /, dashboard at /dashboard)
+- `client/src/pages/landing.tsx` - Marketing landing page with showcase
 - `client/src/pages/dashboard.tsx` - Main dashboard page
 - `client/src/components/file-upload.tsx` - File upload with drag & drop
 - `client/src/components/media-viewer.tsx` - Image/video viewer dialog with download buttons
@@ -47,6 +54,13 @@ A full-stack web application that serves as an AI-powered media generation agent
 - Image generation has retry logic (3 attempts) with exponential backoff for rate limits
 - Uploading a new document clears previous generated files and lesson data
 - Download filenames: Day_{N}_{Sanitized_Topic}.png/mp4
+- Landing page showcases real generated images from /generated/images/
+
+## Pricing Tiers (Landing Page - Not Yet Enforced)
+- Free: 5 images + 5 videos/month
+- Pro ($19/mo): 200 images + 50 videos, bulk uploads, branding
+- Business ($49/mo): Unlimited, team accounts, analytics
+- Enterprise: Custom pricing, API access, white-label
 
 ## Dependencies
 - multer, pdf-parse, mammoth - File upload and document parsing

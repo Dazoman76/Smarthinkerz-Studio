@@ -28,6 +28,7 @@ import {
   Download,
 } from "lucide-react";
 import { useState, useMemo } from "react";
+import { Link } from "wouter";
 import { MediaViewer } from "@/components/media-viewer";
 import { FileUpload } from "@/components/file-upload";
 
@@ -278,10 +279,12 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
-              <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2">
-                <Zap className="w-5 h-5 text-primary" />
-                AI Media Generation Agent
-              </h1>
+              <Link href="/">
+                <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+                  <Zap className="w-5 h-5 text-primary" />
+                  AI Media Agent
+                </h1>
+              </Link>
               <p className="text-sm text-muted-foreground mt-0.5">
                 Upload lessons, generate images & videos automatically
               </p>
