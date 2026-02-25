@@ -8,13 +8,13 @@ import { exec } from "child_process";
 export type MediaStyle = "photorealistic" | "illustration" | "cartoon" | "3d-render" | "watercolor" | "minimalist" | "cinematic";
 
 const stylePrompts: Record<MediaStyle, string> = {
-  "photorealistic": "Photorealistic, ultra-realistic photography, natural lighting, high detail, 8K quality, professional photograph",
-  "illustration": "Professional digital illustration, detailed artwork, modern design, clean lines, vibrant colors",
-  "cartoon": "Colorful cartoon style, fun and playful, bold outlines, bright saturated colors, animated look",
-  "3d-render": "3D rendered scene, realistic materials and textures, studio lighting, polished 3D visualization",
-  "watercolor": "Beautiful watercolor painting style, soft brushstrokes, flowing colors, artistic and elegant",
-  "minimalist": "Clean minimalist design, simple shapes, limited color palette, modern and sleek, white space",
-  "cinematic": "Cinematic film still, dramatic lighting, wide-angle lens, movie-quality composition, atmospheric",
+  "photorealistic": "Photorealistic photograph, shot on a Canon EOS R5 with a 50mm f/1.4 lens, natural ambient lighting, shallow depth of field, ultra-realistic textures, real-world materials, no illustration or cartoon elements, professional DSLR photography, RAW quality, lifelike",
+  "illustration": "Professional digital illustration, detailed artwork, modern design, clean lines, vibrant colors, editorial illustration style",
+  "cartoon": "Colorful cartoon style, fun and playful, bold outlines, bright saturated colors, animated look, comic book aesthetic",
+  "3d-render": "3D rendered scene, realistic materials and textures, studio lighting, polished 3D visualization, Cinema 4D quality",
+  "watercolor": "Beautiful watercolor painting style, soft brushstrokes, flowing colors, artistic and elegant, paper texture visible",
+  "minimalist": "Clean minimalist design, simple shapes, limited color palette, modern and sleek, generous white space, flat design",
+  "cinematic": "Cinematic film still, dramatic lighting, wide-angle anamorphic lens, movie-quality composition, atmospheric, color graded",
 };
 
 class GenerationEngine {
@@ -145,6 +145,11 @@ class GenerationEngine {
         await this.generateImage(day);
       }
 
+      const updatedDay = await storage.getLessonDay(day.id);
+      if (updatedDay && updatedDay.imageStatus === "completed" && updatedDay.videoStatus === "pending") {
+        await this.generateVideo(updatedDay);
+      }
+
       if (this.currentJobId) {
         const stats = await storage.getStats();
         await storage.updateJob(this.currentJobId, {
@@ -157,25 +162,25 @@ class GenerationEngine {
       }
     }
 
-    const updatedDays = await storage.getAllLessonDays();
-    for (const day of updatedDays) {
+    const remainingDays = await storage.getAllLessonDays();
+    for (const day of remainingDays) {
       if (!this.running) break;
       await this.waitIfPaused();
       if (!this.running) break;
 
       if (day.videoStatus === "pending" && day.imageStatus === "completed") {
         await this.generateVideo(day);
-      }
 
-      if (this.currentJobId) {
-        const stats = await storage.getStats();
-        await storage.updateJob(this.currentJobId, {
-          completedImages: stats.imagesCompleted,
-          completedVideos: stats.videosCompleted,
-          failedImages: stats.imagesFailed,
-          failedVideos: stats.videosFailed,
-          currentDay: day.id,
-        });
+        if (this.currentJobId) {
+          const stats = await storage.getStats();
+          await storage.updateJob(this.currentJobId, {
+            completedImages: stats.imagesCompleted,
+            completedVideos: stats.videosCompleted,
+            failedImages: stats.imagesFailed,
+            failedVideos: stats.videosFailed,
+            currentDay: day.id,
+          });
+        }
       }
     }
 
