@@ -8,7 +8,7 @@ A full-stack web application that serves as an AI-powered media generation agent
 - **Backend**: Express.js with TypeScript
 - **Database**: PostgreSQL via Drizzle ORM
 - **AI**: OpenAI API (user's own OPENAI_API_KEY) - gpt-4o-mini for parsing, gpt-image-1 for images
-- **Video**: ffmpeg with Ken Burns zoom effect, text overlays for day label and topic
+- **Video**: ffmpeg with 10 dynamic motion presets (sweep, zoom, drift, pan), fade transitions, animated text overlays
 - **Auth**: Passport.js with local strategy, bcrypt password hashing, express-session
 - **File Upload**: Multer for multipart form handling
 - **Document Parsing**: pdf-parse (PDF), mammoth (DOCX), native text (TXT/CSV/MD)
@@ -39,8 +39,8 @@ A full-stack web application that serves as an AI-powered media generation agent
 9. **Scalability**: Rate limit handling with retries, chunk-based parsing for large documents
 10. **Multi-Industry Support**: Pricing and messaging tailored for 5 industries with tabbed pricing selector
 11. **Admin Dashboard**: Analytics overview (users, posts, media stats), protected by auth
-12. **Blog System**: Public blog with cards, individual post view; admin blog management with draft/publish workflow, cover image upload
-13. **User Management**: Create/edit/delete users, role assignment, block/unblock
+12. **Blog System**: Public blog with cards, individual post view; admin blog editor with rich text toolbar, inline image/video upload at cursor, Markdown formatting, preview mode, draft/publish workflow
+13. **User Management**: Full admin controls - add users, upgrade/downgrade roles, block/unblock, remove users; search & filter by role/status
 14. **Team Management**: Role-based access (viewer, writer, editor, administrator) with promotion/demotion
 15. **Site Settings**: Editable front page content (hero title, tagline, about text, CTA, footer)
 
@@ -87,7 +87,9 @@ A full-stack web application that serves as an AI-powered media generation agent
 
 ## Important Notes
 - Image size: 1536x1024 (OpenAI supported landscape format)
-- Video: 6-second MP4 with Ken Burns zoom, day label overlay, topic overlay
+- Video: 6-second MP4 with 10 motion presets cycled by dayId, fade-in/out, sliding text animations
+- Blog content supports Markdown + inline media via `[image:url]` and `[video:url]` tags
+- Inline media uploads via POST /api/admin/upload-media, stored in generated/media/
 - Document parser splits by Day boundaries (max 40,000 chars per chunk) with retry on rate limits
 - Image generation has retry logic (3 attempts) with exponential backoff for rate limits
 - Uploading a new document clears previous generated files and lesson data

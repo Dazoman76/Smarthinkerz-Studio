@@ -104,11 +104,48 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             )}
 
             <div className="prose prose-invert prose-slate max-w-none" data-testid="text-post-content">
-              {post.content.split("\n\n").map((paragraph, i) => (
-                <p key={i} className="text-slate-300 leading-relaxed mb-4">
-                  {paragraph}
-                </p>
-              ))}
+              {post.content.split("\n").map((line, i) => {
+                const imageMatch = line.match(/^\[image:(.*?)\]$/);
+                if (imageMatch) {
+                  return (
+                    <div key={i} className="my-6">
+                      <img src={imageMatch[1]} alt="Content" className="max-w-full rounded-lg border border-slate-700" />
+                    </div>
+                  );
+                }
+                const videoMatch = line.match(/^\[video:(.*?)\]$/);
+                if (videoMatch) {
+                  return (
+                    <div key={i} className="my-6">
+                      <video src={videoMatch[1]} controls className="max-w-full rounded-lg border border-slate-700" />
+                    </div>
+                  );
+                }
+                if (line.startsWith("## ")) {
+                  return <h2 key={i} className="text-xl font-bold text-white mt-8 mb-3">{line.substring(3)}</h2>;
+                }
+                if (line.startsWith("# ")) {
+                  return <h1 key={i} className="text-2xl font-bold text-white mt-8 mb-3">{line.substring(2)}</h1>;
+                }
+                if (line.startsWith("> ")) {
+                  return <blockquote key={i} className="border-l-4 border-primary pl-4 italic text-slate-400 my-3">{line.substring(2)}</blockquote>;
+                }
+                if (line.startsWith("- ")) {
+                  return <li key={i} className="text-slate-300 ml-6 list-disc">{line.substring(2)}</li>;
+                }
+                if (line === "---") {
+                  return <hr key={i} className="border-slate-700 my-8" />;
+                }
+                if (line.trim() === "") {
+                  return <div key={i} className="h-2" />;
+                }
+                let processed = line;
+                processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                processed = processed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                processed = processed.replace(/`(.*?)`/g, '<code class="bg-slate-700 px-1.5 py-0.5 rounded text-sm text-primary">$1</code>');
+                processed = processed.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-primary underline hover:text-primary/80" target="_blank" rel="noopener">$1</a>');
+                return <p key={i} className="text-slate-300 leading-relaxed mb-2" dangerouslySetInnerHTML={{ __html: processed }} />;
+              })}
             </div>
           </article>
         )}

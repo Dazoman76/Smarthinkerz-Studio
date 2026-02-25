@@ -487,6 +487,43 @@ export async function registerRoutes(
     res.json({ message: "Blog post deleted" });
   });
 
+  // Admin Inline Media Upload (for blog content)
+  const mediaUpload = multer({
+    dest: path.join(process.cwd(), "uploads", "media"),
+    limits: { fileSize: 50 * 1024 * 1024 },
+    fileFilter: (_req, file, cb) => {
+      if (file.mimetype.startsWith("image/") || file.mimetype.startsWith("video/")) {
+        cb(null, true);
+      } else {
+        cb(new Error("Only image and video files are allowed"));
+      }
+    },
+  });
+
+  app.post("/api/admin/upload-media", requireRole("administrator", "editor", "writer"), mediaUpload.single("file"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      const mediaDir = path.join(process.cwd(), "generated", "media");
+      if (!fs.existsSync(mediaDir)) fs.mkdirSync(mediaDir, { recursive: true });
+
+      const timestamp = Date.now();
+      const ext = path.extname(req.file.originalname) || (req.file.mimetype.startsWith("video/") ? ".mp4" : ".jpg");
+      const safeName = req.file.originalname.replace(/[^a-zA-Z0-9_\-.]/g, "_").substring(0, 60);
+      const filename = `${timestamp}_${safeName}`;
+      const destPath = path.join(mediaDir, filename);
+      fs.copyFileSync(req.file.path, destPath);
+      fs.unlinkSync(req.file.path);
+
+      const url = `/generated/media/${filename}`;
+      const type = req.file.mimetype.startsWith("video/") ? "video" : "image";
+      res.json({ url, type, filename });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   // Admin Site Settings
   app.get("/api/admin/settings", requireRole("administrator"), async (_req, res) => {
     const settings = await storage.getAllSettings();
