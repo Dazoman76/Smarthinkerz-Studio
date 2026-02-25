@@ -1,4 +1,4 @@
-# AI Media Generation Agent
+# Smarthinkerz Studio
 
 ## Overview
 A full-stack web application that serves as an AI-powered media generation agent. Users upload content documents (PDF, DOCX, TXT, CSV, MD) — lesson plans, training manuals, marketing briefs, manuscripts, or guides — and the AI parses them to extract sections. Then it generates unique 16:9 images and videos for each section. Supports documents of any size (tested with 220+ sections, designed for 600+). Serves 5 industries: Education, Content Creators, Businesses, Marketers, and Authors/Publishers.
@@ -18,7 +18,7 @@ A full-stack web application that serves as an AI-powered media generation agent
 - `/dashboard` - Main app dashboard (upload, generate, manage media)
 
 ## Key Features
-1. **Landing Page**: Multi-industry marketing page with use cases (Education, Creators, Business, Marketers, Publishers), tabbed pricing, testimonials
+1. **Landing Page**: Smarthinkerz Studio branded marketing page with use cases, style showcase, tabbed pricing, testimonials, CTA
 2. **Document Upload & AI Parsing**: Upload any content documents; AI extracts sections and descriptions
 3. **Batch Media Generation**: Generates 1536x1024 images using gpt-image-1, videos via ffmpeg
 4. **Media Style Selection**: Choose from 7 styles for images and videos: Photorealistic, Illustration, Cartoon, 3D Render, Watercolor, Minimalist, Cinematic

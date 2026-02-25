@@ -298,11 +298,11 @@ export default function Dashboard() {
               <Link href="/">
                 <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
                   <Zap className="w-5 h-5 text-primary" />
-                  AI Media Agent
+                  Smarthinkerz Studio
                 </h1>
               </Link>
               <p className="text-sm text-muted-foreground mt-0.5">
-                Upload content, generate images & videos automatically
+                Turn lessons, posts, and campaigns into stunning media
               </p>
             </div>
             <div className="flex items-center gap-2 flex-wrap">

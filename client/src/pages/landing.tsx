@@ -23,9 +23,8 @@ import {
   Megaphone,
   BookOpen,
   PenTool,
-  Target,
   BarChart3,
-  Shield,
+  Quote,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -56,14 +55,13 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
           <div className="space-y-8">
             <Badge variant="secondary" className="px-4 py-1.5 text-sm">
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-              AI-Powered Media Generation
+              AI-Powered Media Studio
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-              Turn Any Content into{" "}
-              <span className="text-primary">Stunning Visuals</span>
+              <span className="text-primary">Smarthinkerz</span> Studio
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed">
-              Upload documents, generate images & videos automatically. For educators, creators, businesses, marketers, and publishers.
+              Turn any content into stunning visuals. Upload your content once and let AI transform it into professional images and videos across multiple styles. Save time, scale your creativity, and engage your audience like never before.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
@@ -108,7 +106,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                 <div className="w-3 h-3 rounded-full bg-yellow-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
                 <span className="ml-2 text-xs text-muted-foreground">
-                  AI Media Agent
+                  Smarthinkerz Studio
                 </span>
               </div>
               <div className="relative aspect-video bg-muted">
@@ -116,7 +114,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                   <img
                     key={src}
                     src={src}
-                    alt={`Sample generated media ${i + 1}`}
+                    alt={`AI generated sample ${i + 1}`}
                     className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
                       i === currentImage ? "opacity-100" : "opacity-0"
                     }`}
@@ -176,7 +174,7 @@ function UseCasesSection() {
       title: "Education",
       subtitle: "Lessons & Courses",
       description: "Upload lesson plans and curricula. AI generates images and videos for every lesson day — perfect for LMS, slides, and classroom materials.",
-      examples: ["Lesson visuals", "Course thumbnails", "Study guide illustrations"],
+      examples: ["Lesson visuals", "Course thumbnails", "Study guides"],
       color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
     },
     {
@@ -211,6 +209,15 @@ function UseCasesSection() {
       examples: ["Chapter illustrations", "Visual summaries", "Study guides"],
       color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
     },
+    {
+      icon: Sparkles,
+      title: "Your Use Case",
+      subtitle: "Flexible Workflows",
+      description: "Any structured document can become visual content. Flexible workflows adapt to any content type you throw at it.",
+      examples: ["Custom content", "Any document", "Any format"],
+      color: "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400",
+      dashed: true,
+    },
   ];
 
   return (
@@ -221,12 +228,12 @@ function UseCasesSection() {
             Built for Every Industry
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            One platform, endless possibilities. Upload your content and let AI handle the visuals.
+            Smarthinkerz Studio is built for anyone who needs high-impact visuals at scale.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {useCases.map((uc) => (
-            <Card key={uc.title} className="hover-elevate transition-all duration-200">
+            <Card key={uc.title} className={`hover-elevate transition-all duration-200 ${uc.dashed ? "border-dashed" : ""}`}>
               <CardContent className="p-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${uc.color}`}>
@@ -250,17 +257,44 @@ function UseCasesSection() {
               </CardContent>
             </Card>
           ))}
-          <Card className="hover-elevate transition-all duration-200 border-dashed">
-            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-3 h-full">
-              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-muted-foreground" />
-              </div>
-              <h3 className="text-lg font-semibold">Your Use Case</h3>
-              <p className="text-sm text-muted-foreground">
-                Any structured document can become visual content. Upload and let AI figure out the rest.
-              </p>
-            </CardContent>
-          </Card>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StylesSection() {
+  const styles = [
+    { name: "Photorealistic", description: "Ultra-realistic photography with natural lighting", color: "bg-sky-100 dark:bg-sky-900/30" },
+    { name: "Illustration", description: "Professional digital artwork with clean lines", color: "bg-indigo-100 dark:bg-indigo-900/30" },
+    { name: "Cartoon", description: "Fun, colorful with bold outlines", color: "bg-orange-100 dark:bg-orange-900/30" },
+    { name: "3D Render", description: "Polished 3D visualization with studio lighting", color: "bg-cyan-100 dark:bg-cyan-900/30" },
+    { name: "Watercolor", description: "Artistic with soft brushstrokes", color: "bg-pink-100 dark:bg-pink-900/30" },
+    { name: "Minimalist", description: "Clean design, simple shapes, white space", color: "bg-slate-100 dark:bg-slate-900/30" },
+    { name: "Cinematic", description: "Dramatic film-quality composition", color: "bg-amber-100 dark:bg-amber-900/30" },
+  ];
+
+  return (
+    <section className="py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-14">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Palette className="w-6 h-6 text-primary" />
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            7 Visual Styles
+          </h2>
+          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+            Choose the perfect look for your content. Every style is optimized for professional results.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+          {styles.map((style) => (
+            <div key={style.name} className={`rounded-xl p-4 text-center space-y-2 ${style.color} transition-transform hover:scale-105`}>
+              <h3 className="text-sm font-semibold">{style.name}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">{style.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -293,7 +327,7 @@ function HowItWorksSection() {
   ];
 
   return (
-    <section className="py-20">
+    <section className="py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -328,15 +362,15 @@ function FeaturesSection() {
   const features = [
     {
       icon: Upload,
-      title: "Bulk Document Upload",
+      title: "Bulk Content Uploads",
       description:
         "Upload documents with hundreds of sections at once. Supports PDF, DOCX, TXT, CSV, and Markdown.",
     },
     {
       icon: Image,
-      title: "AI Image Generation",
+      title: "Automatic Image Generation",
       description:
-        "Generates unique, professional-quality 1536x1024 images for every section of your content.",
+        "AI generates unique, professional-quality 1536x1024 images for every section of your content.",
     },
     {
       icon: Video,
@@ -346,35 +380,36 @@ function FeaturesSection() {
     },
     {
       icon: Palette,
-      title: "7 Visual Styles",
+      title: "Branding Options",
       description:
-        "Choose from Photorealistic, Illustration, Cartoon, 3D Render, Watercolor, Minimalist, or Cinematic.",
+        "Add your logo, custom overlays, and color palettes to match your brand identity.",
+      badge: "Coming Soon",
     },
     {
       icon: PlugZap,
       title: "Integration-Ready",
       description:
-        "Export media for your LMS, social platforms, presentations, or ad networks. API access for automation.",
+        "Export media for your LMS, social platforms, APIs, and team workflows. Built for automation.",
       badge: "Coming Soon",
     },
     {
-      icon: Download,
-      title: "Flexible Downloads",
+      icon: BarChart3,
+      title: "Analytics Dashboard",
       description:
-        "Download individual files or bulk export everything as a zip — files named with section and topic.",
+        "Track engagement, monitor generation progress, and measure the impact of your visual content.",
+      badge: "Coming Soon",
     },
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Powerful Features
+            Powerful Capabilities
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Everything you need to turn any content into professional media at
-            scale.
+            Everything you need to turn any content into professional media at scale.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -409,15 +444,14 @@ function FeaturesSection() {
 
 function ShowcaseSection() {
   return (
-    <section className="py-20">
+    <section className="py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
             See What AI Creates
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Real examples generated from uploaded content. Every image is
-            unique and tailored to the topic.
+            Real examples generated from uploaded content. Every image is unique and tailored to the topic.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -454,7 +488,7 @@ function ShowcaseSection() {
 
 function CapabilitiesSection() {
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
@@ -529,7 +563,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
   const categories = [
     { id: "education", label: "Education", icon: GraduationCap },
     { id: "creators", label: "Creators", icon: PenTool },
-    { id: "business", label: "Business", icon: Briefcase },
+    { id: "business", label: "Businesses", icon: Briefcase },
     { id: "marketers", label: "Marketers", icon: Megaphone },
     { id: "publishers", label: "Publishers", icon: BookOpen },
   ];
@@ -942,14 +976,14 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
   const plans = plansByCategory[selectedCategory] || plansByCategory.education;
 
   return (
-    <section id="pricing" className="py-20">
+    <section id="pricing" className="py-20 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
             Simple, Transparent Pricing
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Choose the plan that fits your needs. Pricing tailored to your industry.
+            Pricing tailored to your industry. Choose the plan that fits your needs.
           </p>
         </div>
 
@@ -1027,77 +1061,89 @@ function TestimonialsSection() {
   const testimonials = [
     {
       icon: GraduationCap,
-      role: "Educators",
-      quote:
-        "Transform your lesson plans into engaging visuals that captivate students. No design skills required.",
-      name: "For Teachers & Professors",
+      role: "Educator",
+      quote: "Smarthinkerz Studio saved me hours of editing. My lessons now look cinematic.",
       color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
     },
     {
       icon: PenTool,
-      role: "Content Creators",
-      quote:
-        "Save hours of editing and design work. Upload your content and let AI generate professional media instantly.",
-      name: "For YouTubers & Influencers",
-      color:
-        "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+      role: "Content Creator",
+      quote: "I scaled my social content from 10 posts a week to 200 in minutes.",
+      color: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
     },
     {
       icon: Briefcase,
-      role: "Businesses",
-      quote:
-        "Scale your training media production across hundreds of modules. Consistent quality, fraction of the cost.",
-      name: "For L&D & HR Teams",
-      color:
-        "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+      role: "Business Trainer",
+      quote: "Our onboarding guides are now visual and engaging. Employees love them.",
+      color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
     },
     {
       icon: Megaphone,
-      role: "Marketers",
-      quote:
-        "Generate campaign-ready visuals and ad creatives from your marketing copy in minutes, not days.",
-      name: "For Marketing Teams & Agencies",
-      color:
-        "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
+      role: "Marketer",
+      quote: "Campaign visuals that used to take days now take minutes.",
+      color: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
     },
     {
       icon: BookOpen,
-      role: "Authors & Publishers",
-      quote:
-        "Create beautiful chapter illustrations and visual summaries that bring your books to life.",
-      name: "For Writers & Publishing Houses",
-      color:
-        "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+      role: "Author",
+      quote: "My book chapters now have professional illustrations without hiring a designer.",
+      color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
     },
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Built for Everyone
+            What Our Users Say
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            From educators to enterprises, marketers to publishers — trusted by professionals across industries.
+            Trusted by professionals across industries.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           {testimonials.map((item) => (
             <Card key={item.role} className="hover-elevate transition-all duration-200">
-              <CardContent className="p-5 space-y-3">
+              <CardContent className="p-5 space-y-4">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
                   <item.icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-semibold">{item.role}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed italic">
-                  "{item.quote}"
-                </p>
-                <p className="text-xs font-medium text-primary">{item.name}</p>
+                <div className="relative">
+                  <Quote className="w-4 h-4 text-muted-foreground/30 absolute -top-1 -left-1" />
+                  <p className="text-sm text-muted-foreground leading-relaxed italic pl-4">
+                    {item.quote}
+                  </p>
+                </div>
+                <p className="text-xs font-semibold text-foreground">&mdash; {item.role}</p>
               </CardContent>
             </Card>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function CTASection({ onGetStarted }: { onGetStarted: () => void }) {
+  return (
+    <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-6">
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          Your AI-Powered Media Studio
+        </h2>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Start creating today and bring your ideas to life with stunning visuals. Smart thinking, stunning media.
+        </p>
+        <Button
+          size="lg"
+          className="text-base px-10 py-6"
+          onClick={onGetStarted}
+          data-testid="button-cta-get-started"
+        >
+          Get Started Now
+          <ArrowRight className="w-5 h-5 ml-2" />
+        </Button>
       </div>
     </section>
   );
@@ -1111,11 +1157,10 @@ function FooterSection() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Zap className="w-5 h-5 text-primary" />
-              <span className="font-semibold">AI Media Agent</span>
+              <span className="font-semibold">Smarthinkerz Studio</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Turn any content into professional images and videos with the
-              power of AI. For educators, creators, businesses, and more.
+              Turn lessons, posts, and campaigns into stunning media automatically. Your AI-powered creative partner.
             </p>
           </div>
           <div className="space-y-3">
@@ -1176,11 +1221,10 @@ function FooterSection() {
         </div>
         <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            Trusted by educators, creators & businesses worldwide
+            Smart thinking, stunning media.
           </p>
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} AI Media Agent. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} Smarthinkerz Studio. All rights reserved.
           </p>
         </div>
       </div>
@@ -1201,7 +1245,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-primary" />
-            <span className="font-semibold text-lg">AI Media Agent</span>
+            <span className="font-semibold text-lg">Smarthinkerz Studio</span>
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
@@ -1239,12 +1283,14 @@ export default function Landing() {
 
       <HeroSection onGetStarted={handleGetStarted} />
       <UseCasesSection />
+      <StylesSection />
       <HowItWorksSection />
       <FeaturesSection />
       <ShowcaseSection />
       <CapabilitiesSection />
       <PricingSection onGetStarted={handleGetStarted} />
       <TestimonialsSection />
+      <CTASection onGetStarted={handleGetStarted} />
       <FooterSection />
     </div>
   );
