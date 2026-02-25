@@ -221,13 +221,21 @@ export async function registerRoutes(
     res.json(doc);
   });
 
+  function sanitizeFilename(name: string): string {
+    return name.replace(/[^a-zA-Z0-9_\- ]/g, "").replace(/\s+/g, "_").substring(0, 80);
+  }
+
   app.get("/api/download/image/:dayId", async (req, res) => {
     const dayId = parseInt(req.params.dayId);
     const imagePath = path.join(process.cwd(), "generated", "images", `day_${dayId}.png`);
     if (!fs.existsSync(imagePath)) {
       return res.status(404).json({ message: "Image not found" });
     }
-    res.download(imagePath, `day_${dayId}.png`);
+    const days = await storage.getAllLessonDays();
+    const day = days.find(d => d.id === dayId);
+    const topicSlug = day ? sanitizeFilename(day.topic) : "";
+    const filename = topicSlug ? `Day_${dayId}_${topicSlug}.png` : `Day_${dayId}.png`;
+    res.download(imagePath, filename);
   });
 
   app.get("/api/download/video/:dayId", async (req, res) => {
@@ -236,12 +244,18 @@ export async function registerRoutes(
     if (!fs.existsSync(videoPath)) {
       return res.status(404).json({ message: "Video not found" });
     }
-    res.download(videoPath, `day_${dayId}.mp4`);
+    const days = await storage.getAllLessonDays();
+    const day = days.find(d => d.id === dayId);
+    const topicSlug = day ? sanitizeFilename(day.topic) : "";
+    const filename = topicSlug ? `Day_${dayId}_${topicSlug}.mp4` : `Day_${dayId}.mp4`;
+    res.download(videoPath, filename);
   });
 
   app.get("/api/download/all", async (_req, res) => {
     const imagesDir = path.join(process.cwd(), "generated", "images");
     const videosDir = path.join(process.cwd(), "generated", "videos");
+    const days = await storage.getAllLessonDays();
+    const dayMap = new Map(days.map(d => [d.id, d.topic]));
 
     res.setHeader("Content-Type", "application/zip");
     res.setHeader("Content-Disposition", "attachment; filename=all_media.zip");
@@ -256,13 +270,21 @@ export async function registerRoutes(
     if (fs.existsSync(imagesDir)) {
       const imageFiles = fs.readdirSync(imagesDir).filter(f => f.endsWith(".png"));
       for (const file of imageFiles) {
-        archive.file(path.join(imagesDir, file), { name: `images/${file}` });
+        const match = file.match(/day_(\d+)\.png/);
+        const dayId = match ? parseInt(match[1]) : 0;
+        const topic = dayMap.get(dayId);
+        const zipName = topic ? `Day_${dayId}_${sanitizeFilename(topic)}.png` : file;
+        archive.file(path.join(imagesDir, file), { name: `images/${zipName}` });
       }
     }
     if (fs.existsSync(videosDir)) {
       const videoFiles = fs.readdirSync(videosDir).filter(f => f.endsWith(".mp4"));
       for (const file of videoFiles) {
-        archive.file(path.join(videosDir, file), { name: `videos/${file}` });
+        const match = file.match(/day_(\d+)\.mp4/);
+        const dayId = match ? parseInt(match[1]) : 0;
+        const topic = dayMap.get(dayId);
+        const zipName = topic ? `Day_${dayId}_${sanitizeFilename(topic)}.mp4` : file;
+        archive.file(path.join(videosDir, file), { name: `videos/${zipName}` });
       }
     }
 
