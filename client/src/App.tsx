@@ -16,6 +16,7 @@ import AdminBlogEditor from "@/pages/admin/blog-editor";
 import AdminUsers from "@/pages/admin/users";
 import AdminTeam from "@/pages/admin/team";
 import AdminSettings from "@/pages/admin/settings";
+import AdminProfile from "@/pages/admin/profile";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 
@@ -68,6 +69,9 @@ function Router() {
       </Route>
       <Route path="/admin/settings">
         {() => <AdminRoute component={AdminSettings} />}
+      </Route>
+      <Route path="/admin/profile">
+        {() => <AdminRoute component={AdminProfile} />}
       </Route>
       <Route component={NotFound} />
     </Switch>

@@ -10,6 +10,7 @@ import {
   Settings,
   LogOut,
   ChevronLeft,
+  UserCircle,
 } from "lucide-react";
 
 const navItems = [
@@ -59,10 +60,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           })}
         </nav>
         <div className="p-3 border-t border-slate-700">
-          <div className="px-3 py-2 mb-2">
-            <p className="text-sm text-white font-medium" data-testid="text-admin-username">{user?.username}</p>
-            <p className="text-xs text-slate-400 capitalize">{user?.role}</p>
-          </div>
+          <Link href="/admin/profile">
+            <div className={`px-3 py-2 mb-2 rounded-lg cursor-pointer transition-colors ${location === "/admin/profile" ? "bg-primary text-primary-foreground" : "hover:bg-slate-700"}`} data-testid="link-admin-profile">
+              <div className="flex items-center gap-2">
+                <UserCircle className="w-4 h-4" />
+                <p className="text-sm font-medium" data-testid="text-admin-username">{user?.username}</p>
+              </div>
+              <p className="text-xs text-slate-400 capitalize ml-6">{user?.role}</p>
+            </div>
+          </Link>
           <Button
             variant="ghost"
             size="sm"

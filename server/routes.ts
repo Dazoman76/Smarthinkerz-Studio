@@ -505,5 +505,50 @@ export async function registerRoutes(
     res.json({ message: "Settings updated" });
   });
 
+  // Profile Update (change own username/password)
+  app.patch("/api/auth/profile", requireAuth, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      if (!userId) return res.status(401).json({ message: "Not authenticated" });
+
+      const { username, currentPassword, newPassword } = req.body;
+      const user = await storage.getUserById(userId);
+      if (!user) return res.status(404).json({ message: "User not found" });
+
+      const isValid = await bcrypt.compare(currentPassword, user.password);
+      if (!isValid) return res.status(400).json({ message: "Current password is incorrect" });
+
+      const updateData: any = {};
+
+      if (username && username !== user.username) {
+        const existing = await storage.getUserByUsername(username);
+        if (existing) return res.status(400).json({ message: "Username already taken" });
+        updateData.username = username;
+      }
+
+      if (newPassword) {
+        if (newPassword.length < 6) {
+          return res.status(400).json({ message: "New password must be at least 6 characters" });
+        }
+        updateData.password = await bcrypt.hash(newPassword, 10);
+      }
+
+      if (Object.keys(updateData).length === 0) {
+        return res.status(400).json({ message: "No changes to save" });
+      }
+
+      await storage.updateUser(userId, updateData);
+
+      const updated = await storage.getUserById(userId);
+      if (updated) {
+        (req.user as any).username = updated.username;
+      }
+
+      res.json({ message: "Profile updated successfully", username: updated?.username });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   return httpServer;
 }
