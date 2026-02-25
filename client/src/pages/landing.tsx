@@ -81,12 +81,14 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
               className="rounded-xl overflow-hidden border shadow-lg max-w-lg cursor-pointer"
               onMouseEnter={() => {
                 if (heroVideoRef.current) {
+                  heroVideoRef.current.currentTime = 0;
                   heroVideoRef.current.muted = false;
                   heroVideoRef.current.play().catch(() => {});
                 }
               }}
               onMouseLeave={() => {
                 if (heroVideoRef.current) {
+                  heroVideoRef.current.pause();
                   heroVideoRef.current.muted = true;
                 }
               }}
@@ -94,7 +96,6 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
               <video
                 ref={heroVideoRef}
                 src="/generated/media/smarthinkerz_hero.mp4"
-                autoPlay
                 muted
                 loop
                 playsInline
