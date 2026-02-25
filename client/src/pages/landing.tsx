@@ -52,6 +52,7 @@ const sampleImages = [
 
 function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   const [currentImage, setCurrentImage] = useState(0);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -76,8 +77,22 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
             <p className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed">
               Turn any content into stunning visuals. Upload your content once and let AI transform it into professional images and videos across multiple styles. Save time, scale your creativity, and engage your audience like never before.
             </p>
-            <div className="rounded-xl overflow-hidden border shadow-lg max-w-lg">
+            <div
+              className="rounded-xl overflow-hidden border shadow-lg max-w-lg cursor-pointer"
+              onMouseEnter={() => {
+                if (heroVideoRef.current) {
+                  heroVideoRef.current.muted = false;
+                  heroVideoRef.current.play().catch(() => {});
+                }
+              }}
+              onMouseLeave={() => {
+                if (heroVideoRef.current) {
+                  heroVideoRef.current.muted = true;
+                }
+              }}
+            >
               <video
+                ref={heroVideoRef}
                 src="/generated/media/smarthinkerz_hero.mp4"
                 autoPlay
                 muted
