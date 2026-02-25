@@ -45,6 +45,18 @@ export async function registerRoutes(
   if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
   }
+  const mediaDir = path.join(process.cwd(), "generated", "media");
+  if (!fs.existsSync(mediaDir)) {
+    fs.mkdirSync(mediaDir, { recursive: true });
+  }
+  const blogUploadsDir = path.join(process.cwd(), "uploads", "blog");
+  if (!fs.existsSync(blogUploadsDir)) {
+    fs.mkdirSync(blogUploadsDir, { recursive: true });
+  }
+  const mediaUploadsDir = path.join(process.cwd(), "uploads", "media");
+  if (!fs.existsSync(mediaUploadsDir)) {
+    fs.mkdirSync(mediaUploadsDir, { recursive: true });
+  }
 
   app.use("/generated", express.static(generatedDir));
 
@@ -355,16 +367,30 @@ export async function registerRoutes(
     });
   });
 
-  // Admin User Management
+  // Admin User Management (all users)
   app.get("/api/admin/users", requireRole("administrator"), async (_req, res) => {
     const allUsers = await storage.getAllUsers();
     const safeUsers = allUsers.map(({ password, ...u }) => u);
     res.json(safeUsers);
   });
 
+  // Clients only
+  app.get("/api/admin/clients", requireRole("administrator", "editor"), async (_req, res) => {
+    const allUsers = await storage.getAllUsers();
+    const clients = allUsers.filter(u => u.userType === "client").map(({ password, ...u }) => u);
+    res.json(clients);
+  });
+
+  // Team members only
+  app.get("/api/admin/team", requireRole("administrator"), async (_req, res) => {
+    const allUsers = await storage.getAllUsers();
+    const team = allUsers.filter(u => u.userType === "team").map(({ password, ...u }) => u);
+    res.json(team);
+  });
+
   app.post("/api/admin/users", requireRole("administrator"), async (req, res) => {
     try {
-      const { username, email, password, role } = req.body;
+      const { username, email, password, role, userType, subscription } = req.body;
       if (!username || !email || !password) {
         return res.status(400).json({ message: "Username, email, and password are required" });
       }
@@ -376,6 +402,8 @@ export async function registerRoutes(
         email,
         password: hashedPassword,
         role: role || "viewer",
+        userType: userType || "client",
+        subscription: subscription || "free",
         status: "active",
       });
       const { password: _, ...safeUser } = user;
@@ -387,11 +415,13 @@ export async function registerRoutes(
 
   app.patch("/api/admin/users/:id", requireRole("administrator"), async (req, res) => {
     const id = parseInt(req.params.id);
-    const { role, status, email, password } = req.body;
+    const { role, status, email, password, userType, subscription } = req.body;
     const updateData: any = {};
     if (role) updateData.role = role;
     if (status) updateData.status = status;
     if (email) updateData.email = email;
+    if (userType) updateData.userType = userType;
+    if (subscription) updateData.subscription = subscription;
     if (password) updateData.password = await bcrypt.hash(password, 10);
     await storage.updateUser(id, updateData);
     res.json({ message: "User updated" });

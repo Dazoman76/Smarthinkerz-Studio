@@ -22,6 +22,18 @@ export const userStatusEnum = pgEnum("user_status", [
   "blocked",
 ]);
 
+export const userTypeEnum = pgEnum("user_type", [
+  "client",
+  "team",
+]);
+
+export const subscriptionEnum = pgEnum("subscription_tier", [
+  "free",
+  "basic",
+  "advanced",
+  "premium",
+]);
+
 export const blogStatusEnum = pgEnum("blog_status", [
   "draft",
   "published",
@@ -70,6 +82,8 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
   role: userRoleEnum("role").default("viewer").notNull(),
+  userType: userTypeEnum("user_type").default("client").notNull(),
+  subscription: subscriptionEnum("subscription_tier").default("free").notNull(),
   status: userStatusEnum("status").default("active").notNull(),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });

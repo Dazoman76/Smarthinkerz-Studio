@@ -23,8 +23,8 @@ A full-stack web application that serves as an AI-powered media generation agent
 - `/admin` - Admin dashboard with analytics
 - `/admin/blog` - Blog management (create, edit, publish, delete posts)
 - `/admin/blog/:id` - Blog post editor
-- `/admin/users` - User management (add, edit role, block, delete)
-- `/admin/team` - Team management with role assignments
+- `/admin/clients` - Client management (subscription tiers: free/basic/advanced/premium, upgrade/downgrade, block, delete)
+- `/admin/team` - Team member management (assign roles: viewer/writer/editor/administrator)
 - `/admin/settings` - Site settings editor (front page content)
 
 ## Key Features
@@ -40,8 +40,8 @@ A full-stack web application that serves as an AI-powered media generation agent
 10. **Multi-Industry Support**: Pricing and messaging tailored for 5 industries with tabbed pricing selector
 11. **Admin Dashboard**: Analytics overview (users, posts, media stats), protected by auth
 12. **Blog System**: Public blog with cards, individual post view; admin blog editor with rich text toolbar, inline image/video upload at cursor, Markdown formatting, preview mode, draft/publish workflow
-13. **User Management**: Full admin controls - add users, upgrade/downgrade roles, block/unblock, remove users; search & filter by role/status
-14. **Team Management**: Role-based access (viewer, writer, editor, administrator) with promotion/demotion
+13. **Client Management**: Separate section for app users with subscription tiers (Free/Basic/Advanced/Premium); upgrade/downgrade, block/unblock, remove; search & filter
+14. **Team Management**: Separate section for internal team members with role assignment (Viewer/Writer/Editor/Administrator); add/remove/block team members
 15. **Site Settings**: Editable front page content (hero title, tagline, about text, CTA, footer)
 
 ## File Structure

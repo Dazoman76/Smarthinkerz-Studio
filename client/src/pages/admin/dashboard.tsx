@@ -160,7 +160,7 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-2 mb-3">
           <Users className="w-5 h-5 text-blue-400" />
           <h2 className="text-lg font-semibold text-white">Users</h2>
-          <Link href="/admin/users">
+          <Link href="/admin/clients">
             <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white ml-auto h-7 text-xs" data-testid="link-manage-users">
               Manage <ArrowRight className="w-3 h-3 ml-1" />
             </Button>
@@ -220,7 +220,7 @@ export default function AdminDashboard() {
             <CardTitle className="text-white text-base flex items-center gap-2">
               <Activity className="w-4 h-4 text-blue-400" />
               Recent Users
-              <Link href="/admin/users">
+              <Link href="/admin/clients">
                 <Button variant="ghost" size="sm" className="ml-auto h-6 text-xs text-slate-400 hover:text-white" data-testid="link-view-all-users">
                   View All
                 </Button>
@@ -301,9 +301,9 @@ export default function AdminDashboard() {
             <Shield className="w-4 h-4" /> Quick Admin Actions
           </h3>
           <div className="flex flex-wrap gap-3">
-            <Link href="/admin/users">
+            <Link href="/admin/clients">
               <Button variant="outline" size="sm" className="border-slate-600 text-slate-300 hover:bg-slate-700" data-testid="button-quick-users">
-                <Users className="w-4 h-4 mr-2" /> Manage Users
+                <Users className="w-4 h-4 mr-2" /> Manage Clients
               </Button>
             </Link>
             <Link href="/admin/blog/new">

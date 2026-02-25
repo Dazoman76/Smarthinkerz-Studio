@@ -16,7 +16,7 @@ import {
 const navItems = [
   { path: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { path: "/admin/blog", label: "Blog", icon: FileText },
-  { path: "/admin/users", label: "Users", icon: Users },
+  { path: "/admin/clients", label: "Clients", icon: Users },
   { path: "/admin/team", label: "Team", icon: UserCog },
   { path: "/admin/settings", label: "Settings", icon: Settings },
 ];

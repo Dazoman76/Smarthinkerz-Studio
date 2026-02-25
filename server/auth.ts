@@ -141,6 +141,8 @@ export async function ensureDefaultAdmin() {
       email: "admin@smarthinkerz.com",
       password: hashedPassword,
       role: "administrator",
+      userType: "team",
+      subscription: "free",
       status: "active",
     });
     console.log("Default admin user created (username: admin, password: admin123)");

@@ -61,6 +61,9 @@ function Router() {
       <Route path="/admin/blog/:id">
         {(params) => <AdminRoute component={AdminBlogEditor} params={params} />}
       </Route>
+      <Route path="/admin/clients">
+        {() => <AdminRoute component={AdminUsers} />}
+      </Route>
       <Route path="/admin/users">
         {() => <AdminRoute component={AdminUsers} />}
       </Route>
