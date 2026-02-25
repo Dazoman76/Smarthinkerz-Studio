@@ -76,6 +76,17 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
             <p className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed">
               Turn any content into stunning visuals. Upload your content once and let AI transform it into professional images and videos across multiple styles. Save time, scale your creativity, and engage your audience like never before.
             </p>
+            <div className="rounded-xl overflow-hidden border shadow-lg max-w-lg">
+              <video
+                src="/generated/media/smarthinkerz_hero.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-auto"
+                data-testid="video-hero-showcase"
+              />
+            </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
@@ -259,6 +270,7 @@ function UseCasesSection() {
       examples: ["Lesson visuals", "Course thumbnails", "Study guides"],
       color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
       image: educationImg,
+      video: "/generated/media/education_usecase.mp4",
     },
     {
       icon: PenTool,
@@ -287,6 +299,7 @@ function UseCasesSection() {
       examples: ["Ad creatives", "Campaign visuals", "Branded snippets"],
       color: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
       image: marketersImg,
+      video: "/generated/media/marketers_usecase.mp4",
     },
     {
       icon: BookOpen,
