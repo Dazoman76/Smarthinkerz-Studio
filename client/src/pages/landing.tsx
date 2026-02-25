@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
+import logoImage from "@assets/Sleek_SmartThinkerz_company_logo_on_dark_backgroun-17515430621_1771985098421.png";
 import {
   Zap,
   Upload,
@@ -1155,9 +1156,9 @@ function FooterSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-primary" />
-              <span className="font-semibold">Smarthinkerz Studio</span>
+            <div className="flex flex-col items-start">
+              <img src={logoImage} alt="SmartThinkerz" className="h-7 w-auto rounded" />
+              <span className="text-[10px] text-muted-foreground tracking-[0.25em] uppercase ml-0.5 -mt-0.5">Studio</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Turn lessons, posts, and campaigns into stunning media automatically. Your AI-powered creative partner.
@@ -1243,9 +1244,9 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       <nav className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-primary" />
-            <span className="font-semibold text-lg">Smarthinkerz Studio</span>
+          <div className="flex flex-col items-start">
+            <img src={logoImage} alt="SmartThinkerz" className="h-8 w-auto rounded" />
+            <span className="text-[10px] text-muted-foreground tracking-[0.25em] uppercase ml-0.5 -mt-0.5">Studio</span>
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a

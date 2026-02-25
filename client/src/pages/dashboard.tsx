@@ -45,6 +45,7 @@ import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { MediaViewer } from "@/components/media-viewer";
 import { FileUpload } from "@/components/file-upload";
+import logoImage from "@assets/Sleek_SmartThinkerz_company_logo_on_dark_backgroun-17515430621_1771985098421.png";
 
 type Stats = {
   totalDays: number;
@@ -296,10 +297,10 @@ export default function Dashboard() {
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
               <Link href="/">
-                <h1 className="text-xl font-semibold tracking-tight flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
-                  <Zap className="w-5 h-5 text-primary" />
-                  Smarthinkerz Studio
-                </h1>
+                <div className="flex flex-col items-start cursor-pointer hover:opacity-80 transition-opacity">
+                  <img src={logoImage} alt="SmartThinkerz" className="h-7 w-auto rounded" />
+                  <span className="text-[10px] text-muted-foreground tracking-[0.25em] uppercase ml-0.5 -mt-0.5">Studio</span>
+                </div>
               </Link>
               <p className="text-sm text-muted-foreground mt-0.5">
                 Turn lessons, posts, and campaigns into stunning media
