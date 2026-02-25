@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
-import logoImage from "@assets/Sleek_SmartThinkerz_company_logo_on_dark_backgroun-17515430621_1771985098421.png";
+import logoImage from "@assets/SmartThinkerz_Studio_logo_v2_1772058282432.png";
 import {
   Zap,
   Upload,
@@ -1343,36 +1343,36 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 border-b border-blue-800/50 bg-[#0a1628]/95 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div className="flex flex-col items-start">
-            <img src={logoImage} alt="SmartThinkerz" className="h-8 w-auto rounded" />
-            <span className="text-[10px] text-muted-foreground tracking-[0.25em] uppercase ml-0.5 -mt-0.5">Studio</span>
+          <div className="flex items-center">
+            <img src={logoImage} alt="SmartThinkerz Studio" className="h-9 w-auto" />
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
               href="#use-cases"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-blue-200/80 hover:text-white transition-colors"
               data-testid="nav-link-use-cases"
             >
               Use Cases
             </a>
             <a
               href="#pricing"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-blue-200/80 hover:text-white transition-colors"
               data-testid="nav-link-pricing"
             >
               Pricing
             </a>
             <a
               href="/blog"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-blue-200/80 hover:text-white transition-colors"
               data-testid="nav-link-blog"
             >
               Blog
             </a>
             <Button
               size="sm"
+              className="bg-cyan-500 hover:bg-cyan-400 text-white font-semibold"
               onClick={handleGetStarted}
               data-testid="nav-button-get-started"
             >
@@ -1381,7 +1381,7 @@ export default function Landing() {
           </div>
           <Button
             size="sm"
-            className="sm:hidden"
+            className="sm:hidden bg-cyan-500 hover:bg-cyan-400 text-white font-semibold"
             onClick={handleGetStarted}
             data-testid="nav-button-get-started-mobile"
           >
