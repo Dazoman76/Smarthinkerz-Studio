@@ -28,12 +28,12 @@ import {
   Quote,
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import educationImg from "@assets/lesson_upload_image_1772017417412.jpg";
-import contentCreatorImg from "@assets/content_creator_image_1772017417411.jpg";
-import businessesImg from "@assets/Businesses_1772017417410.jpg";
-import marketersImg from "@assets/Marketers_1772017417409.jpg";
-import publishingImg from "@assets/creative_publishing_1772017389803.jpg";
-import yourUseCaseImg from "@assets/Your_Use_Case_1772017417407.jpg";
+import educationImg from "@assets/lesson_upload_image_1772019754863.jpg";
+import contentCreatorImg from "@assets/content_creator_image_1772019754862.jpg";
+import businessesImg from "@assets/Training_and_onboarding_1772019754860.jpg";
+import marketersImg from "@assets/Marketers_Campaigns_and_Ads_1772019754859.jpg";
+import publishingImg from "@assets/3_Authors_and_Publishers_1772019754858.jpg";
+import yourUseCaseImg from "@assets/Your_Use_Case_1772019754856.jpg";
 
 const sampleImages = [
   { src: "/generated/images/day_1.png", style: "Photorealistic" },
