@@ -13,6 +13,12 @@ interface GenerationStats {
   videosFailed: number;
 }
 
+function getAppUrl(): string {
+  const domain = process.env.REPLIT_DOMAINS?.split(",")[0];
+  if (domain) return `https://${domain}`;
+  return process.env.APP_URL || "http://localhost:5000";
+}
+
 export async function sendGenerationCompleteEmail(
   toEmail: string,
   username: string,
@@ -79,7 +85,7 @@ export async function sendGenerationCompleteEmail(
             </p>
 
             <div style="text-align: center; margin: 28px 0;">
-              <a href="#" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-block;">
+              <a href="${getAppUrl()}/admin/login" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-block;">
                 View Dashboard
               </a>
             </div>
