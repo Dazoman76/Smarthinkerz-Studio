@@ -334,6 +334,7 @@ function UseCasesSection() {
       examples: ["Custom content", "Any document", "Any format"],
       color: "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400",
       image: yourUseCaseImg,
+      video: "/generated/media/your_usecase.mp4",
       dashed: true,
     },
   ];
