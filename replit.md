@@ -21,11 +21,12 @@ A full-stack web application that serves as an AI-powered media generation agent
 1. **Landing Page**: Professional marketing page with hero, features, pricing tiers, image showcase, testimonials
 2. **Document Upload & AI Parsing**: Upload lesson plan documents; AI extracts lesson topics and descriptions
 3. **Batch Media Generation**: Generates 1536x1024 images using gpt-image-1, videos via ffmpeg
-4. **Progress Dashboard**: Real-time tracking of generation progress with grid/list views
-5. **Media Viewer**: View generated images and videos per lesson day with individual download buttons
-6. **Generation Controls**: Start/Pause/Resume/Stop generation, retry failed items
-7. **Downloads**: Individual image/video download with Day+Topic filenames, bulk Download All as zip
-8. **Scalability**: Rate limit handling with retries, chunk-based parsing for large documents
+4. **Media Style Selection**: Choose from 7 styles for images and videos: Photorealistic, Illustration, Cartoon, 3D Render, Watercolor, Minimalist, Cinematic
+5. **Progress Dashboard**: Real-time tracking of generation progress with grid/list views
+6. **Media Viewer**: View generated images and videos per lesson day with individual download buttons
+7. **Generation Controls**: Start/Pause/Resume/Stop generation, retry failed items
+8. **Downloads**: Individual image/video download with Day+Topic filenames, bulk Download All as zip
+9. **Scalability**: Rate limit handling with retries, chunk-based parsing for large documents
 
 ## File Structure
 - `shared/schema.ts` - Database schema (lesson_days, generation_jobs, uploaded_documents)

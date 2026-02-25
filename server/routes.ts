@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { generationEngine } from "./generation-engine";
+import { generationEngine, type MediaStyle } from "./generation-engine";
 import { parseDocumentToLessons, extractTextFromFile } from "./document-parser";
 import * as path from "path";
 import * as fs from "fs";
@@ -69,11 +69,12 @@ export async function registerRoutes(
     const status = generationEngine.getStatus();
     const isRunning = generationEngine.isRunning();
     const isPaused = generationEngine.isPaused();
+    const styles = generationEngine.getStyles();
     const job = await storage.getActiveJob();
-    res.json({ isRunning, isPaused, status, job });
+    res.json({ isRunning, isPaused, status, ...styles, job });
   });
 
-  app.post("/api/generation/start", async (_req, res) => {
+  app.post("/api/generation/start", async (req, res) => {
     if (generationEngine.isRunning() && !generationEngine.isPaused()) {
       return res.status(400).json({ message: "Generation is already running" });
     }
@@ -81,7 +82,8 @@ export async function registerRoutes(
     if (stats.totalDays === 0) {
       return res.status(400).json({ message: "No lessons found. Please upload a document first." });
     }
-    await generationEngine.start();
+    const { imageStyle, videoStyle } = req.body || {};
+    await generationEngine.start({ imageStyle, videoStyle });
     res.json({ message: "Generation started" });
   });
 

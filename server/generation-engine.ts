@@ -5,11 +5,25 @@ import * as fs from "fs";
 import * as path from "path";
 import { exec } from "child_process";
 
+export type MediaStyle = "photorealistic" | "illustration" | "cartoon" | "3d-render" | "watercolor" | "minimalist" | "cinematic";
+
+const stylePrompts: Record<MediaStyle, string> = {
+  "photorealistic": "Photorealistic, ultra-realistic photography, natural lighting, high detail, 8K quality, professional photograph",
+  "illustration": "Professional digital illustration, detailed artwork, modern design, clean lines, vibrant colors",
+  "cartoon": "Colorful cartoon style, fun and playful, bold outlines, bright saturated colors, animated look",
+  "3d-render": "3D rendered scene, realistic materials and textures, studio lighting, polished 3D visualization",
+  "watercolor": "Beautiful watercolor painting style, soft brushstrokes, flowing colors, artistic and elegant",
+  "minimalist": "Clean minimalist design, simple shapes, limited color palette, modern and sleek, white space",
+  "cinematic": "Cinematic film still, dramatic lighting, wide-angle lens, movie-quality composition, atmospheric",
+};
+
 class GenerationEngine {
   private running = false;
   private paused = false;
   private currentJobId: string | null = null;
   private pauseResolve: (() => void) | null = null;
+  private imageStyle: MediaStyle = "photorealistic";
+  private videoStyle: MediaStyle = "photorealistic";
 
   isRunning(): boolean {
     return this.running;
@@ -25,13 +39,25 @@ class GenerationEngine {
     return "running";
   }
 
-  async start(): Promise<void> {
+  getStyles(): { imageStyle: MediaStyle; videoStyle: MediaStyle } {
+    return { imageStyle: this.imageStyle, videoStyle: this.videoStyle };
+  }
+
+  setStyles(imageStyle?: MediaStyle, videoStyle?: MediaStyle): void {
+    if (imageStyle) this.imageStyle = imageStyle;
+    if (videoStyle) this.videoStyle = videoStyle;
+  }
+
+  async start(options?: { imageStyle?: MediaStyle; videoStyle?: MediaStyle }): Promise<void> {
     if (this.running && !this.paused) return;
 
     if (this.paused) {
       this.resume();
       return;
     }
+
+    if (options?.imageStyle) this.imageStyle = options.imageStyle;
+    if (options?.videoStyle) this.videoStyle = options.videoStyle;
 
     this.running = true;
     this.paused = false;
@@ -167,7 +193,8 @@ class GenerationEngine {
     try {
       await storage.updateLessonDayImageStatus(day.id, "generating");
 
-      const prompt = `Professional educational illustration for "Day ${day.id}: ${day.topic}". ${day.description}. The label "Day ${day.id}" must be prominently displayed. High quality, detailed, photorealistic, modern educational design, vibrant colors, clean composition. 16:9 widescreen.`;
+      const styleDesc = stylePrompts[this.imageStyle] || stylePrompts["photorealistic"];
+      const prompt = `${styleDesc}. Educational image for "Day ${day.id}: ${day.topic}". ${day.description}. The label "Day ${day.id}" must be prominently displayed. High quality, clean composition. 16:9 widescreen.`;
 
       let imageBuffer: Buffer | null = null;
       const maxRetries = 3;

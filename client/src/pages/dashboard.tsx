@@ -6,8 +6,21 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import type { LessonDay } from "@shared/schema";
+
+type MediaStyle = "photorealistic" | "illustration" | "cartoon" | "3d-render" | "watercolor" | "minimalist" | "cinematic";
+
+const styleLabels: Record<MediaStyle, string> = {
+  "photorealistic": "Photorealistic",
+  "illustration": "Illustration",
+  "cartoon": "Cartoon",
+  "3d-render": "3D Render",
+  "watercolor": "Watercolor",
+  "minimalist": "Minimalist",
+  "cinematic": "Cinematic",
+};
 import {
   Play,
   Pause,
@@ -26,6 +39,7 @@ import {
   Eye,
   Upload,
   Download,
+  Palette,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
@@ -194,6 +208,8 @@ export default function Dashboard() {
   const [filter, setFilter] = useState<"all" | "pending" | "completed" | "generating" | "failed">("all");
   const [selectedDay, setSelectedDay] = useState<LessonDay | null>(null);
   const [activeTab, setActiveTab] = useState("upload");
+  const [imageStyle, setImageStyle] = useState<MediaStyle>("photorealistic");
+  const [videoStyle, setVideoStyle] = useState<MediaStyle>("photorealistic");
 
   const { data: stats, isLoading: statsLoading } = useQuery<Stats>({
     queryKey: ["/api/stats"],
@@ -211,9 +227,9 @@ export default function Dashboard() {
   });
 
   const startGeneration = useMutation({
-    mutationFn: () => apiRequest("POST", "/api/generation/start"),
+    mutationFn: () => apiRequest("POST", "/api/generation/start", { imageStyle, videoStyle }),
     onSuccess: () => {
-      toast({ title: "Generation started", description: "The AI agent is now generating media for all lesson days." });
+      toast({ title: "Generation started", description: `Generating ${styleLabels[imageStyle]} images & ${styleLabels[videoStyle]} videos.` });
       queryClient.invalidateQueries({ queryKey: ["/api/generation/status"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
     },
@@ -505,6 +521,80 @@ export default function Dashboard() {
                     color="bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400"
                   />
                 </div>
+
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Palette className="w-4 h-4" />
+                      Media Style
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-muted-foreground">Image Style</label>
+                        <Select
+                          value={imageStyle}
+                          onValueChange={(v) => setImageStyle(v as MediaStyle)}
+                          disabled={isRunning}
+                        >
+                          <SelectTrigger data-testid="select-image-style">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.entries(styleLabels).map(([key, label]) => (
+                              <SelectItem key={key} value={key} data-testid={`option-image-style-${key}`}>
+                                {label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          {imageStyle === "photorealistic" && "Ultra-realistic photography with natural lighting"}
+                          {imageStyle === "illustration" && "Professional digital artwork with clean lines"}
+                          {imageStyle === "cartoon" && "Fun, colorful cartoon with bold outlines"}
+                          {imageStyle === "3d-render" && "Polished 3D visualization with studio lighting"}
+                          {imageStyle === "watercolor" && "Artistic watercolor with soft brushstrokes"}
+                          {imageStyle === "minimalist" && "Clean design with simple shapes and white space"}
+                          {imageStyle === "cinematic" && "Dramatic film-quality composition"}
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-muted-foreground">Video Style</label>
+                        <Select
+                          value={videoStyle}
+                          onValueChange={(v) => setVideoStyle(v as MediaStyle)}
+                          disabled={isRunning}
+                        >
+                          <SelectTrigger data-testid="select-video-style">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.entries(styleLabels).map(([key, label]) => (
+                              <SelectItem key={key} value={key} data-testid={`option-video-style-${key}`}>
+                                {label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          {videoStyle === "photorealistic" && "Ultra-realistic photography with natural lighting"}
+                          {videoStyle === "illustration" && "Professional digital artwork with clean lines"}
+                          {videoStyle === "cartoon" && "Fun, colorful cartoon with bold outlines"}
+                          {videoStyle === "3d-render" && "Polished 3D visualization with studio lighting"}
+                          {videoStyle === "watercolor" && "Artistic watercolor with soft brushstrokes"}
+                          {videoStyle === "minimalist" && "Clean design with simple shapes and white space"}
+                          {videoStyle === "cinematic" && "Dramatic film-quality composition"}
+                        </p>
+                      </div>
+                    </div>
+                    {isRunning && (
+                      <p className="text-xs text-amber-600 mt-3">
+                        Style can only be changed when generation is not running.
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
 
                 <Card>
                   <CardHeader className="pb-3">
