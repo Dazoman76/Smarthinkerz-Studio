@@ -1,6 +1,10 @@
-import { lessonDays, generationJobs, uploadedDocuments, type LessonDay, type InsertLessonDay, type GenerationJob, type UploadedDocument } from "@shared/schema";
+import {
+  lessonDays, generationJobs, uploadedDocuments, users, blogPosts, siteSettings,
+  type LessonDay, type InsertLessonDay, type GenerationJob, type UploadedDocument,
+  type User, type InsertUser, type BlogPost, type InsertBlogPost, type SiteSetting
+} from "@shared/schema";
 import { db } from "./db";
-import { eq, count, sql } from "drizzle-orm";
+import { eq, count, sql, desc, and } from "drizzle-orm";
 
 export interface IStorage {
   getAllLessonDays(): Promise<LessonDay[]>;
@@ -27,6 +31,28 @@ export interface IStorage {
   createUploadedDocument(filename: string, content: string): Promise<UploadedDocument>;
   updateUploadedDocument(id: number, data: Partial<UploadedDocument>): Promise<void>;
   getUploadedDocuments(): Promise<UploadedDocument[]>;
+
+  // Users
+  getUserByUsername(username: string): Promise<User | undefined>;
+  getUserById(id: number): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
+  createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, data: Partial<User>): Promise<void>;
+  deleteUser(id: number): Promise<void>;
+
+  // Blog
+  getPublishedBlogPosts(): Promise<BlogPost[]>;
+  getBlogPostBySlug(slug: string): Promise<BlogPost | undefined>;
+  getAllBlogPosts(): Promise<BlogPost[]>;
+  getBlogPostById(id: number): Promise<BlogPost | undefined>;
+  createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
+  updateBlogPost(id: number, data: Partial<BlogPost>): Promise<void>;
+  deleteBlogPost(id: number): Promise<void>;
+
+  // Site Settings
+  getSetting(key: string): Promise<string | undefined>;
+  getAllSettings(): Promise<SiteSetting[]>;
+  upsertSetting(key: string, value: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -146,6 +172,86 @@ export class DatabaseStorage implements IStorage {
 
   async getUploadedDocuments(): Promise<UploadedDocument[]> {
     return await db.select().from(uploadedDocuments).orderBy(uploadedDocuments.uploadedAt);
+  }
+
+  // Users
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
+  }
+
+  async getUserById(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return await db.select().from(users).orderBy(desc(users.createdAt));
+  }
+
+  async createUser(user: InsertUser): Promise<User> {
+    const [created] = await db.insert(users).values(user).returning();
+    return created;
+  }
+
+  async updateUser(id: number, data: Partial<User>): Promise<void> {
+    await db.update(users).set(data).where(eq(users.id, id));
+  }
+
+  async deleteUser(id: number): Promise<void> {
+    await db.delete(users).where(eq(users.id, id));
+  }
+
+  // Blog
+  async getPublishedBlogPosts(): Promise<BlogPost[]> {
+    return await db.select().from(blogPosts)
+      .where(eq(blogPosts.status, "published"))
+      .orderBy(desc(blogPosts.publishedAt));
+  }
+
+  async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+    return post;
+  }
+
+  async getAllBlogPosts(): Promise<BlogPost[]> {
+    return await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
+  }
+
+  async getBlogPostById(id: number): Promise<BlogPost | undefined> {
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+    return post;
+  }
+
+  async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
+    const [created] = await db.insert(blogPosts).values(post).returning();
+    return created;
+  }
+
+  async updateBlogPost(id: number, data: Partial<BlogPost>): Promise<void> {
+    await db.update(blogPosts).set({ ...data, updatedAt: new Date() }).where(eq(blogPosts.id, id));
+  }
+
+  async deleteBlogPost(id: number): Promise<void> {
+    await db.delete(blogPosts).where(eq(blogPosts.id, id));
+  }
+
+  // Site Settings
+  async getSetting(key: string): Promise<string | undefined> {
+    const [setting] = await db.select().from(siteSettings).where(eq(siteSettings.key, key));
+    return setting?.value;
+  }
+
+  async getAllSettings(): Promise<SiteSetting[]> {
+    return await db.select().from(siteSettings);
+  }
+
+  async upsertSetting(key: string, value: string): Promise<void> {
+    await db.insert(siteSettings).values({ key, value, updatedAt: new Date() })
+      .onConflictDoUpdate({
+        target: siteSettings.key,
+        set: { value, updatedAt: new Date() },
+      });
   }
 }
 

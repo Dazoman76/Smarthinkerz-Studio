@@ -1198,7 +1198,7 @@ function FooterSection() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-foreground transition-colors" data-testid="link-blog">
+                <a href="/blog" className="hover:text-foreground transition-colors" data-testid="link-blog">
                   Blog
                 </a>
               </li>
@@ -1262,6 +1262,13 @@ export default function Landing() {
               data-testid="nav-link-pricing"
             >
               Pricing
+            </a>
+            <a
+              href="/blog"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              data-testid="nav-link-blog"
+            >
+              Blog
             </a>
             <Button
               size="sm"

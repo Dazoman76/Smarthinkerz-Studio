@@ -3,11 +3,13 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generationEngine, type MediaStyle } from "./generation-engine";
 import { parseDocumentToLessons, extractTextFromFile } from "./document-parser";
+import { requireAuth, requireRole } from "./auth";
 import * as path from "path";
 import * as fs from "fs";
 import express from "express";
 import multer from "multer";
 import archiver from "archiver";
+import bcrypt from "bcrypt";
 
 const upload = multer({
   dest: path.join(process.cwd(), "uploads"),
@@ -300,6 +302,207 @@ export async function registerRoutes(
     }
 
     await archive.finalize();
+  });
+
+  // ===== PUBLIC BLOG ROUTES =====
+  app.get("/api/blog", async (_req, res) => {
+    const posts = await storage.getPublishedBlogPosts();
+    const postsWithAuthor = await Promise.all(
+      posts.map(async (post) => {
+        const author = post.authorId ? await storage.getUserById(post.authorId) : null;
+        return { ...post, authorName: author?.username || "Unknown" };
+      })
+    );
+    res.json(postsWithAuthor);
+  });
+
+  app.get("/api/blog/:slug", async (req, res) => {
+    const post = await storage.getBlogPostBySlug(req.params.slug);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+    const author = post.authorId ? await storage.getUserById(post.authorId) : null;
+    res.json({ ...post, authorName: author?.username || "Unknown" });
+  });
+
+  // ===== PUBLIC SITE SETTINGS =====
+  app.get("/api/settings", async (_req, res) => {
+    const settings = await storage.getAllSettings();
+    const result: Record<string, string> = {};
+    settings.forEach(s => { result[s.key] = s.value; });
+    res.json(result);
+  });
+
+  // ===== ADMIN ROUTES =====
+
+  // Admin Analytics
+  app.get("/api/admin/analytics", requireRole("administrator", "editor"), async (_req, res) => {
+    const allUsers = await storage.getAllUsers();
+    const allPosts = await storage.getAllBlogPosts();
+    const stats = await storage.getStats();
+    const publishedPosts = allPosts.filter(p => p.status === "published").length;
+    const draftPosts = allPosts.filter(p => p.status === "draft").length;
+    res.json({
+      totalUsers: allUsers.length,
+      activeUsers: allUsers.filter(u => u.status === "active").length,
+      blockedUsers: allUsers.filter(u => u.status === "blocked").length,
+      totalBlogPosts: allPosts.length,
+      publishedPosts,
+      draftPosts,
+      totalLessons: stats.totalDays,
+      imagesGenerated: stats.imagesCompleted,
+      videosGenerated: stats.videosCompleted,
+      imagesFailed: stats.imagesFailed,
+      videosFailed: stats.videosFailed,
+    });
+  });
+
+  // Admin User Management
+  app.get("/api/admin/users", requireRole("administrator"), async (_req, res) => {
+    const allUsers = await storage.getAllUsers();
+    const safeUsers = allUsers.map(({ password, ...u }) => u);
+    res.json(safeUsers);
+  });
+
+  app.post("/api/admin/users", requireRole("administrator"), async (req, res) => {
+    try {
+      const { username, email, password, role } = req.body;
+      if (!username || !email || !password) {
+        return res.status(400).json({ message: "Username, email, and password are required" });
+      }
+      const existing = await storage.getUserByUsername(username);
+      if (existing) return res.status(400).json({ message: "Username already exists" });
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await storage.createUser({
+        username,
+        email,
+        password: hashedPassword,
+        role: role || "viewer",
+        status: "active",
+      });
+      const { password: _, ...safeUser } = user;
+      res.json(safeUser);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.patch("/api/admin/users/:id", requireRole("administrator"), async (req, res) => {
+    const id = parseInt(req.params.id);
+    const { role, status, email, password } = req.body;
+    const updateData: any = {};
+    if (role) updateData.role = role;
+    if (status) updateData.status = status;
+    if (email) updateData.email = email;
+    if (password) updateData.password = await bcrypt.hash(password, 10);
+    await storage.updateUser(id, updateData);
+    res.json({ message: "User updated" });
+  });
+
+  app.delete("/api/admin/users/:id", requireRole("administrator"), async (req, res) => {
+    const id = parseInt(req.params.id);
+    if ((req.user as any)?.id === id) {
+      return res.status(400).json({ message: "Cannot delete yourself" });
+    }
+    await storage.deleteUser(id);
+    res.json({ message: "User deleted" });
+  });
+
+  // Admin Blog Management
+  const blogUpload = multer({
+    dest: path.join(process.cwd(), "uploads", "blog"),
+    limits: { fileSize: 10 * 1024 * 1024 },
+  });
+
+  app.get("/api/admin/blog", requireRole("administrator", "editor", "writer"), async (_req, res) => {
+    const posts = await storage.getAllBlogPosts();
+    const postsWithAuthor = await Promise.all(
+      posts.map(async (post) => {
+        const author = post.authorId ? await storage.getUserById(post.authorId) : null;
+        return { ...post, authorName: author?.username || "Unknown" };
+      })
+    );
+    res.json(postsWithAuthor);
+  });
+
+  app.post("/api/admin/blog", requireRole("administrator", "editor", "writer"), blogUpload.single("coverImage"), async (req, res) => {
+    try {
+      const { title, content, excerpt, status } = req.body;
+      if (!title || !content) {
+        return res.status(400).json({ message: "Title and content are required" });
+      }
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      let coverImage: string | undefined;
+      if (req.file) {
+        const blogImagesDir = path.join(process.cwd(), "generated", "blog");
+        if (!fs.existsSync(blogImagesDir)) fs.mkdirSync(blogImagesDir, { recursive: true });
+        const ext = path.extname(req.file.originalname) || ".jpg";
+        const destPath = path.join(blogImagesDir, `${slug}${ext}`);
+        fs.copyFileSync(req.file.path, destPath);
+        fs.unlinkSync(req.file.path);
+        coverImage = `/generated/blog/${slug}${ext}`;
+      }
+      const post = await storage.createBlogPost({
+        title,
+        slug,
+        content,
+        excerpt: excerpt || content.substring(0, 200),
+        coverImage,
+        authorId: (req.user as any)?.id,
+        status: status || "draft",
+        publishedAt: status === "published" ? new Date() : null,
+      });
+      res.json(post);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.patch("/api/admin/blog/:id", requireRole("administrator", "editor", "writer"), blogUpload.single("coverImage"), async (req, res) => {
+    const id = parseInt(req.params.id);
+    const { title, content, excerpt, status } = req.body;
+    const updateData: any = {};
+    if (title) updateData.title = title;
+    if (content) updateData.content = content;
+    if (excerpt) updateData.excerpt = excerpt;
+    if (status) {
+      updateData.status = status;
+      if (status === "published") updateData.publishedAt = new Date();
+    }
+    if (req.file) {
+      const blogImagesDir = path.join(process.cwd(), "generated", "blog");
+      if (!fs.existsSync(blogImagesDir)) fs.mkdirSync(blogImagesDir, { recursive: true });
+      const slug = title?.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || `post-${id}`;
+      const ext = path.extname(req.file.originalname) || ".jpg";
+      const destPath = path.join(blogImagesDir, `${slug}${ext}`);
+      fs.copyFileSync(req.file.path, destPath);
+      fs.unlinkSync(req.file.path);
+      updateData.coverImage = `/generated/blog/${slug}${ext}`;
+    }
+    await storage.updateBlogPost(id, updateData);
+    res.json({ message: "Blog post updated" });
+  });
+
+  app.delete("/api/admin/blog/:id", requireRole("administrator", "editor"), async (req, res) => {
+    const id = parseInt(req.params.id);
+    await storage.deleteBlogPost(id);
+    res.json({ message: "Blog post deleted" });
+  });
+
+  // Admin Site Settings
+  app.get("/api/admin/settings", requireRole("administrator"), async (_req, res) => {
+    const settings = await storage.getAllSettings();
+    const result: Record<string, string> = {};
+    settings.forEach(s => { result[s.key] = s.value; });
+    res.json(result);
+  });
+
+  app.patch("/api/admin/settings", requireRole("administrator"), async (req, res) => {
+    const updates = req.body;
+    for (const [key, value] of Object.entries(updates)) {
+      if (typeof value === "string") {
+        await storage.upsertSetting(key, value);
+      }
+    }
+    res.json({ message: "Settings updated" });
   });
 
   return httpServer;
