@@ -7,19 +7,34 @@ import { exec } from "child_process";
 
 class GenerationEngine {
   private running = false;
+  private paused = false;
   private currentJobId: string | null = null;
+  private pauseResolve: (() => void) | null = null;
 
   isRunning(): boolean {
     return this.running;
   }
 
-  setRunning(value: boolean): void {
-    this.running = value;
+  isPaused(): boolean {
+    return this.paused;
+  }
+
+  getStatus(): "idle" | "running" | "paused" {
+    if (!this.running) return "idle";
+    if (this.paused) return "paused";
+    return "running";
   }
 
   async start(): Promise<void> {
-    if (this.running) return;
+    if (this.running && !this.paused) return;
+
+    if (this.paused) {
+      this.resume();
+      return;
+    }
+
     this.running = true;
+    this.paused = false;
 
     const generatedDir = path.join(process.cwd(), "generated");
     const imagesDir = path.join(generatedDir, "images");
@@ -38,11 +53,41 @@ class GenerationEngine {
     this.runGenerationLoop().catch((err) => {
       console.error("Generation loop error:", err);
       this.running = false;
+      this.paused = false;
     });
+  }
+
+  pause(): void {
+    if (this.running && !this.paused) {
+      this.paused = true;
+      console.log("Generation paused - will pause after current item completes");
+      if (this.currentJobId) {
+        storage.updateJob(this.currentJobId, { status: "paused" });
+      }
+    }
+  }
+
+  resume(): void {
+    if (this.running && this.paused) {
+      this.paused = false;
+      console.log("Generation resumed");
+      if (this.currentJobId) {
+        storage.updateJob(this.currentJobId, { status: "running" });
+      }
+      if (this.pauseResolve) {
+        this.pauseResolve();
+        this.pauseResolve = null;
+      }
+    }
   }
 
   stop(): void {
     this.running = false;
+    this.paused = false;
+    if (this.pauseResolve) {
+      this.pauseResolve();
+      this.pauseResolve = null;
+    }
     if (this.currentJobId) {
       storage.updateJob(this.currentJobId, {
         status: "stopped",
@@ -50,12 +95,24 @@ class GenerationEngine {
       });
       this.currentJobId = null;
     }
+    console.log("Generation stopped");
+  }
+
+  private async waitIfPaused(): Promise<void> {
+    if (this.paused && this.running) {
+      console.log("Generation paused - waiting for resume...");
+      await new Promise<void>((resolve) => {
+        this.pauseResolve = resolve;
+      });
+    }
   }
 
   private async runGenerationLoop(): Promise<void> {
     const days = await storage.getAllLessonDays();
 
     for (const day of days) {
+      if (!this.running) break;
+      await this.waitIfPaused();
       if (!this.running) break;
 
       if (day.imageStatus === "pending") {
@@ -76,6 +133,8 @@ class GenerationEngine {
 
     const updatedDays = await storage.getAllLessonDays();
     for (const day of updatedDays) {
+      if (!this.running) break;
+      await this.waitIfPaused();
       if (!this.running) break;
 
       if (day.videoStatus === "pending" && day.imageStatus === "completed") {

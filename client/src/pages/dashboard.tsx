@@ -11,6 +11,7 @@ import type { LessonDay } from "@shared/schema";
 import {
   Play,
   Pause,
+  Square,
   Image,
   Video,
   CheckCircle2,
@@ -202,7 +203,7 @@ export default function Dashboard() {
     refetchInterval: 5000,
   });
 
-  const { data: jobStatus } = useQuery<{ isRunning: boolean; job: any }>({
+  const { data: jobStatus } = useQuery<{ isRunning: boolean; isPaused: boolean; status: string; job: any }>({
     queryKey: ["/api/generation/status"],
     refetchInterval: 3000,
   });
@@ -219,10 +220,26 @@ export default function Dashboard() {
     },
   });
 
+  const pauseGeneration = useMutation({
+    mutationFn: () => apiRequest("POST", "/api/generation/pause"),
+    onSuccess: () => {
+      toast({ title: "Generation paused", description: "Will pause after the current item finishes. Click Resume to continue." });
+      queryClient.invalidateQueries({ queryKey: ["/api/generation/status"] });
+    },
+  });
+
+  const resumeGeneration = useMutation({
+    mutationFn: () => apiRequest("POST", "/api/generation/resume"),
+    onSuccess: () => {
+      toast({ title: "Generation resumed", description: "Continuing media generation." });
+      queryClient.invalidateQueries({ queryKey: ["/api/generation/status"] });
+    },
+  });
+
   const stopGeneration = useMutation({
     mutationFn: () => apiRequest("POST", "/api/generation/stop"),
     onSuccess: () => {
-      toast({ title: "Generation stopped", description: "The generation process has been paused." });
+      toast({ title: "Generation stopped", description: "The generation process has been fully stopped." });
       queryClient.invalidateQueries({ queryKey: ["/api/generation/status"] });
     },
   });
@@ -251,6 +268,7 @@ export default function Dashboard() {
   const completedMedia = (stats?.imagesCompleted ?? 0) + (stats?.videosCompleted ?? 0);
   const overallProgress = totalMedia > 0 ? Math.round((completedMedia / totalMedia) * 100) : 0;
   const isRunning = jobStatus?.isRunning ?? false;
+  const isPaused = jobStatus?.isPaused ?? false;
   const hasLessons = (stats?.totalDays ?? 0) > 0;
 
   return (
@@ -268,20 +286,63 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-              {isRunning ? (
-                <Button
-                  onClick={() => stopGeneration.mutate()}
-                  variant="destructive"
-                  disabled={stopGeneration.isPending}
-                  data-testid="button-stop-generation"
-                >
-                  {stopGeneration.isPending ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <Pause className="w-4 h-4 mr-2" />
-                  )}
-                  Stop Generation
-                </Button>
+              {isRunning && !isPaused ? (
+                <>
+                  <Button
+                    onClick={() => pauseGeneration.mutate()}
+                    variant="outline"
+                    disabled={pauseGeneration.isPending}
+                    data-testid="button-pause-generation"
+                  >
+                    {pauseGeneration.isPending ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Pause className="w-4 h-4 mr-2" />
+                    )}
+                    Pause
+                  </Button>
+                  <Button
+                    onClick={() => stopGeneration.mutate()}
+                    variant="destructive"
+                    disabled={stopGeneration.isPending}
+                    data-testid="button-stop-generation"
+                  >
+                    {stopGeneration.isPending ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Square className="w-4 h-4 mr-2" />
+                    )}
+                    Stop
+                  </Button>
+                </>
+              ) : isPaused ? (
+                <>
+                  <Button
+                    onClick={() => resumeGeneration.mutate()}
+                    disabled={resumeGeneration.isPending}
+                    data-testid="button-resume-generation"
+                  >
+                    {resumeGeneration.isPending ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Play className="w-4 h-4 mr-2" />
+                    )}
+                    Resume
+                  </Button>
+                  <Button
+                    onClick={() => stopGeneration.mutate()}
+                    variant="destructive"
+                    disabled={stopGeneration.isPending}
+                    data-testid="button-stop-generation"
+                  >
+                    {stopGeneration.isPending ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Square className="w-4 h-4 mr-2" />
+                    )}
+                    Stop
+                  </Button>
+                </>
               ) : (
                 <Button
                   onClick={() => startGeneration.mutate()}
@@ -385,10 +446,16 @@ export default function Dashboard() {
                   <Progress value={overallProgress} className="h-3" />
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">{overallProgress}% complete</span>
-                    {isRunning && (
+                    {isRunning && !isPaused && (
                       <Badge variant="secondary">
                         <Loader2 className="w-3 h-3 mr-1 animate-spin" />
                         Generating...
+                      </Badge>
+                    )}
+                    {isPaused && (
+                      <Badge variant="outline" className="border-amber-500 text-amber-600">
+                        <Pause className="w-3 h-3 mr-1" />
+                        Paused
                       </Badge>
                     )}
                   </div>

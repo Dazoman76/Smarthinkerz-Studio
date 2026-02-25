@@ -65,13 +65,15 @@ export async function registerRoutes(
   });
 
   app.get("/api/generation/status", async (_req, res) => {
+    const status = generationEngine.getStatus();
     const isRunning = generationEngine.isRunning();
+    const isPaused = generationEngine.isPaused();
     const job = await storage.getActiveJob();
-    res.json({ isRunning, job });
+    res.json({ isRunning, isPaused, status, job });
   });
 
   app.post("/api/generation/start", async (_req, res) => {
-    if (generationEngine.isRunning()) {
+    if (generationEngine.isRunning() && !generationEngine.isPaused()) {
       return res.status(400).json({ message: "Generation is already running" });
     }
     const stats = await storage.getStats();
@@ -80,6 +82,16 @@ export async function registerRoutes(
     }
     await generationEngine.start();
     res.json({ message: "Generation started" });
+  });
+
+  app.post("/api/generation/pause", async (_req, res) => {
+    generationEngine.pause();
+    res.json({ message: "Generation paused" });
+  });
+
+  app.post("/api/generation/resume", async (_req, res) => {
+    generationEngine.resume();
+    res.json({ message: "Generation resumed" });
   });
 
   app.post("/api/generation/stop", async (_req, res) => {
