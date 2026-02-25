@@ -110,7 +110,7 @@ class GenerationEngine {
 
       const prompt = `Professional educational illustration for "Day ${day.id}: ${day.topic}". ${day.description}. The label "Day ${day.id}" must be prominently displayed. High quality, detailed, photorealistic, modern educational design, vibrant colors, clean composition. 16:9 widescreen.`;
 
-      const imageBuffer = await generateImageBuffer(prompt, "1792x1024");
+      const imageBuffer = await generateImageBuffer(prompt, "1536x1024");
 
       const outputPath = path.join(process.cwd(), "generated", "images", `day_${day.id}.png`);
       fs.writeFileSync(outputPath, imageBuffer);
@@ -177,7 +177,7 @@ class GenerationEngine {
         "-loop", "1",
         "-i", `"${imagePath}"`,
         "-t", "6",
-        "-vf", `"scale=1792:1024,zoompan=z='min(zoom+0.0015,1.3)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=180:s=1792x1024:fps=30,drawtext=text='${escapedDay}':fontsize=72:fontcolor=white:borderw=3:bordercolor=black:x=(w-text_w)/2:y=h*0.08:enable='gte(t,0.5)',drawtext=text='${escapedTopic}':fontsize=36:fontcolor=white:borderw=2:bordercolor=black:x=(w-text_w)/2:y=h*0.88:enable='gte(t,1)'"`,
+        "-vf", `"scale=1536:1024,zoompan=z='min(zoom+0.0015,1.3)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=180:s=1536x1024:fps=30,drawtext=text='${escapedDay}':fontsize=72:fontcolor=white:borderw=3:bordercolor=black:x=(w-text_w)/2:y=h*0.08:enable='gte(t,0.5)',drawtext=text='${escapedTopic}':fontsize=36:fontcolor=white:borderw=2:bordercolor=black:x=(w-text_w)/2:y=h*0.88:enable='gte(t,1)'"`,
         "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
         "-preset", "fast",
