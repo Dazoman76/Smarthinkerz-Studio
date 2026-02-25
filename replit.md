@@ -58,10 +58,11 @@ A full-stack web application that serves as an AI-powered media generation agent
 - Landing page showcases real generated images from /generated/images/
 
 ## Pricing Tiers (Landing Page - Not Yet Enforced)
-- Free: 5 images + 5 videos/month
-- Pro ($19/mo): 200 images + 50 videos, bulk uploads, branding
-- Business ($49/mo): Unlimited, team accounts, analytics
-- Enterprise: Custom pricing, API access, white-label
+- Free: 10 images + 2 videos/month, Illustration style only
+- Pro ($19/mo): 200 images + 50 videos, Illustration/Cartoon/Minimalist styles
+- Business ($49/mo): 500 images + 100 videos, adds Photorealistic/Watercolor
+- Premium ($99/mo): 1000 images + 200 videos, all styles including 3D Render/Cinematic
+- Enterprise: Custom pricing, unlimited, API access, white-label, team accounts
 
 ## Dependencies
 - multer, pdf-parse, mammoth - File upload and document parsing
