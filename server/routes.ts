@@ -617,5 +617,68 @@ export async function registerRoutes(
     }
   });
 
+  app.get("/api/auth/notifications", requireAuth, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const user = await storage.getUserById(userId);
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.json({
+        notificationEmail: user.notificationEmail || "",
+        notifyOnComplete: user.notifyOnComplete,
+      });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.patch("/api/auth/notifications", requireAuth, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const { notificationEmail, notifyOnComplete } = req.body;
+
+      const updateData: any = {};
+      if (typeof notificationEmail === "string") {
+        updateData.notificationEmail = notificationEmail || null;
+      }
+      if (typeof notifyOnComplete === "boolean") {
+        updateData.notifyOnComplete = notifyOnComplete;
+      }
+
+      await storage.updateUser(userId, updateData);
+      res.json({ message: "Notification preferences updated" });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.post("/api/auth/notifications/test", requireAuth, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const user = await storage.getUserById(userId);
+      if (!user) return res.status(404).json({ message: "User not found" });
+      if (!user.notificationEmail) {
+        return res.status(400).json({ message: "No notification email configured" });
+      }
+
+      const { sendGenerationCompleteEmail } = await import("./notifications");
+      const sent = await sendGenerationCompleteEmail(user.notificationEmail, user.username, {
+        totalImages: 10,
+        totalVideos: 10,
+        imagesCompleted: 8,
+        videosCompleted: 7,
+        imagesFailed: 2,
+        videosFailed: 3,
+      });
+
+      if (sent) {
+        res.json({ message: "Test email sent successfully" });
+      } else {
+        res.status(500).json({ message: "Failed to send test email. Check Resend API key." });
+      }
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   return httpServer;
 }

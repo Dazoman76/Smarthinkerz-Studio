@@ -4,6 +4,7 @@ import { generateImageBuffer } from "./replit_integrations/image/client";
 import * as fs from "fs";
 import * as path from "path";
 import { exec } from "child_process";
+import { sendGenerationCompleteEmail } from "./notifications";
 
 export type MediaStyle = "photorealistic" | "illustration" | "cartoon" | "3d-render" | "watercolor" | "minimalist" | "cinematic";
 
@@ -190,8 +191,38 @@ class GenerationEngine {
         completedAt: new Date(),
       });
     }
+
+    const finalStats = await storage.getStats();
+    await this.notifySubscribedUsers(finalStats);
+
     this.running = false;
     this.currentJobId = null;
+  }
+
+  private async notifySubscribedUsers(stats: { imagesCompleted: number; videosCompleted: number; imagesFailed: number; videosFailed: number; totalDays: number }): Promise<void> {
+    try {
+      const allUsers = await storage.getAllUsers();
+      const subscribedUsers = allUsers.filter(u => u.notifyOnComplete && u.notificationEmail);
+
+      console.log(`Notifying ${subscribedUsers.length} subscribed user(s) about generation completion`);
+
+      for (const user of subscribedUsers) {
+        await sendGenerationCompleteEmail(
+          user.notificationEmail!,
+          user.username,
+          {
+            totalImages: stats.totalDays,
+            totalVideos: stats.totalDays,
+            imagesCompleted: stats.imagesCompleted,
+            videosCompleted: stats.videosCompleted,
+            imagesFailed: stats.imagesFailed,
+            videosFailed: stats.videosFailed,
+          }
+        );
+      }
+    } catch (err) {
+      console.error("Error notifying users:", err);
+    }
   }
 
   private async generateImage(day: LessonDay): Promise<void> {

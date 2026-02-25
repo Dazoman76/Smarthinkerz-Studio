@@ -10,6 +10,7 @@ A full-stack web application that serves as an AI-powered media generation agent
 - **AI**: OpenAI API (user's own OPENAI_API_KEY) - gpt-4o-mini for parsing, gpt-image-1 for images
 - **Video**: ffmpeg with 10 dynamic motion presets (sweep, zoom, drift, pan), fade transitions, animated text overlays
 - **Auth**: Passport.js with local strategy, bcrypt password hashing, express-session
+- **Email Notifications**: Resend API for generation completion alerts
 - **File Upload**: Multer for multipart form handling
 - **Document Parsing**: pdf-parse (PDF), mammoth (DOCX), native text (TXT/CSV/MD)
 - **Downloads**: Individual file downloads + bulk zip via archiver
@@ -43,6 +44,7 @@ A full-stack web application that serves as an AI-powered media generation agent
 13. **Client Management**: Separate section for app users with subscription tiers (Free/Basic/Advanced/Premium); upgrade/downgrade, block/unblock, remove; search & filter
 14. **Team Management**: Separate section for internal team members with role assignment (Viewer/Writer/Editor/Administrator); add/remove/block team members
 15. **Site Settings**: Editable front page content (hero title, tagline, about text, CTA, footer)
+16. **Email Notifications**: Resend-powered email alerts when media generation completes; configurable per-user via Profile page with test email support
 
 ## File Structure
 - `shared/schema.ts` - Database schema (lesson_days, generation_jobs, uploaded_documents, users, blog_posts, site_settings)

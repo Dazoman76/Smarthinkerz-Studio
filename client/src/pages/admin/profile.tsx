@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
-import { User, Lock, Eye, EyeOff, Save, Shield } from "lucide-react";
+import { User, Lock, Eye, EyeOff, Save, Shield, Bell, Mail, Send } from "lucide-react";
 
 export default function AdminProfile() {
   const { user } = useAuth();
@@ -68,11 +69,52 @@ export default function AdminProfile() {
     updateMutation.mutate(data);
   };
 
+  const notifQuery = useQuery<{ notificationEmail: string; notifyOnComplete: boolean }>({
+    queryKey: ["/api/auth/notifications"],
+  });
+
+  const [notifEmail, setNotifEmail] = useState("");
+  const [notifyEnabled, setNotifyEnabled] = useState(false);
+
+  useEffect(() => {
+    if (notifQuery.data) {
+      setNotifEmail(notifQuery.data.notificationEmail || "");
+      setNotifyEnabled(notifQuery.data.notifyOnComplete);
+    }
+  }, [notifQuery.data]);
+
+  const notifMutation = useMutation({
+    mutationFn: async (data: { notificationEmail: string; notifyOnComplete: boolean }) => {
+      const res = await apiRequest("PATCH", "/api/auth/notifications", data);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/notifications"] });
+      toast({ title: "Notifications updated", description: "Your notification preferences have been saved." });
+    },
+    onError: (err: any) => {
+      toast({ title: "Update failed", description: err.message, variant: "destructive" });
+    },
+  });
+
+  const testMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest("POST", "/api/auth/notifications/test", {});
+      return res.json();
+    },
+    onSuccess: () => {
+      toast({ title: "Test email sent", description: "Check your inbox for the test notification." });
+    },
+    onError: (err: any) => {
+      toast({ title: "Test failed", description: err.message, variant: "destructive" });
+    },
+  });
+
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
         <h1 className="text-2xl font-bold text-white">My Profile</h1>
-        <p className="text-slate-400 mt-1">Update your account credentials</p>
+        <p className="text-slate-400 mt-1">Update your account credentials and notification preferences</p>
       </div>
 
       <Card className="bg-slate-800 border-slate-700">
@@ -182,6 +224,72 @@ export default function AdminProfile() {
               </Button>
             </div>
           </form>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white text-lg flex items-center gap-2">
+            <Bell className="w-5 h-5 text-primary" />
+            Email Notifications
+          </CardTitle>
+          <p className="text-sm text-slate-400">
+            Get notified by email when media generation completes
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <Label className="text-slate-300">Enable notifications</Label>
+              <p className="text-xs text-slate-500">Receive an email when all images and videos finish generating</p>
+            </div>
+            <Switch
+              checked={notifyEnabled}
+              onCheckedChange={setNotifyEnabled}
+              data-testid="switch-notify-on-complete"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-slate-300 flex items-center gap-2">
+              <Mail className="w-4 h-4" /> Notification Email
+            </Label>
+            <Input
+              data-testid="input-notification-email"
+              type="email"
+              value={notifEmail}
+              onChange={(e) => setNotifEmail(e.target.value)}
+              placeholder="Enter email for notifications"
+              className="bg-slate-700 border-slate-600 text-white"
+              disabled={!notifyEnabled}
+            />
+            <p className="text-xs text-slate-500">
+              This can be different from your account email
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 pt-2 border-t border-slate-700">
+            <Button
+              onClick={() => notifMutation.mutate({ notificationEmail: notifEmail, notifyOnComplete: notifyEnabled })}
+              disabled={notifMutation.isPending}
+              data-testid="button-save-notifications"
+            >
+              <Save className="w-4 h-4 mr-2" />
+              {notifMutation.isPending ? "Saving..." : "Save Preferences"}
+            </Button>
+            {notifyEnabled && notifEmail && (
+              <Button
+                variant="outline"
+                className="border-slate-600 text-slate-300 hover:bg-slate-700"
+                onClick={() => testMutation.mutate()}
+                disabled={testMutation.isPending}
+                data-testid="button-test-notification"
+              >
+                <Send className="w-4 h-4 mr-2" />
+                {testMutation.isPending ? "Sending..." : "Send Test Email"}
+              </Button>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>
