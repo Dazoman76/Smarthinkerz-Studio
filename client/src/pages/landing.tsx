@@ -1551,14 +1551,14 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background">
       <nav className="sticky top-0 z-50 border-b border-[#c5c8d5]" style={{ background: 'linear-gradient(to bottom, #E8E6E9 0%, #E0DFE5 25%, #D3D9E5 50%, #CFD2E1 75%, #D1D4E3 100%)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between relative">
-          <div className="flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center shrink-0">
             <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-24 w-auto" />
           </div>
-          <div className="hidden md:block absolute left-1/2 -translate-x-1/2 text-center">
-            <span className="text-[22px] font-bold text-gray-700">Transforming Structured Content into Scalable Media</span>
+          <div className="hidden md:flex flex-1 justify-center px-4">
+            <span className="text-[22px] font-bold text-gray-700 text-center">Transforming Structured Content into Scalable Media</span>
           </div>
-          <div className="hidden sm:flex items-center gap-6 text-sm">
+          <div className="hidden sm:flex items-center gap-6 text-sm shrink-0">
             <a
               href="#use-cases"
               className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
