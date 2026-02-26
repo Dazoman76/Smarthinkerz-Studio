@@ -3,8 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import logoImage from "@assets/SmartThinkerz_Studio_logo_v2_1772058282432.png";
-import logoTransparent1 from "@assets/2-SmartThinkerz_Studio_logo_transparent_1772061627347.png";
-import logoTransparent2 from "@assets/SmartThinkerz_Studio_logo_transparent_1772061627351.png";
 import {
   Zap,
   Upload,
@@ -1347,19 +1345,8 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       <nav className="sticky top-0 z-50 border-b border-blue-800/50 bg-[#0a1628]/95 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="flex flex-col items-center">
-              <img src={logoImage} alt="Current" className="h-9 w-auto" />
-              <span className="text-[9px] text-blue-300/60">Current</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <img src={logoTransparent1} alt="Option A" className="h-9 w-auto" />
-              <span className="text-[9px] text-blue-300/60">Option A</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <img src={logoTransparent2} alt="Option B" className="h-9 w-auto" />
-              <span className="text-[9px] text-blue-300/60">Option B</span>
-            </div>
+          <div className="flex items-center">
+            <img src={logoImage} alt="SmartThinkerz Studio" className="h-9 w-auto rounded-md" style={{ mixBlendMode: "lighten" }} />
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
