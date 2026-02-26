@@ -218,6 +218,188 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   );
 }
 
+function ProblemSection() {
+  return (
+    <section className="py-20 bg-muted/30">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-6">
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          Content Scales. Visual Production Does Not.
+        </h2>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Teams create structured content every day. Turning that content into visuals and videos takes time, designers, revisions, and coordination. Visual production becomes the bottleneck that slows learning, marketing, and training.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function SolutionSection() {
+  return (
+    <section className="py-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-6">
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          The AI Media Engine for Structured Content
+        </h2>
+        <p className="text-lg text-muted-foreground leading-relaxed font-medium">
+          Upload once and generate at scale.
+        </p>
+        <p className="text-muted-foreground leading-relaxed">
+          Smarthinkerz Studio automatically extracts sections, understands context, generates professional images, creates HD videos per section, maintains style consistency, and processes hundreds of sections reliably.
+        </p>
+        <p className="text-lg text-muted-foreground leading-relaxed font-medium">
+          From document to distribution in minutes.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function CompetitiveTable() {
+  const competitors = [
+    { name: "Canva", single: "Yes", bulk: "No", video: "No", style: "Partial", teams: "Partial" },
+    { name: "Runway", single: "Yes", bulk: "No", video: "Partial", style: "No", teams: "Partial" },
+    { name: "Sora", single: "Yes", bulk: "No", video: "Yes", style: "No", teams: "No" },
+    { name: "Smarthinkerz Studio", single: "No", bulk: "Yes", video: "Yes", style: "Yes", teams: "Yes", highlight: true },
+  ];
+
+  return (
+    <section className="py-20 bg-muted/30">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            Not Just Another AI Image Tool
+          </h2>
+          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+            Most tools generate one asset at a time. Smarthinkerz Studio transforms structured documents into complete media libraries.
+          </p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm" data-testid="table-competitive">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-3 px-4 font-semibold">Platform</th>
+                <th className="text-center py-3 px-4 font-semibold">Single Prompt Workflow</th>
+                <th className="text-center py-3 px-4 font-semibold">Bulk Document Processing</th>
+                <th className="text-center py-3 px-4 font-semibold">Video Per Section</th>
+                <th className="text-center py-3 px-4 font-semibold">Style Consistency</th>
+                <th className="text-center py-3 px-4 font-semibold">Built for Teams</th>
+              </tr>
+            </thead>
+            <tbody>
+              {competitors.map((c) => (
+                <tr key={c.name} className={`border-b ${c.highlight ? "bg-primary/5 font-semibold" : ""}`}>
+                  <td className="py-3 px-4">{c.name}</td>
+                  <td className="text-center py-3 px-4">{c.single}</td>
+                  <td className="text-center py-3 px-4">{c.bulk}</td>
+                  <td className="text-center py-3 px-4">{c.video}</td>
+                  <td className="text-center py-3 px-4">{c.style}</td>
+                  <td className="text-center py-3 px-4">{c.teams}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CostComparisonTable() {
+  const methods = [
+    { method: "Freelance Designer", cost: "$2,000 to $6,000", scalability: "Limited", speed: "Slow" },
+    { method: "Agency", cost: "$5,000 to $20,000", scalability: "Moderate", speed: "Slow" },
+    { method: "In house Team", cost: "$4,000 to $12,000", scalability: "Limited by headcount", speed: "Medium" },
+    { method: "Smarthinkerz Studio", cost: "$0 to $99+", scalability: "High", speed: "Fast", highlight: true },
+  ];
+
+  return (
+    <section className="py-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            Traditional Media Production vs Smarthinkerz Studio
+          </h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm" data-testid="table-cost-comparison">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-3 px-4 font-semibold">Production Method</th>
+                <th className="text-center py-3 px-4 font-semibold">Typical Monthly Cost</th>
+                <th className="text-center py-3 px-4 font-semibold">Scalability</th>
+                <th className="text-center py-3 px-4 font-semibold">Speed</th>
+              </tr>
+            </thead>
+            <tbody>
+              {methods.map((m) => (
+                <tr key={m.method} className={`border-b ${m.highlight ? "bg-primary/5 font-semibold" : ""}`}>
+                  <td className="py-3 px-4">{m.method}</td>
+                  <td className="text-center py-3 px-4">{m.cost}</td>
+                  <td className="text-center py-3 px-4">{m.scalability}</td>
+                  <td className="text-center py-3 px-4">{m.speed}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WhyUpgradeTable() {
+  const capabilities = [
+    { name: "Bulk uploads and bulk export", free: false, pro: true, business: true, premium: true, enterprise: true },
+    { name: "High volume processing", free: false, pro: true, business: true, premium: true, enterprise: true },
+    { name: "Photorealistic output", free: false, pro: false, business: true, premium: true, enterprise: true },
+    { name: "Watercolor output", free: false, pro: false, business: true, premium: true, enterprise: true },
+    { name: "3D Render and Cinematic styles", free: false, pro: false, business: false, premium: true, enterprise: true },
+    { name: "Team accounts", free: false, pro: false, business: false, premium: true, enterprise: true },
+    { name: "Analytics dashboard", free: false, pro: false, business: false, premium: true, enterprise: true },
+    { name: "API access", free: false, pro: false, business: false, premium: false, enterprise: true },
+    { name: "White label", free: false, pro: false, business: false, premium: false, enterprise: true },
+    { name: "SLA and dedicated support", free: false, pro: false, business: false, premium: false, enterprise: true },
+  ];
+
+  return (
+    <section className="py-20 bg-muted/30">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            Why Teams Upgrade
+          </h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm" data-testid="table-why-upgrade">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-3 px-4 font-semibold">Capability</th>
+                <th className="text-center py-3 px-4 font-semibold">Free</th>
+                <th className="text-center py-3 px-4 font-semibold">Pro</th>
+                <th className="text-center py-3 px-4 font-semibold">Business</th>
+                <th className="text-center py-3 px-4 font-semibold">Premium</th>
+                <th className="text-center py-3 px-4 font-semibold">Enterprise</th>
+              </tr>
+            </thead>
+            <tbody>
+              {capabilities.map((cap) => (
+                <tr key={cap.name} className="border-b">
+                  <td className="py-3 px-4">{cap.name}</td>
+                  <td className="text-center py-3 px-4">{cap.free ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
+                  <td className="text-center py-3 px-4">{cap.pro ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
+                  <td className="text-center py-3 px-4">{cap.business ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
+                  <td className="text-center py-3 px-4">{cap.premium ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
+                  <td className="text-center py-3 px-4">{cap.enterprise ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function UseCaseCard({ uc }: { uc: { icon: any; title: string; subtitle: string; description: string; examples: string[]; color: string; image: string; video?: string; dashed?: boolean } }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -1370,8 +1552,9 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       <nav className="sticky top-0 z-50 border-b border-[#c5c8d5]" style={{ background: 'linear-gradient(to bottom, #E8E6E9 0%, #E0DFE5 25%, #D3D9E5 50%, #CFD2E1 75%, #D1D4E3 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
             <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-24 w-auto" />
+            <span className="hidden md:block text-xs text-gray-500 font-medium tracking-wide">Structured Content. Scalable Media.</span>
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
@@ -1416,13 +1599,18 @@ export default function Landing() {
       </nav>
 
       <HeroSection onGetStarted={handleGetStarted} />
+      <ShowcaseSection />
+      <ProblemSection />
+      <SolutionSection />
       <UseCasesSection />
       <StylesSection />
       <HowItWorksSection />
       <FeaturesSection />
-      <ShowcaseSection />
       <CapabilitiesSection />
+      <CompetitiveTable />
+      <CostComparisonTable />
       <PricingSection onGetStarted={handleGetStarted} />
+      <WhyUpgradeTable />
       <TestimonialsSection />
       <CTASection onGetStarted={handleGetStarted} />
       <FooterSection />
