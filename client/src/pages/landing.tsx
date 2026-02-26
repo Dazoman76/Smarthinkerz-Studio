@@ -36,6 +36,7 @@ import publishingImg from "@assets/3_Authors_and_Publishers_1772019754858.jpg";
 import yourUseCaseImg from "@assets/Your_Use_Case_1772019754856.jpg";
 import autoImageGenImg from "@assets/IMG_6413_1772099055969.jpeg";
 import bulkUploadImg from "@assets/IMG_6414_1772099235676.jpeg";
+import hdVideoGenImg from "@assets/IMG_6415_1772099436218.jpeg";
 
 const sampleImages = [
   { src: "/generated/images/day_1.png", style: "Photorealistic" },
@@ -478,6 +479,7 @@ function FeaturesSection() {
       title: "HD Video Generation",
       description:
         "Automatically creates animated HD videos with Ken Burns effects, labels, and topic overlays.",
+      image: hdVideoGenImg,
     },
     {
       icon: Palette,
