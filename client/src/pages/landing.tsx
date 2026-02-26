@@ -480,6 +480,7 @@ function FeaturesSection() {
       description:
         "Automatically creates animated HD videos with Ken Burns effects, labels, and topic overlays.",
       image: hdVideoGenImg,
+      imagePosition: "bottom" as const,
     },
     {
       icon: Palette,
@@ -523,7 +524,7 @@ function FeaturesSection() {
             >
               <CardContent className="p-6 space-y-4">
                 {feature.image ? (
-                  <img src={feature.image} alt={feature.title} className="w-full h-40 object-cover rounded-xl" />
+                  <img src={feature.image} alt={feature.title} className={`w-full h-40 object-cover rounded-xl ${feature.imagePosition === "bottom" ? "object-bottom" : "object-center"}`} />
                 ) : (
                   <div className="flex items-center justify-between">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
