@@ -1343,10 +1343,10 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 border-b border-blue-800/50 bg-[#0a1628]/95 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 border-b border-blue-900/50 bg-[#0d1117]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center">
-            <img src={logoImage} alt="SmartThinkerz Studio" className="h-9 w-auto rounded-md" style={{ mixBlendMode: "lighten" }} />
+            <img src={logoImage} alt="SmartThinkerz Studio" className="h-9 w-auto" />
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
