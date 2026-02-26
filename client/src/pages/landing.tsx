@@ -1280,7 +1280,7 @@ function FooterSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
             <div className="flex items-start">
-              <video src="/generated/media/logo_video.mp4" autoPlay loop muted playsInline className="h-14 w-auto" />
+              <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-14 w-auto" />
             </div>
             <p className="text-sm text-gray-600 leading-relaxed">
               Turn lessons, posts, and campaigns into stunning media automatically. Your AI-powered creative partner.
@@ -1367,7 +1367,7 @@ export default function Landing() {
       <nav className="sticky top-0 z-50 border-b border-[#c5c8d5]" style={{ background: 'linear-gradient(to bottom, #E8E6E9 0%, #E0DFE5 25%, #D3D9E5 50%, #CFD2E1 75%, #D1D4E3 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center">
-            <video src="/generated/media/logo_video.mp4" autoPlay loop muted playsInline className="h-14 w-auto" />
+            <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-14 w-auto" />
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
