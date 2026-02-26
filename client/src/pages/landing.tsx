@@ -1275,78 +1275,78 @@ function CTASection({ onGetStarted }: { onGetStarted: () => void }) {
 
 function FooterSection() {
   return (
-    <footer className="border-t bg-card/50 py-12">
+    <footer className="border-t border-[#1a1a2e] bg-[#0a0a19] py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
             <div className="flex items-start">
               <img src={logoImage} alt="SmartThinkerz Studio" className="h-14 w-auto" />
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-sm text-gray-400 leading-relaxed">
               Turn lessons, posts, and campaigns into stunning media automatically. Your AI-powered creative partner.
             </p>
           </div>
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm">Product</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h4 className="font-semibold text-sm text-white">Product</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <a href="#use-cases" className="hover:text-foreground transition-colors" data-testid="link-use-cases">
+                <a href="#use-cases" className="hover:text-white transition-colors" data-testid="link-use-cases">
                   Use Cases
                 </a>
               </li>
               <li>
-                <a href="#pricing" className="hover:text-foreground transition-colors" data-testid="link-pricing">
+                <a href="#pricing" className="hover:text-white transition-colors" data-testid="link-pricing">
                   Pricing
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-foreground transition-colors" data-testid="link-api-docs">
+                <a href="#" className="hover:text-white transition-colors" data-testid="link-api-docs">
                   API Docs
                 </a>
               </li>
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm">Company</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h4 className="font-semibold text-sm text-white">Company</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <a href="#" className="hover:text-foreground transition-colors" data-testid="link-about">
+                <a href="#" className="hover:text-white transition-colors" data-testid="link-about">
                   About
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-foreground transition-colors" data-testid="link-contact">
+                <a href="#" className="hover:text-white transition-colors" data-testid="link-contact">
                   Contact
                 </a>
               </li>
               <li>
-                <a href="/blog" className="hover:text-foreground transition-colors" data-testid="link-blog">
+                <a href="/blog" className="hover:text-white transition-colors" data-testid="link-blog">
                   Blog
                 </a>
               </li>
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm">Legal</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h4 className="font-semibold text-sm text-white">Legal</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <a href="#" className="hover:text-foreground transition-colors" data-testid="link-privacy">
+                <a href="#" className="hover:text-white transition-colors" data-testid="link-privacy">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-foreground transition-colors" data-testid="link-terms">
+                <a href="#" className="hover:text-white transition-colors" data-testid="link-terms">
                   Terms of Service
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
+        <div className="border-t border-[#1a1a2e] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-400">
             Smart thinking, stunning media.
           </p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-gray-500">
             &copy; {new Date().getFullYear()} Smarthinkerz Studio. All rights reserved.
           </p>
         </div>
@@ -1364,7 +1364,7 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 border-b border-blue-900/50 bg-[#0d1117]">
+      <nav className="sticky top-0 z-50 border-b border-[#1a1a2e] bg-[#0a0a19]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center">
             <img src={logoImage} alt="SmartThinkerz Studio" className="h-14 w-auto" />
@@ -1372,28 +1372,28 @@ export default function Landing() {
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
               href="#use-cases"
-              className="text-blue-200/80 hover:text-white transition-colors"
+              className="text-gray-300 hover:text-white transition-colors"
               data-testid="nav-link-use-cases"
             >
               Use Cases
             </a>
             <a
               href="#pricing"
-              className="text-blue-200/80 hover:text-white transition-colors"
+              className="text-gray-300 hover:text-white transition-colors"
               data-testid="nav-link-pricing"
             >
               Pricing
             </a>
             <a
               href="/blog"
-              className="text-blue-200/80 hover:text-white transition-colors"
+              className="text-gray-300 hover:text-white transition-colors"
               data-testid="nav-link-blog"
             >
               Blog
             </a>
             <Button
               size="sm"
-              className="bg-cyan-500 hover:bg-cyan-400 text-white font-semibold"
+              className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold"
               onClick={handleGetStarted}
               data-testid="nav-button-get-started"
             >
@@ -1402,7 +1402,7 @@ export default function Landing() {
           </div>
           <Button
             size="sm"
-            className="sm:hidden bg-cyan-500 hover:bg-cyan-400 text-white font-semibold"
+            className="sm:hidden bg-indigo-600 hover:bg-indigo-500 text-white font-semibold"
             onClick={handleGetStarted}
             data-testid="nav-button-get-started-mobile"
           >
