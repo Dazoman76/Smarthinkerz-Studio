@@ -37,6 +37,9 @@ import yourUseCaseImg from "@assets/Your_Use_Case_1772019754856.jpg";
 import autoImageGenImg from "@assets/IMG_6413_1772099055969.jpeg";
 import bulkUploadImg from "@assets/IMG_6414_1772099235676.jpeg";
 import hdVideoGenImg from "@assets/IMG_6415_1772099436218.jpeg";
+import brandingImg from "@assets/brand_ea55fa52-81e5-4578-bdbe-9dc2de1da18f_1772106356531.jpg";
+import dashboardImg from "@assets/Dashboard_b02c1996-6b6a-4580-bd3e-95a54e79f941_1772106541282.jpg";
+import integrationImg from "@assets/Integration-Ready_1772106673102.jpg";
 
 const sampleImages = [
   { src: "/generated/images/day_1.png", style: "Photorealistic" },
@@ -480,13 +483,14 @@ function FeaturesSection() {
       description:
         "Automatically creates animated HD videos with Ken Burns effects, labels, and topic overlays.",
       image: hdVideoGenImg,
-      imagePosition: "bottom" as const,
+      imagePosition: "center" as const,
     },
     {
       icon: Palette,
       title: "Branding Options",
       description:
         "Add your logo, custom overlays, and color palettes to match your brand identity.",
+      image: brandingImg,
     },
     {
       icon: PlugZap,
@@ -494,6 +498,7 @@ function FeaturesSection() {
       description:
         "Export media for your LMS, social platforms, APIs, and team workflows. Built for automation.",
       badge: "Coming Soon",
+      image: integrationImg,
     },
     {
       icon: BarChart3,
@@ -501,6 +506,7 @@ function FeaturesSection() {
       description:
         "Track engagement, monitor generation progress, and measure the impact of your visual content.",
       badge: "Coming Soon",
+      image: dashboardImg,
     },
   ];
 
@@ -650,7 +656,7 @@ function CapabilitiesSection() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            {sampleImages.slice(0, 4).map((img, i) => (
+            {sampleImages.slice(4, 8).map((img, i) => (
               <div
                 key={i}
                 className="relative aspect-video rounded-lg overflow-hidden border shadow-md"
@@ -1362,7 +1368,7 @@ export default function Landing() {
       <nav className="sticky top-0 z-50 border-b border-blue-900/50 bg-[#0d1117]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center">
-            <img src={logoImage} alt="SmartThinkerz Studio" className="h-9 w-auto" />
+            <img src={logoImage} alt="SmartThinkerz Studio" className="h-14 w-auto" />
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm">
             <a
