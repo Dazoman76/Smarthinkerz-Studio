@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
-import logoImage from "@assets/SmartThinkerz_Studio_logo_v2_1772058282432.png";
+import logoImage from "@assets/smarthinkerzstudio__1772109413138.gif";
 import {
   Zap,
   Upload,
