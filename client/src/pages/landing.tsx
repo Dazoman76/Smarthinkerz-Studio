@@ -1279,9 +1279,8 @@ function FooterSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
-            <div className="flex flex-col items-start">
-              <img src={logoImage} alt="SmartThinkerz" className="h-7 w-auto rounded" />
-              <span className="text-[10px] text-muted-foreground tracking-[0.25em] uppercase ml-0.5 -mt-0.5">Studio</span>
+            <div className="flex items-start">
+              <img src={logoImage} alt="SmartThinkerz Studio" className="h-14 w-auto" />
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Turn lessons, posts, and campaigns into stunning media automatically. Your AI-powered creative partner.
