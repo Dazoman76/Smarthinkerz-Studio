@@ -1364,7 +1364,7 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 border-b border-[#7782a0] bg-gradient-to-r from-[#a4aec3] via-[#d6d9e4] to-[#7782a0]">
+      <nav className="sticky top-0 z-50 border-b border-[#c0c4d0] bg-[#D4D8E4]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center">
             <img src={logoImage} alt="SmartThinkerz Studio" className="h-14 w-auto" />
