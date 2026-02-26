@@ -487,7 +487,6 @@ function FeaturesSection() {
       title: "Branding Options",
       description:
         "Add your logo, custom overlays, and color palettes to match your brand identity.",
-      badge: "Coming Soon",
     },
     {
       icon: PlugZap,

@@ -492,6 +492,42 @@ export default function Dashboard() {
                   </div>
                 </div>
 
+                <Card className="border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-950/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-300" data-testid="text-remaining-title">Remaining Work</h3>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div data-testid="text-remaining-images">
+                        <p className="text-2xl font-bold text-blue-700 dark:text-blue-400">{stats?.imagesPending ?? 0}</p>
+                        <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Images remaining</p>
+                      </div>
+                      <div data-testid="text-remaining-videos">
+                        <p className="text-2xl font-bold text-blue-700 dark:text-blue-400">{stats?.videosPending ?? 0}</p>
+                        <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Videos remaining</p>
+                      </div>
+                      <div data-testid="text-remaining-total">
+                        <p className="text-2xl font-bold text-blue-700 dark:text-blue-400">{(stats?.imagesPending ?? 0) + (stats?.videosPending ?? 0)}</p>
+                        <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Total remaining</p>
+                      </div>
+                      <div data-testid="text-estimated-time">
+                        <p className="text-2xl font-bold text-blue-700 dark:text-blue-400">
+                          {(() => {
+                            const remaining = (stats?.imagesPending ?? 0) + (stats?.videosPending ?? 0);
+                            const mins = Math.ceil(remaining * 0.25);
+                            if (mins < 60) return `~${mins}m`;
+                            const hrs = Math.floor(mins / 60);
+                            const rm = mins % 60;
+                            return `~${hrs}h ${rm}m`;
+                          })()}
+                        </p>
+                        <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Est. time left</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <StatCard
                     title="Images Done"

@@ -110,6 +110,26 @@ export const siteSettings = pgTable("site_settings", {
   updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
+export const brandingSettings = pgTable("branding_settings", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  logoPath: text("logo_path"),
+  logoPosition: text("logo_position").default("bottom-right"),
+  logoOpacity: integer("logo_opacity").default(80),
+  primaryColor: text("primary_color").default("#0ea5e9"),
+  secondaryColor: text("secondary_color").default("#1e293b"),
+  textColor: text("text_color").default("#ffffff"),
+  fontFamily: text("font_family").default("Inter"),
+  overlayEnabled: boolean("overlay_enabled").default(false),
+  overlayColor: text("overlay_color").default("#000000"),
+  overlayOpacity: integer("overlay_opacity").default(30),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
+export const insertBrandingSettingsSchema = createInsertSchema(brandingSettings).omit({ id: true, updatedAt: true });
+export type BrandingSettings = typeof brandingSettings.$inferSelect;
+export type InsertBrandingSettings = z.infer<typeof insertBrandingSettingsSchema>;
+
 export const insertLessonDaySchema = createInsertSchema(lessonDays);
 export const insertGenerationJobSchema = createInsertSchema(generationJobs).omit({ id: true });
 export const insertUploadedDocumentSchema = createInsertSchema(uploadedDocuments).omit({ id: true, uploadedAt: true });

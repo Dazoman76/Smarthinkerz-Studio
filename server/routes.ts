@@ -680,5 +680,61 @@ export async function registerRoutes(
     }
   });
 
+  // Branding Settings
+  app.get("/api/branding", requireAuth, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const settings = await storage.getBrandingSettings(userId);
+      res.json(settings || {
+        logoPath: null,
+        logoPosition: "bottom-right",
+        logoOpacity: 80,
+        primaryColor: "#0ea5e9",
+        secondaryColor: "#1e293b",
+        textColor: "#ffffff",
+        fontFamily: "Inter",
+        overlayEnabled: false,
+        overlayColor: "#000000",
+        overlayOpacity: 30,
+      });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.patch("/api/branding", requireAuth, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const data = { ...req.body, userId };
+      const settings = await storage.saveBrandingSettings(data);
+      res.json(settings);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.post("/api/branding/logo", requireAuth, mediaUpload.single("logo"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      const brandingDir = path.join(process.cwd(), "generated", "branding");
+      if (!fs.existsSync(brandingDir)) fs.mkdirSync(brandingDir, { recursive: true });
+
+      const userId = (req.user as any)?.id;
+      const ext = path.extname(req.file.originalname) || ".png";
+      const filename = `logo_${userId}_${Date.now()}${ext}`;
+      const destPath = path.join(brandingDir, filename);
+      fs.copyFileSync(req.file.path, destPath);
+      fs.unlinkSync(req.file.path);
+
+      const logoPath = `/generated/branding/${filename}`;
+      await storage.saveBrandingSettings({ userId, logoPath });
+      res.json({ logoPath });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   return httpServer;
 }

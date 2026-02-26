@@ -47,7 +47,7 @@ A full-stack web application that serves as an AI-powered media generation agent
 16. **Email Notifications**: Resend-powered email alerts when media generation completes; configurable per-user via Profile page with test email support
 
 ## File Structure
-- `shared/schema.ts` - Database schema (lesson_days, generation_jobs, uploaded_documents, users, blog_posts, site_settings)
+- `shared/schema.ts` - Database schema (lesson_days, generation_jobs, uploaded_documents, users, blog_posts, site_settings, branding_settings)
 - `server/routes.ts` - API endpoints including upload, generation, downloads, admin, blog, auth
 - `server/storage.ts` - Database storage layer with CRUD for all tables
 - `server/auth.ts` - Authentication setup (passport, sessions, middleware, default admin seeding)
@@ -69,6 +69,7 @@ A full-stack web application that serves as an AI-powered media generation agent
 - `client/src/pages/admin/users.tsx` - User management
 - `client/src/pages/admin/team.tsx` - Team management
 - `client/src/pages/admin/settings.tsx` - Site settings editor
+- `client/src/pages/admin/branding.tsx` - Branding options (logo, colors, overlay, fonts)
 - `client/src/components/file-upload.tsx` - File upload with drag & drop
 - `client/src/components/media-viewer.tsx` - Image/video viewer dialog with download buttons
 - `generated/` - Output directory for generated images, videos, and blog images
@@ -80,6 +81,7 @@ A full-stack web application that serves as an AI-powered media generation agent
 - `users` - User accounts with roles (viewer/writer/editor/administrator) and status (active/blocked)
 - `blog_posts` - Blog posts with title, slug, content, excerpt, cover image, status (draft/published)
 - `site_settings` - Key-value pairs for editable front page content
+- `branding_settings` - Logo, colors, overlay, font preferences per user
 
 ## Auth System
 - Default admin: username=admin, password=admin123 (created on startup if not exists)

@@ -11,6 +11,7 @@ import {
   LogOut,
   ChevronLeft,
   UserCircle,
+  Palette,
 } from "lucide-react";
 
 const navItems = [
@@ -18,6 +19,7 @@ const navItems = [
   { path: "/admin/blog", label: "Blog", icon: FileText },
   { path: "/admin/clients", label: "Clients", icon: Users },
   { path: "/admin/team", label: "Team", icon: UserCog },
+  { path: "/admin/branding", label: "Branding", icon: Palette },
   { path: "/admin/settings", label: "Settings", icon: Settings },
 ];
 

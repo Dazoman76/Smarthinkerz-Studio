@@ -1,7 +1,8 @@
 import {
-  lessonDays, generationJobs, uploadedDocuments, users, blogPosts, siteSettings,
+  lessonDays, generationJobs, uploadedDocuments, users, blogPosts, siteSettings, brandingSettings,
   type LessonDay, type InsertLessonDay, type GenerationJob, type UploadedDocument,
-  type User, type InsertUser, type BlogPost, type InsertBlogPost, type SiteSetting
+  type User, type InsertUser, type BlogPost, type InsertBlogPost, type SiteSetting,
+  type BrandingSettings, type InsertBrandingSettings
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, count, sql, desc, and } from "drizzle-orm";
@@ -53,6 +54,10 @@ export interface IStorage {
   getSetting(key: string): Promise<string | undefined>;
   getAllSettings(): Promise<SiteSetting[]>;
   upsertSetting(key: string, value: string): Promise<void>;
+
+  // Branding
+  getBrandingSettings(userId?: number): Promise<BrandingSettings | undefined>;
+  saveBrandingSettings(data: InsertBrandingSettings): Promise<BrandingSettings>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -252,6 +257,28 @@ export class DatabaseStorage implements IStorage {
         target: siteSettings.key,
         set: { value, updatedAt: new Date() },
       });
+  }
+
+  async getBrandingSettings(userId?: number): Promise<BrandingSettings | undefined> {
+    if (userId) {
+      const [result] = await db.select().from(brandingSettings).where(eq(brandingSettings.userId, userId));
+      return result;
+    }
+    const [result] = await db.select().from(brandingSettings).limit(1);
+    return result;
+  }
+
+  async saveBrandingSettings(data: InsertBrandingSettings): Promise<BrandingSettings> {
+    const existing = data.userId ? await this.getBrandingSettings(data.userId) : await this.getBrandingSettings();
+    if (existing) {
+      const [updated] = await db.update(brandingSettings)
+        .set({ ...data, updatedAt: new Date() })
+        .where(eq(brandingSettings.id, existing.id))
+        .returning();
+      return updated;
+    }
+    const [created] = await db.insert(brandingSettings).values({ ...data, updatedAt: new Date() }).returning();
+    return created;
   }
 }
 
