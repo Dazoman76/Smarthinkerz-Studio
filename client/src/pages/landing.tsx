@@ -34,6 +34,7 @@ import businessesImg from "@assets/Training_and_onboarding_1772019754860.jpg";
 import marketersImg from "@assets/Marketers_Campaigns_and_Ads_1772019754859.jpg";
 import publishingImg from "@assets/3_Authors_and_Publishers_1772019754858.jpg";
 import yourUseCaseImg from "@assets/Your_Use_Case_1772019754856.jpg";
+import autoImageGenImg from "@assets/IMG_6413_1772099055969.jpeg";
 
 const sampleImages = [
   { src: "/generated/images/day_1.png", style: "Photorealistic" },
@@ -468,6 +469,7 @@ function FeaturesSection() {
       title: "Automatic Image Generation",
       description:
         "AI generates unique, professional-quality 1536x1024 images for every section of your content.",
+      image: autoImageGenImg,
     },
     {
       icon: Video,
@@ -516,16 +518,26 @@ function FeaturesSection() {
               className="hover-elevate transition-all duration-200"
             >
               <CardContent className="p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <feature.icon className="w-6 h-6 text-primary" />
+                {feature.image ? (
+                  <img src={feature.image} alt={feature.title} className="w-full h-40 object-cover rounded-xl" />
+                ) : (
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <feature.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    {feature.badge && (
+                      <Badge variant="secondary" className="text-xs">
+                        {feature.badge}
+                      </Badge>
+                    )}
                   </div>
-                  {feature.badge && (
-                    <Badge variant="secondary" className="text-xs">
-                      {feature.badge}
-                    </Badge>
-                  )}
-                </div>
+                )}
+                {!feature.image && feature.badge && null}
+                {feature.image && feature.badge && (
+                  <Badge variant="secondary" className="text-xs">
+                    {feature.badge}
+                  </Badge>
+                )}
                 <h3 className="text-lg font-semibold">{feature.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {feature.description}
