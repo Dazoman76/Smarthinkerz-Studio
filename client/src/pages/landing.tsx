@@ -75,14 +75,19 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
           <div className="space-y-8">
             <Badge variant="secondary" className="px-4 py-1.5 text-sm">
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-              AI-Powered Media Studio
+              Structured Content. Scalable Media.
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
-              <span className="text-primary">Smarthinkerz</span> Studio
+              Turn Structured Content Into Production Ready Media Instantly
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed">
-              Turn any content into stunning visuals. Upload your content once and let AI transform it into professional images and videos across multiple styles. Save time, scale your creativity, and engage your audience like never before.
+              Upload lesson plans, training manuals, marketing briefs, or manuscripts. Smarthinkerz Studio transforms every section into high resolution visuals and HD video at scale.
             </p>
+            <div className="space-y-1 text-sm text-muted-foreground">
+              <p>No design team required.</p>
+              <p>No manual prompts required.</p>
+              <p>No production bottlenecks.</p>
+            </div>
             <div
               className="rounded-xl overflow-hidden border shadow-lg max-w-lg cursor-pointer"
               onMouseEnter={() => {
@@ -140,7 +145,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                7 visual styles
+                Seven visual styles
               </div>
             </div>
           </div>
@@ -287,8 +292,8 @@ function UseCasesSection() {
     {
       icon: GraduationCap,
       title: "Education",
-      subtitle: "Lessons & Courses",
-      description: "Upload lesson plans and curricula. AI generates images and videos for every lesson day — perfect for LMS, slides, and classroom materials.",
+      subtitle: "Lessons and Courses",
+      description: "Upload lesson plans and curricula. Generate images and videos for every lesson day for LMS, slides, and classroom materials.",
       examples: ["Lesson visuals", "Course thumbnails", "Study guides"],
       color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
       image: educationImg,
@@ -297,8 +302,8 @@ function UseCasesSection() {
     {
       icon: PenTool,
       title: "Content Creators",
-      subtitle: "Social & Explainers",
-      description: "Create social media posts, explainer video frames, and infographics from your content briefs or scripts.",
+      subtitle: "Social and Explainers",
+      description: "Create social media posts, explainer frames, and infographics from briefs or scripts.",
       examples: ["Social media posts", "Explainer videos", "Infographics"],
       color: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
       image: contentCreatorImg,
@@ -306,8 +311,8 @@ function UseCasesSection() {
     {
       icon: Briefcase,
       title: "Businesses",
-      subtitle: "Training & Onboarding",
-      description: "Turn training manuals, onboarding guides, and product tutorials into professional visual content at scale.",
+      subtitle: "Training and Onboarding",
+      description: "Turn manuals, onboarding guides, and tutorials into visual content at scale.",
       examples: ["Training modules", "Onboarding guides", "Product tutorials"],
       color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
       image: businessesImg,
@@ -316,8 +321,8 @@ function UseCasesSection() {
     {
       icon: Megaphone,
       title: "Marketers",
-      subtitle: "Campaigns & Ads",
-      description: "Generate campaign visuals, ad creatives, and branded video snippets from marketing briefs and copy.",
+      subtitle: "Campaigns and Ads",
+      description: "Generate campaign visuals, ad creatives, and branded snippets from marketing copy.",
       examples: ["Ad creatives", "Campaign visuals", "Branded snippets"],
       color: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
       image: marketersImg,
@@ -326,8 +331,8 @@ function UseCasesSection() {
     {
       icon: BookOpen,
       title: "Authors & Publishers",
-      subtitle: "Books & Guides",
-      description: "Create illustrated chapters, visual summaries, and study guides from your manuscripts and outlines.",
+      subtitle: "Books and Guides",
+      description: "Create chapter illustrations, visual summaries, and study guides from manuscripts and outlines.",
       examples: ["Chapter illustrations", "Visual summaries", "Study guides"],
       color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
       image: publishingImg,
@@ -336,7 +341,7 @@ function UseCasesSection() {
       icon: Sparkles,
       title: "Your Use Case",
       subtitle: "Flexible Workflows",
-      description: "Any structured document can become visual content. Flexible workflows adapt to any content type you throw at it.",
+      description: "Turn any structured document into visual content with workflows that adapt to your content type.",
       examples: ["Custom content", "Any document", "Any format"],
       color: "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400",
       image: yourUseCaseImg,
@@ -350,10 +355,10 @@ function UseCasesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Built for Every Industry
+            Built for High Output Teams
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Smarthinkerz Studio is built for anyone who needs high-impact visuals at scale.
+            Smarthinkerz Studio is built for anyone who needs professional visuals at scale.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -368,13 +373,13 @@ function UseCasesSection() {
 
 function StylesSection() {
   const styles = [
-    { name: "Photorealistic", description: "Ultra-realistic photography with natural lighting", color: "bg-sky-100 dark:bg-sky-900/30" },
+    { name: "Photorealistic", description: "Ultra realistic photography with natural lighting", color: "bg-sky-100 dark:bg-sky-900/30" },
     { name: "Illustration", description: "Professional digital artwork with clean lines", color: "bg-indigo-100 dark:bg-indigo-900/30" },
-    { name: "Cartoon", description: "Fun, colorful with bold outlines", color: "bg-orange-100 dark:bg-orange-900/30" },
+    { name: "Cartoon", description: "Fun and colorful visuals with bold outlines", color: "bg-orange-100 dark:bg-orange-900/30" },
     { name: "3D Render", description: "Polished 3D visualization with studio lighting", color: "bg-cyan-100 dark:bg-cyan-900/30" },
-    { name: "Watercolor", description: "Artistic with soft brushstrokes", color: "bg-pink-100 dark:bg-pink-900/30" },
-    { name: "Minimalist", description: "Clean design, simple shapes, white space", color: "bg-slate-100 dark:bg-slate-900/30" },
-    { name: "Cinematic", description: "Dramatic film-quality composition", color: "bg-amber-100 dark:bg-amber-900/30" },
+    { name: "Watercolor", description: "Artistic visuals with soft brushstrokes", color: "bg-pink-100 dark:bg-pink-900/30" },
+    { name: "Minimalist", description: "Clean design with simple shapes and white space", color: "bg-slate-100 dark:bg-slate-900/30" },
+    { name: "Cinematic", description: "Dramatic film quality composition", color: "bg-amber-100 dark:bg-amber-900/30" },
   ];
 
   return (
@@ -385,7 +390,7 @@ function StylesSection() {
             <Palette className="w-6 h-6 text-primary" />
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            7 Visual Styles
+            Seven Production Optimized Visual Styles
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
             Choose the perfect look for your content. Every style is optimized for professional results.
@@ -408,23 +413,23 @@ function HowItWorksSection() {
   const steps = [
     {
       step: "1",
-      title: "Upload Your Content",
+      title: "Upload structured content",
       description:
-        "Upload any document — lesson plans, training manuals, marketing briefs, manuscripts. Supports PDF, DOCX, TXT, CSV, and Markdown.",
+        "Upload single or bulk documents in PDF, DOCX, TXT, CSV, and Markdown format.",
       icon: Upload,
     },
     {
       step: "2",
-      title: "AI Extracts & Generates",
+      title: "AI analyzes and generates",
       description:
-        "Our AI analyzes your document, extracts each section, and generates unique images and videos in your chosen style.",
+        "Our engine extracts sections, understands context, and generates high resolution images and HD videos automatically.",
       icon: Sparkles,
     },
     {
       step: "3",
-      title: "Download & Use",
+      title: "Download and deploy",
       description:
-        "Download individually or bulk export as a zip. Use in your LMS, social media, presentations, or marketing campaigns.",
+        "Bulk export your media and deploy instantly into LMS platforms, social channels, presentations, or internal systems.",
       icon: Download,
     },
   ];
@@ -434,10 +439,10 @@ function HowItWorksSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            How It Works
+            Three Simple Steps
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Three simple steps from document to media. No design skills needed.
+            Ready to download in minutes instead of weeks.
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
@@ -467,21 +472,21 @@ function FeaturesSection() {
       icon: Upload,
       title: "Bulk Content Uploads",
       description:
-        "Upload documents with hundreds of sections at once. Supports PDF, DOCX, TXT, CSV, and Markdown.",
+        "Upload documents with hundreds of sections in one workflow.",
       image: bulkUploadImg,
     },
     {
       icon: Image,
       title: "Automatic Image Generation",
       description:
-        "AI generates unique, professional-quality 1536x1024 images for every section of your content.",
+        "Generate unique 1536 by 1024 images for every section.",
       image: autoImageGenImg,
     },
     {
       icon: Video,
       title: "HD Video Generation",
       description:
-        "Automatically creates animated HD videos with Ken Burns effects, labels, and topic overlays.",
+        "Create animated HD videos with motion effects and topic overlays.",
       image: hdVideoGenImg,
       imagePosition: "center" as const,
     },
@@ -489,14 +494,14 @@ function FeaturesSection() {
       icon: Palette,
       title: "Branding Options",
       description:
-        "Add your logo, custom overlays, and color palettes to match your brand identity.",
+        "Add your logo, overlays, and palettes to match your brand.",
       image: brandingImg,
     },
     {
       icon: PlugZap,
-      title: "Integration-Ready",
+      title: "Integration Ready",
       description:
-        "Export media for your LMS, social platforms, APIs, and team workflows. Built for automation.",
+        "Export media for LMS platforms, social workflows, APIs, and automation pipelines.",
       badge: "Coming Soon",
       image: integrationImg,
     },
@@ -504,7 +509,7 @@ function FeaturesSection() {
       icon: BarChart3,
       title: "Analytics Dashboard",
       description:
-        "Track engagement, monitor generation progress, and measure the impact of your visual content.",
+        "Track engagement, monitor generation progress, and measure media impact.",
       badge: "Coming Soon",
       image: dashboardImg,
     },
@@ -515,10 +520,10 @@ function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Powerful Capabilities
+            Everything You Need to Turn Content Into Professional Media
           </h2>
           <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
-            Everything you need to turn any content into professional media at scale.
+            Everything you need to turn content into professional media at scale.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -597,7 +602,7 @@ function ShowcaseSection() {
         </div>
         <div className="text-center mt-8">
           <p className="text-sm text-muted-foreground">
-            Generated using gpt-image-1 at 1536x1024 resolution
+            Generated using gpt image 1 at 1536 by 1024 resolution
           </p>
         </div>
       </div>
@@ -612,17 +617,16 @@ function CapabilitiesSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              Built for Scale
+              Reliable Output at High Volume
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Whether you have 10 sections or 600+, our engine handles it all with
-              smart chunking, retry logic, and rate limit management.
+              Whether you have 10 sections or 600 plus, the system handles smart chunking, retries, and rate management so your production stays stable.
             </p>
             <div className="space-y-4">
               {[
                 {
                   icon: Layers,
-                  text: "Handles hundreds of content sections at once",
+                  text: "Handles hundreds of sections at once",
                 },
                 {
                   icon: Zap,
@@ -630,11 +634,11 @@ function CapabilitiesSection() {
                 },
                 {
                   icon: DollarSign,
-                  text: "Cost-efficient — as low as $0.04 per image",
+                  text: "Cost efficient generation",
                 },
                 {
                   icon: Video,
-                  text: "Local video generation — no extra API cost",
+                  text: "Local video generation with no extra API cost",
                 },
                 {
                   icon: Play,
@@ -642,7 +646,7 @@ function CapabilitiesSection() {
                 },
                 {
                   icon: Palette,
-                  text: "7 distinct visual styles to match your brand",
+                  text: "Seven distinct visual styles to match your brand",
                 },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-3">
@@ -722,7 +726,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         name: "Pro",
         price: "$19",
         period: "/month",
-        description: "For mid-tier creators",
+        description: "For creators scaling output",
         features: [
           "200 images + 50 videos/month",
           "Illustration, Cartoon & Minimalist",
@@ -738,7 +742,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         name: "Business",
         price: "$49",
         period: "/month",
-        description: "Professional content creators",
+        description: "For production teams",
         features: [
           "500 images + 100 videos/month",
           "Unlock Photorealistic & Watercolor",
@@ -754,7 +758,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         name: "Premium",
         price: "$99",
         period: "/month",
-        description: "Schools & training companies",
+        description: "For schools and training companies",
         features: [
           "1,000 images + 200 videos/month",
           "All 7 styles unlocked",
@@ -770,7 +774,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         name: "Enterprise",
         price: "Custom",
         period: "pricing",
-        description: "Large institutions",
+        description: "For large institutions",
         features: [
           "Unlimited images & videos",
           "All styles unlocked",
@@ -1254,10 +1258,10 @@ function CTASection({ onGetStarted }: { onGetStarted: () => void }) {
     <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-6">
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-          Your AI-Powered Media Studio
+          Your AI Powered Media Studio
         </h2>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Start creating today and bring your ideas to life with stunning visuals. Smart thinking, stunning media.
+          Start creating today and bring your ideas to life with stunning visuals and videos.
         </p>
         <Button
           size="lg"
@@ -1283,7 +1287,7 @@ function FooterSection() {
               <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-24 w-auto" />
             </div>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Turn lessons, posts, and campaigns into stunning media automatically. Your AI-powered creative partner.
+              Turn lessons, posts, and campaigns into stunning media automatically. Your AI powered creative partner.
             </p>
           </div>
           <div className="space-y-3">
