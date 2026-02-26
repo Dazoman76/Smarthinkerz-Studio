@@ -35,6 +35,7 @@ import marketersImg from "@assets/Marketers_Campaigns_and_Ads_1772019754859.jpg"
 import publishingImg from "@assets/3_Authors_and_Publishers_1772019754858.jpg";
 import yourUseCaseImg from "@assets/Your_Use_Case_1772019754856.jpg";
 import autoImageGenImg from "@assets/IMG_6413_1772099055969.jpeg";
+import bulkUploadImg from "@assets/IMG_6414_1772099235676.jpeg";
 
 const sampleImages = [
   { src: "/generated/images/day_1.png", style: "Photorealistic" },
@@ -463,6 +464,7 @@ function FeaturesSection() {
       title: "Bulk Content Uploads",
       description:
         "Upload documents with hundreds of sections at once. Supports PDF, DOCX, TXT, CSV, and Markdown.",
+      image: bulkUploadImg,
     },
     {
       icon: Image,
