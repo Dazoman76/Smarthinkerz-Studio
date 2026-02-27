@@ -53,6 +53,7 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-react";
+import type React from "react";
 import { useState, useEffect, useRef, useCallback, createContext, useContext } from "react";
 
 const HoverPreviewContext = createContext<{ enabled: boolean; toggle: () => void }>({ enabled: true, toggle: () => {} });
@@ -2492,7 +2493,9 @@ export default function Landing() {
   };
 
   return (
+    <HoverPreviewProvider>
     <div className="min-h-screen" style={{ backgroundColor: "#FFFFFF" }}>
+      <WelcomeModal />
       <nav
         className="sticky top-0 z-50"
         style={{
@@ -2594,5 +2597,6 @@ export default function Landing() {
       <CTASection onGetStarted={handleGetStarted} />
       <FooterSection />
     </div>
+    </HoverPreviewProvider>
   );
 }
