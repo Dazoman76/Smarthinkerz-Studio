@@ -56,6 +56,14 @@ const sampleImages = [
   { src: "/generated/images/day_12.png", style: "Illustrated" },
 ];
 
+const accentColors = {
+  education: "#2563EB",
+  creators: "#7C3AED",
+  business: "#F59E0B",
+  marketers: "#F43F5E",
+  authors: "#10B981",
+};
+
 function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   const [currentImage, setCurrentImage] = useState(0);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
@@ -68,28 +76,74 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-primary/10 min-h-[90vh] flex items-center">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 relative z-10">
+    <section
+      className="relative overflow-hidden min-h-[90vh] flex items-center"
+      style={{
+        background: "linear-gradient(135deg, #1E3A8A 0%, #2563EB 45%, #1E293B 100%)",
+      }}
+    >
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(circle at 50% 30%, rgba(34,211,238,0.15) 0%, rgba(34,211,238,0) 60%)",
+        }}
+      />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.15]">
+        {Array.from({ length: 30 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: Math.random() * 3 + 1 + "px",
+              height: Math.random() * 3 + 1 + "px",
+              top: Math.random() * 100 + "%",
+              left: Math.random() * 100 + "%",
+              filter: "blur(1px)",
+            }}
+          />
+        ))}
+      </div>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-[120px] pb-[140px] relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <Badge variant="secondary" className="px-4 py-1.5 text-sm">
+            <Badge
+              className="px-4 py-1.5 text-sm border-0"
+              style={{ backgroundColor: "#1E293B", color: "#22D3EE" }}
+              data-testid="badge-hero"
+            >
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
               Structured Content. Scalable Media.
             </Badge>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+            <h1
+              className="text-[32px] sm:text-[42px] lg:text-[56px] font-bold text-white"
+              style={{ lineHeight: 1.1 }}
+              data-testid="heading-hero"
+            >
               Turn Structured Content Into Production Ready Media Instantly
             </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed">
+            <p
+              className="text-[20px] font-light max-w-[720px]"
+              style={{ color: "#E2E8F0", lineHeight: 1.6 }}
+            >
               Upload lesson plans, training manuals, marketing briefs, or manuscripts. Smarthinkerz Studio transforms every section into high resolution visuals and HD video at scale.
             </p>
-            <div className="space-y-1 text-sm text-muted-foreground">
-              <p>No design team required.</p>
-              <p>No manual prompts required.</p>
-              <p>No production bottlenecks.</p>
+            <div className="space-y-1 text-[18px]" style={{ color: "#F1F5F9" }}>
+              <p className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" style={{ color: "#10B981" }} />
+                No design team required.
+              </p>
+              <p className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" style={{ color: "#10B981" }} />
+                No manual prompts required.
+              </p>
+              <p className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" style={{ color: "#10B981" }} />
+                No production bottlenecks.
+              </p>
             </div>
             <div
-              className="rounded-xl overflow-hidden border shadow-lg max-w-lg cursor-pointer"
+              className="rounded-xl overflow-hidden max-w-lg cursor-pointer"
+              style={{ boxShadow: "0 12px 30px rgba(0,0,0,0.3)" }}
               onMouseEnter={() => {
                 if (heroVideoRef.current) {
                   heroVideoRef.current.currentTime = 0;
@@ -114,53 +168,66 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                 data-testid="video-hero-showcase"
               />
             </div>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-5">
               <Button
                 size="lg"
-                className="text-base px-8 py-6"
+                className="text-base px-7 py-4 font-semibold tracking-[0.4px] border-0"
+                style={{
+                  backgroundColor: "#22D3EE",
+                  color: "#0F172A",
+                  borderRadius: "12px",
+                  boxShadow: "0 12px 30px rgba(34,211,238,0.35)",
+                }}
                 onClick={onGetStarted}
                 data-testid="button-start-free-trial"
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#06B6D4"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#22D3EE"; }}
               >
                 Start Free Trial
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                className="text-base px-8 py-6"
+                className="text-base px-7 py-4 font-semibold tracking-[0.4px] bg-transparent text-white hover:text-[#0F172A]"
+                style={{
+                  border: "2px solid #22D3EE",
+                  borderRadius: "12px",
+                }}
                 onClick={() =>
                   document
                     .getElementById("pricing")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
                 data-testid="button-view-pricing"
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#22D3EE"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
               >
                 View Pricing
               </Button>
             </div>
-            <div className="flex items-center gap-6 text-sm text-muted-foreground pt-2">
+            <div className="flex items-center gap-6 text-[14px] pt-2" style={{ color: "#94A3B8" }}>
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <CheckCircle2 className="w-4 h-4" style={{ color: "#10B981" }} />
                 No credit card required
               </div>
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <CheckCircle2 className="w-4 h-4" style={{ color: "#10B981" }} />
                 Seven visual styles
               </div>
             </div>
           </div>
 
           <div className="relative">
-            <div className="relative rounded-xl overflow-hidden shadow-2xl border bg-card">
-              <div className="flex items-center gap-2 px-4 py-3 border-b bg-muted/50">
+            <div className="relative rounded-[16px] overflow-hidden" style={{ boxShadow: "0 20px 50px rgba(0,0,0,0.12)", border: "1px solid #E2E8F0" }}>
+              <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ backgroundColor: "rgba(30,41,59,0.8)", borderColor: "#1F2937" }}>
                 <div className="w-3 h-3 rounded-full bg-red-400" />
                 <div className="w-3 h-3 rounded-full bg-yellow-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
-                <span className="ml-2 text-xs text-muted-foreground">
+                <span className="ml-2 text-xs" style={{ color: "#CBD5E1" }}>
                   Smarthinkerz Studio
                 </span>
               </div>
-              <div className="relative aspect-video bg-muted">
+              <div className="relative aspect-video bg-[#1E293B]">
                 {sampleImages.map((img, i) => (
                   <img
                     key={img.src}
@@ -174,7 +241,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                 ))}
                 <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                   <div className="flex items-center gap-2">
-                    <Badge className="bg-primary text-primary-foreground">
+                    <Badge style={{ backgroundColor: "#2563EB", color: "#FFFFFF", borderRadius: "20px" }}>
                       {sampleImages[currentImage]?.style || "Sample"}
                     </Badge>
                     <span className="text-white text-sm font-medium">
@@ -183,17 +250,22 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                   </div>
                 </div>
               </div>
-              <div className="p-4 flex items-center justify-between">
+              <div className="p-4 flex items-center justify-between" style={{ backgroundColor: "#FFFFFF" }}>
                 <div className="flex items-center gap-3">
                   <div className="flex -space-x-1">
                     {sampleImages.slice(0, 6).map((img, i) => (
                       <div
                         key={i}
-                        className={`w-8 h-8 rounded-md border-2 border-card overflow-hidden cursor-pointer transition-all ${
+                        className={`w-8 h-8 overflow-hidden cursor-pointer transition-all ${
                           i === currentImage
-                            ? "ring-2 ring-primary scale-110"
+                            ? "ring-2 scale-110"
                             : "opacity-70"
                         }`}
+                        style={{
+                          borderRadius: "6px",
+                          border: "2px solid white",
+                          ringColor: "#2563EB",
+                        }}
                         onClick={() => setCurrentImage(i)}
                       >
                         <img
@@ -205,7 +277,10 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                     ))}
                   </div>
                 </div>
-                <Badge variant="outline" className="text-emerald-600 border-emerald-300">
+                <Badge
+                  variant="outline"
+                  style={{ color: "#10B981", borderColor: "#10B981", borderRadius: "20px" }}
+                >
                   <CheckCircle2 className="w-3 h-3 mr-1" />
                   6 Generated
                 </Badge>
@@ -220,12 +295,15 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
 
 function ProblemSection() {
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-6">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+    <section className="py-[100px]" style={{ backgroundColor: "#FFFFFF" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center space-y-6">
+        <h2
+          className="text-3xl sm:text-4xl font-bold"
+          style={{ color: "#0F172A", lineHeight: 1.1 }}
+        >
           Content Scales. Visual Production Does Not.
         </h2>
-        <p className="text-lg text-muted-foreground leading-relaxed">
+        <p className="text-lg leading-relaxed" style={{ color: "#475569", lineHeight: 1.6 }}>
           Teams create structured content every day. Turning that content into visuals and videos takes time, designers, revisions, and coordination. Visual production becomes the bottleneck that slows learning, marketing, and training.
         </p>
       </div>
@@ -235,18 +313,21 @@ function ProblemSection() {
 
 function SolutionSection() {
   return (
-    <section className="py-20">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-6">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+    <section className="py-[100px]" style={{ backgroundColor: "#F8FAFC" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center space-y-6">
+        <h2
+          className="text-3xl sm:text-4xl font-bold"
+          style={{ color: "#0F172A", lineHeight: 1.1 }}
+        >
           The AI Media Engine for Structured Content
         </h2>
-        <p className="text-lg text-muted-foreground leading-relaxed font-medium">
+        <p className="text-lg font-semibold" style={{ color: "#475569", lineHeight: 1.6 }}>
           Upload once and generate at scale.
         </p>
-        <p className="text-muted-foreground leading-relaxed">
+        <p style={{ color: "#475569", lineHeight: 1.6 }}>
           Smarthinkerz Studio automatically extracts sections, understands context, generates professional images, creates HD videos per section, maintains style consistency, and processes hundreds of sections reliably.
         </p>
-        <p className="text-lg text-muted-foreground leading-relaxed font-medium">
+        <p className="text-lg font-semibold" style={{ color: "#475569", lineHeight: 1.6 }}>
           From document to distribution in minutes.
         </p>
       </div>
@@ -263,37 +344,53 @@ function CompetitiveTable() {
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+    <section className="py-[100px]" style={{ backgroundColor: "#FFFFFF" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             Not Just Another AI Image Tool
           </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Most tools generate one asset at a time. Smarthinkerz Studio transforms structured documents into complete media libraries.
           </p>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" data-testid="table-competitive">
+          <table className="w-full text-sm" style={{ borderCollapse: "separate", borderSpacing: 0, border: "1px solid #E2E8F0", borderRadius: "16px", overflow: "hidden" }} data-testid="table-competitive">
             <thead>
-              <tr className="border-b">
-                <th className="text-left py-3 px-4 font-semibold">Platform</th>
-                <th className="text-center py-3 px-4 font-semibold">Single Prompt Workflow</th>
-                <th className="text-center py-3 px-4 font-semibold">Bulk Document Processing</th>
-                <th className="text-center py-3 px-4 font-semibold">Video Per Section</th>
-                <th className="text-center py-3 px-4 font-semibold">Style Consistency</th>
-                <th className="text-center py-3 px-4 font-semibold">Built for Teams</th>
+              <tr style={{ backgroundColor: "#FFFFFF" }}>
+                <th className="text-left py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Platform</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Single Prompt Workflow</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Bulk Document Processing</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Video Per Section</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Style Consistency</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Built for Teams</th>
               </tr>
             </thead>
             <tbody>
               {competitors.map((c) => (
-                <tr key={c.name} className={`border-b ${c.highlight ? "bg-primary/5 font-semibold" : ""}`}>
-                  <td className="py-3 px-4">{c.name}</td>
-                  <td className="text-center py-3 px-4">{c.single}</td>
-                  <td className="text-center py-3 px-4">{c.bulk}</td>
-                  <td className="text-center py-3 px-4">{c.video}</td>
-                  <td className="text-center py-3 px-4">{c.style}</td>
-                  <td className="text-center py-3 px-4">{c.teams}</td>
+                <tr
+                  key={c.name}
+                  style={{
+                    backgroundColor: c.highlight ? "#EFF6FF" : "#FFFFFF",
+                    borderBottom: "1px solid #E2E8F0",
+                  }}
+                  className={c.highlight ? "font-semibold" : ""}
+                >
+                  <td className="py-3 px-4" style={{ color: "#0F172A" }}>{c.name}</td>
+                  {[c.single, c.bulk, c.video, c.style, c.teams].map((val, i) => (
+                    <td key={i} className="text-center py-3 px-4">
+                      {val === "Yes" ? (
+                        <CheckCircle2 className="w-4 h-4 mx-auto" style={{ color: "#10B981" }} />
+                      ) : val === "No" ? (
+                        <span style={{ color: "#94A3B8" }}>No</span>
+                      ) : (
+                        <span style={{ color: "#64748B" }}>{val}</span>
+                      )}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
@@ -313,30 +410,41 @@ function CostComparisonTable() {
   ];
 
   return (
-    <section className="py-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+    <section className="py-[100px]" style={{ backgroundColor: "#F8FAFC" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             Traditional Media Production vs Smarthinkerz Studio
           </h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" data-testid="table-cost-comparison">
+          <table className="w-full text-sm" style={{ borderCollapse: "separate", borderSpacing: 0, border: "1px solid #E2E8F0", borderRadius: "16px", overflow: "hidden" }} data-testid="table-cost-comparison">
             <thead>
-              <tr className="border-b">
-                <th className="text-left py-3 px-4 font-semibold">Production Method</th>
-                <th className="text-center py-3 px-4 font-semibold">Typical Monthly Cost</th>
-                <th className="text-center py-3 px-4 font-semibold">Scalability</th>
-                <th className="text-center py-3 px-4 font-semibold">Speed</th>
+              <tr style={{ backgroundColor: "#FFFFFF" }}>
+                <th className="text-left py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Production Method</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Typical Monthly Cost</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Scalability</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Speed</th>
               </tr>
             </thead>
             <tbody>
               {methods.map((m) => (
-                <tr key={m.method} className={`border-b ${m.highlight ? "bg-primary/5 font-semibold" : ""}`}>
-                  <td className="py-3 px-4">{m.method}</td>
-                  <td className="text-center py-3 px-4">{m.cost}</td>
-                  <td className="text-center py-3 px-4">{m.scalability}</td>
-                  <td className="text-center py-3 px-4">{m.speed}</td>
+                <tr
+                  key={m.method}
+                  style={{
+                    backgroundColor: m.highlight ? "#ECFEFF" : "#FFFFFF",
+                    borderLeft: m.highlight ? "4px solid #22D3EE" : "none",
+                    borderBottom: "1px solid #E2E8F0",
+                  }}
+                  className={m.highlight ? "font-semibold" : ""}
+                >
+                  <td className="py-3 px-4" style={{ color: "#0F172A" }}>{m.method}</td>
+                  <td className="text-center py-3 px-4" style={{ color: m.highlight ? "#2563EB" : "#475569", fontWeight: m.highlight ? 700 : 400 }}>{m.cost}</td>
+                  <td className="text-center py-3 px-4" style={{ color: "#475569" }}>{m.scalability}</td>
+                  <td className="text-center py-3 px-4" style={{ color: "#475569" }}>{m.speed}</td>
                 </tr>
               ))}
             </tbody>
@@ -362,34 +470,37 @@ function WhyUpgradeTable() {
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+    <section className="py-[100px]" style={{ backgroundColor: "#F8FAFC" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             Why Teams Upgrade
           </h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" data-testid="table-why-upgrade">
+          <table className="w-full text-sm" style={{ borderCollapse: "separate", borderSpacing: 0, border: "1px solid #E2E8F0", borderRadius: "16px", overflow: "hidden" }} data-testid="table-why-upgrade">
             <thead>
-              <tr className="border-b">
-                <th className="text-left py-3 px-4 font-semibold">Capability</th>
-                <th className="text-center py-3 px-4 font-semibold">Free</th>
-                <th className="text-center py-3 px-4 font-semibold">Pro</th>
-                <th className="text-center py-3 px-4 font-semibold">Business</th>
-                <th className="text-center py-3 px-4 font-semibold">Premium</th>
-                <th className="text-center py-3 px-4 font-semibold">Enterprise</th>
+              <tr style={{ backgroundColor: "#FFFFFF" }}>
+                <th className="text-left py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Capability</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Free</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Pro</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Business</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Premium</th>
+                <th className="text-center py-3 px-4 font-bold" style={{ color: "#0F172A", borderBottom: "1px solid #E2E8F0" }}>Enterprise</th>
               </tr>
             </thead>
             <tbody>
               {capabilities.map((cap) => (
-                <tr key={cap.name} className="border-b">
-                  <td className="py-3 px-4">{cap.name}</td>
-                  <td className="text-center py-3 px-4">{cap.free ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
-                  <td className="text-center py-3 px-4">{cap.pro ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
-                  <td className="text-center py-3 px-4">{cap.business ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
-                  <td className="text-center py-3 px-4">{cap.premium ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
-                  <td className="text-center py-3 px-4">{cap.enterprise ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" /> : <span className="text-muted-foreground">No</span>}</td>
+                <tr key={cap.name} style={{ borderBottom: "1px solid #E2E8F0", backgroundColor: "#FFFFFF" }}>
+                  <td className="py-3 px-4" style={{ color: "#0F172A" }}>{cap.name}</td>
+                  <td className="text-center py-3 px-4">{cap.free ? <CheckCircle2 className="w-4 h-4 mx-auto" style={{ color: "#10B981" }} /> : <span style={{ color: "#94A3B8" }}>No</span>}</td>
+                  <td className="text-center py-3 px-4">{cap.pro ? <CheckCircle2 className="w-4 h-4 mx-auto" style={{ color: "#10B981" }} /> : <span style={{ color: "#94A3B8" }}>No</span>}</td>
+                  <td className="text-center py-3 px-4">{cap.business ? <CheckCircle2 className="w-4 h-4 mx-auto" style={{ color: "#10B981" }} /> : <span style={{ color: "#94A3B8" }}>No</span>}</td>
+                  <td className="text-center py-3 px-4">{cap.premium ? <CheckCircle2 className="w-4 h-4 mx-auto" style={{ color: "#10B981" }} /> : <span style={{ color: "#94A3B8" }}>No</span>}</td>
+                  <td className="text-center py-3 px-4">{cap.enterprise ? <CheckCircle2 className="w-4 h-4 mx-auto" style={{ color: "#10B981" }} /> : <span style={{ color: "#94A3B8" }}>No</span>}</td>
                 </tr>
               ))}
             </tbody>
@@ -400,7 +511,7 @@ function WhyUpgradeTable() {
   );
 }
 
-function UseCaseCard({ uc }: { uc: { icon: any; title: string; subtitle: string; description: string; examples: string[]; color: string; image: string; video?: string; dashed?: boolean } }) {
+function UseCaseCard({ uc }: { uc: { icon: any; title: string; subtitle: string; description: string; examples: string[]; color: string; accentColor: string; image: string; video?: string; dashed?: boolean } }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseEnter = useCallback(() => {
@@ -419,11 +530,27 @@ function UseCaseCard({ uc }: { uc: { icon: any; title: string; subtitle: string;
   }, []);
 
   return (
-    <Card
-      className={`hover-elevate transition-all duration-200 overflow-hidden ${uc.dashed ? "border-dashed" : ""}`}
-      onMouseEnter={uc.video ? handleMouseEnter : undefined}
-      onMouseLeave={uc.video ? handleMouseLeave : undefined}
+    <div
+      className={`group overflow-hidden transition-all duration-300 ${uc.dashed ? "border-dashed" : ""}`}
+      style={{
+        backgroundColor: "#FFFFFF",
+        border: "1px solid #E2E8F0",
+        borderRadius: "16px",
+        padding: "0",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-6px)";
+        e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.08)";
+        if (uc.video) handleMouseEnter();
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.05)";
+        if (uc.video) handleMouseLeave();
+      }}
     >
+      <div style={{ height: "4px", backgroundColor: uc.accentColor }} />
       <div className="relative aspect-[16/10] overflow-hidden">
         {uc.video ? (
           <video
@@ -446,26 +573,33 @@ function UseCaseCard({ uc }: { uc: { icon: any; title: string; subtitle: string;
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
         <div className="absolute bottom-3 left-3 flex items-center gap-2">
-          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${uc.color}`}>
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: uc.accentColor + "20", color: uc.accentColor }}
+          >
             <uc.icon className="w-4 h-4" />
           </div>
           <span className="text-white font-semibold text-sm drop-shadow-md">{uc.subtitle}</span>
         </div>
       </div>
-      <CardContent className="p-5 space-y-3">
-        <h3 className="text-lg font-semibold">{uc.title}</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
+      <div className="p-7 space-y-3">
+        <h3 className="text-lg font-semibold" style={{ color: "#0F172A" }}>{uc.title}</h3>
+        <p className="text-sm leading-relaxed" style={{ color: "#475569", lineHeight: 1.6 }}>
           {uc.description}
         </p>
         <div className="flex flex-wrap gap-2">
           {uc.examples.map((ex) => (
-            <Badge key={ex} variant="secondary" className="text-xs">
+            <Badge
+              key={ex}
+              className="text-xs"
+              style={{ backgroundColor: "#F1F5F9", color: "#475569", borderRadius: "20px" }}
+            >
               {ex}
             </Badge>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -477,7 +611,8 @@ function UseCasesSection() {
       subtitle: "Lessons and Courses",
       description: "Upload lesson plans and curricula. Generate images and videos for every lesson day for LMS, slides, and classroom materials.",
       examples: ["Lesson visuals", "Course thumbnails", "Study guides"],
-      color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+      color: "bg-blue-100 text-blue-700",
+      accentColor: accentColors.education,
       image: educationImg,
       video: "/generated/media/education_usecase.mp4",
     },
@@ -487,7 +622,8 @@ function UseCasesSection() {
       subtitle: "Social and Explainers",
       description: "Create social media posts, explainer frames, and infographics from briefs or scripts.",
       examples: ["Social media posts", "Explainer videos", "Infographics"],
-      color: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+      color: "bg-purple-100 text-purple-700",
+      accentColor: accentColors.creators,
       image: contentCreatorImg,
     },
     {
@@ -496,7 +632,8 @@ function UseCasesSection() {
       subtitle: "Training and Onboarding",
       description: "Turn manuals, onboarding guides, and tutorials into visual content at scale.",
       examples: ["Training modules", "Onboarding guides", "Product tutorials"],
-      color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+      color: "bg-amber-100 text-amber-700",
+      accentColor: accentColors.business,
       image: businessesImg,
       video: "/generated/media/onboarding_business.mp4",
     },
@@ -506,7 +643,8 @@ function UseCasesSection() {
       subtitle: "Campaigns and Ads",
       description: "Generate campaign visuals, ad creatives, and branded snippets from marketing copy.",
       examples: ["Ad creatives", "Campaign visuals", "Branded snippets"],
-      color: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
+      color: "bg-rose-100 text-rose-700",
+      accentColor: accentColors.marketers,
       image: marketersImg,
       video: "/generated/media/marketers_usecase.mp4",
     },
@@ -516,7 +654,8 @@ function UseCasesSection() {
       subtitle: "Books and Guides",
       description: "Create chapter illustrations, visual summaries, and study guides from manuscripts and outlines.",
       examples: ["Chapter illustrations", "Visual summaries", "Study guides"],
-      color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+      color: "bg-emerald-100 text-emerald-700",
+      accentColor: accentColors.authors,
       image: publishingImg,
     },
     {
@@ -525,7 +664,8 @@ function UseCasesSection() {
       subtitle: "Flexible Workflows",
       description: "Turn any structured document into visual content with workflows that adapt to your content type.",
       examples: ["Custom content", "Any document", "Any format"],
-      color: "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400",
+      color: "bg-slate-100 text-slate-700",
+      accentColor: "#64748B",
       image: yourUseCaseImg,
       video: "/generated/media/your_usecase.mp4",
       dashed: true,
@@ -533,17 +673,20 @@ function UseCasesSection() {
   ];
 
   return (
-    <section id="use-cases" className="py-20 bg-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section id="use-cases" className="py-[100px]" style={{ backgroundColor: "#FFFFFF" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             Built for High Output Teams
           </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Smarthinkerz Studio is built for anyone who needs professional visuals at scale.
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "32px" }}>
           {useCases.map((uc) => (
             <UseCaseCard key={uc.title} uc={uc} />
           ))}
@@ -555,34 +698,47 @@ function UseCasesSection() {
 
 function StylesSection() {
   const styles = [
-    { name: "Photorealistic", description: "Ultra realistic photography with natural lighting", color: "bg-sky-100 dark:bg-sky-900/30" },
-    { name: "Illustration", description: "Professional digital artwork with clean lines", color: "bg-indigo-100 dark:bg-indigo-900/30" },
-    { name: "Cartoon", description: "Fun and colorful visuals with bold outlines", color: "bg-orange-100 dark:bg-orange-900/30" },
-    { name: "3D Render", description: "Polished 3D visualization with studio lighting", color: "bg-cyan-100 dark:bg-cyan-900/30" },
-    { name: "Watercolor", description: "Artistic visuals with soft brushstrokes", color: "bg-pink-100 dark:bg-pink-900/30" },
-    { name: "Minimalist", description: "Clean design with simple shapes and white space", color: "bg-slate-100 dark:bg-slate-900/30" },
-    { name: "Cinematic", description: "Dramatic film quality composition", color: "bg-amber-100 dark:bg-amber-900/30" },
+    { name: "Photorealistic", description: "Ultra realistic photography with natural lighting" },
+    { name: "Illustration", description: "Professional digital artwork with clean lines" },
+    { name: "Cartoon", description: "Fun and colorful visuals with bold outlines" },
+    { name: "3D Render", description: "Polished 3D visualization with studio lighting" },
+    { name: "Watercolor", description: "Artistic visuals with soft brushstrokes" },
+    { name: "Minimalist", description: "Clean design with simple shapes and white space" },
+    { name: "Cinematic", description: "Dramatic film quality composition" },
   ];
 
   return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="py-[100px]" style={{ backgroundColor: "#F8FAFC" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Palette className="w-6 h-6 text-primary" />
+            <Palette className="w-6 h-6" style={{ color: "#2563EB" }} />
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             Seven Production Optimized Visual Styles
           </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Choose the perfect look for your content. Every style is optimized for professional results.
           </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7" style={{ gap: "32px" }}>
           {styles.map((style) => (
-            <div key={style.name} className={`rounded-xl p-4 text-center space-y-2 ${style.color} transition-transform hover:scale-105`}>
-              <h3 className="text-sm font-semibold">{style.name}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{style.description}</p>
+            <div
+              key={style.name}
+              className="p-4 text-center space-y-2 transition-all duration-200 cursor-pointer"
+              style={{
+                border: "1px solid #E2E8F0",
+                borderRadius: "16px",
+                backgroundColor: "#FFFFFF",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#22D3EE"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#E2E8F0"; }}
+            >
+              <h3 className="text-sm font-semibold" style={{ color: "#0F172A" }}>{style.name}</h3>
+              <p className="text-xs leading-relaxed" style={{ color: "#475569", lineHeight: 1.4 }}>{style.description}</p>
             </div>
           ))}
         </div>
@@ -617,27 +773,46 @@ function HowItWorksSection() {
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="py-[100px]" style={{ backgroundColor: "#F1F5F9" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             Three Simple Steps
           </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Ready to download in minutes instead of weeks.
           </p>
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3" style={{ gap: "32px" }}>
           {steps.map((item) => (
-            <div key={item.step} className="text-center space-y-4">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
-                <item.icon className="w-8 h-8 text-primary" />
-              </div>
-              <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-sm font-bold">
+            <div
+              key={item.step}
+              className="text-center space-y-4 relative"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderRadius: "16px",
+                border: "1px solid #E2E8F0",
+                padding: "28px",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
+              }}
+            >
+              <span
+                className="text-[72px] font-bold absolute top-2 right-4"
+                style={{ color: "#CBD5E1", opacity: 0.4 }}
+              >
                 {item.step}
+              </span>
+              <div
+                className="w-16 h-16 flex items-center justify-center mx-auto"
+                style={{ backgroundColor: "#E0F2FE", borderRadius: "12px" }}
+              >
+                <item.icon className="w-8 h-8" style={{ color: "#2563EB" }} />
               </div>
-              <h3 className="text-xl font-semibold">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <h3 className="text-xl font-semibold" style={{ color: "#0F172A" }}>{item.title}</h3>
+              <p style={{ color: "#475569", lineHeight: 1.6 }}>
                 {item.description}
               </p>
             </div>
@@ -698,49 +873,74 @@ function FeaturesSection() {
   ];
 
   return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="py-[100px]" style={{ backgroundColor: "#FFFFFF" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             Everything You Need to Turn Content Into Professional Media
           </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Everything you need to turn content into professional media at scale.
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "32px" }}>
           {features.map((feature) => (
-            <Card
+            <div
               key={feature.title}
-              className="hover-elevate transition-all duration-200"
+              className="transition-all duration-200"
+              style={{
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E2E8F0",
+                borderRadius: "16px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
+                overflow: "hidden",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-6px)";
+                e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.05)";
+              }}
             >
-              <CardContent className="p-6 space-y-4">
+              <div className="p-6 space-y-4">
                 {feature.image ? (
-                  <img src={feature.image} alt={feature.title} className={`w-full h-40 object-cover rounded-xl ${feature.imagePosition === "bottom" ? "object-bottom" : "object-center"}`} />
+                  <img
+                    src={feature.image}
+                    alt={feature.title}
+                    className={`w-full h-40 object-cover ${feature.imagePosition === "bottom" ? "object-bottom" : "object-center"}`}
+                    style={{ borderRadius: "12px" }}
+                  />
                 ) : (
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <feature.icon className="w-6 h-6 text-primary" />
+                    <div
+                      className="w-12 h-12 flex items-center justify-center"
+                      style={{ backgroundColor: "#E0F2FE", borderRadius: "12px" }}
+                    >
+                      <feature.icon className="w-6 h-6" style={{ color: "#2563EB" }} />
                     </div>
                     {feature.badge && (
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge style={{ backgroundColor: "#F1F5F9", color: "#64748B", borderRadius: "20px" }} className="text-xs">
                         {feature.badge}
                       </Badge>
                     )}
                   </div>
                 )}
-                {!feature.image && feature.badge && null}
                 {feature.image && feature.badge && (
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge style={{ backgroundColor: "#F1F5F9", color: "#64748B", borderRadius: "20px" }} className="text-xs">
                     {feature.badge}
                   </Badge>
                 )}
-                <h3 className="text-lg font-semibold">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <h3 className="text-lg font-semibold" style={{ color: "#0F172A" }}>{feature.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: "#475569", lineHeight: 1.6 }}>
                   {feature.description}
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -750,21 +950,29 @@ function FeaturesSection() {
 
 function ShowcaseSection() {
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="py-[100px]" style={{ backgroundColor: "#F8FAFC" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             See What AI Creates
           </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Real examples generated from uploaded content. Every image is unique and tailored to the topic.
           </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: "16px" }}>
           {sampleImages.map((img, i) => (
             <div
               key={i}
-              className="group relative aspect-video rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-shadow duration-300"
+              className="group relative aspect-video overflow-hidden"
+              style={{
+                borderRadius: "16px",
+                border: "1px solid #E2E8F0",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
+              }}
             >
               <img
                 src={img.src}
@@ -774,7 +982,11 @@ function ShowcaseSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-3 left-3">
-                  <Badge className={img.style === "Photorealistic" ? "bg-cyan-500/90 text-white" : "bg-purple-500/90 text-white"}>
+                  <Badge style={{
+                    backgroundColor: img.style === "Photorealistic" ? "rgba(34,211,238,0.9)" : "rgba(124,58,237,0.9)",
+                    color: "#FFFFFF",
+                    borderRadius: "20px",
+                  }}>
                     {img.style}
                   </Badge>
                 </div>
@@ -783,7 +995,7 @@ function ShowcaseSection() {
           ))}
         </div>
         <div className="text-center mt-8">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm" style={{ color: "#64748B" }}>
             Generated using gpt image 1 at 1536 by 1024 resolution
           </p>
         </div>
@@ -794,48 +1006,36 @@ function ShowcaseSection() {
 
 function CapabilitiesSection() {
   return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="py-[100px]" style={{ backgroundColor: "#F8FAFC" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            <h2
+              className="text-3xl sm:text-4xl font-bold"
+              style={{ color: "#0F172A", lineHeight: 1.1 }}
+            >
               Reliable Output at High Volume
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg leading-relaxed" style={{ color: "#475569", lineHeight: 1.6 }}>
               Whether you have 10 sections or 600 plus, the system handles smart chunking, retries, and rate management so your production stays stable.
             </p>
             <div className="space-y-4">
               {[
-                {
-                  icon: Layers,
-                  text: "Handles hundreds of sections at once",
-                },
-                {
-                  icon: Zap,
-                  text: "Generates both images and videos per section",
-                },
-                {
-                  icon: DollarSign,
-                  text: "Cost efficient generation",
-                },
-                {
-                  icon: Video,
-                  text: "Local video generation with no extra API cost",
-                },
-                {
-                  icon: Play,
-                  text: "Pause, resume, or stop generation anytime",
-                },
-                {
-                  icon: Palette,
-                  text: "Seven distinct visual styles to match your brand",
-                },
+                { icon: Layers, text: "Handles hundreds of sections at once" },
+                { icon: Zap, text: "Generates both images and videos per section" },
+                { icon: DollarSign, text: "Cost efficient generation" },
+                { icon: Video, text: "Local video generation with no extra API cost" },
+                { icon: Play, text: "Pause, resume, or stop generation anytime" },
+                { icon: Palette, text: "Seven distinct visual styles to match your brand" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center shrink-0">
-                    <item.icon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <div
+                    className="w-8 h-8 flex items-center justify-center shrink-0"
+                    style={{ backgroundColor: "#D1FAE5", borderRadius: "8px" }}
+                  >
+                    <item.icon className="w-4 h-4" style={{ color: "#059669" }} />
                   </div>
-                  <span className="text-sm font-medium">{item.text}</span>
+                  <span className="text-sm font-medium" style={{ color: "#0F172A" }}>{item.text}</span>
                 </div>
               ))}
             </div>
@@ -845,7 +1045,12 @@ function CapabilitiesSection() {
             {sampleImages.slice(4, 8).map((img, i) => (
               <div
                 key={i}
-                className="relative aspect-video rounded-lg overflow-hidden border shadow-md"
+                className="relative aspect-video overflow-hidden"
+                style={{
+                  borderRadius: "12px",
+                  border: "1px solid #E2E8F0",
+                  boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
+                }}
               >
                 <img
                   src={img.src}
@@ -854,7 +1059,14 @@ function CapabilitiesSection() {
                   data-testid={`img-capability-sample-${i}`}
                 />
                 <div className="absolute top-2 left-2">
-                  <Badge className={`text-[10px] ${img.style === "Photorealistic" ? "bg-cyan-500/90 text-white" : "bg-purple-500/90 text-white"}`}>
+                  <Badge
+                    className="text-[10px]"
+                    style={{
+                      backgroundColor: img.style === "Photorealistic" ? "rgba(34,211,238,0.9)" : "rgba(124,58,237,0.9)",
+                      color: "#FFFFFF",
+                      borderRadius: "20px",
+                    }}
+                  >
                     {img.style}
                   </Badge>
                 </div>
@@ -887,6 +1099,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
     cta: string;
     variant: "outline" | "default";
     popular: boolean;
+    enterprise?: boolean;
   }>> = {
     education: [
       {
@@ -967,6 +1180,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         cta: "Contact Sales",
         variant: "outline",
         popular: false,
+        enterprise: true,
       },
     ],
     creators: [
@@ -1044,6 +1258,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         cta: "Contact Sales",
         variant: "outline",
         popular: false,
+        enterprise: true,
       },
     ],
     business: [
@@ -1123,6 +1338,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         cta: "Contact Sales",
         variant: "outline",
         popular: false,
+        enterprise: true,
       },
     ],
     marketers: [
@@ -1201,6 +1417,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         cta: "Contact Sales",
         variant: "outline",
         popular: false,
+        enterprise: true,
       },
     ],
     publishers: [
@@ -1279,6 +1496,7 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
         cta: "Contact Sales",
         variant: "outline",
         popular: false,
+        enterprise: true,
       },
     ],
   };
@@ -1286,13 +1504,16 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
   const plans = plansByCategory[selectedCategory] || plansByCategory.education;
 
   return (
-    <section id="pricing" className="py-20 bg-muted/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section id="pricing" className="py-[100px]" style={{ backgroundColor: "#FFFFFF" }}>
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             Simple, Transparent Pricing
           </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Pricing tailored to your industry. Choose the plan that fits your needs.
           </p>
         </div>
@@ -1301,11 +1522,22 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
           {categories.map((cat) => (
             <Button
               key={cat.id}
-              variant={selectedCategory === cat.id ? "default" : "outline"}
               size="sm"
+              className="gap-1.5 tracking-[0.4px]"
+              style={{
+                backgroundColor: selectedCategory === cat.id ? "#2563EB" : "transparent",
+                color: selectedCategory === cat.id ? "#FFFFFF" : "#475569",
+                border: selectedCategory === cat.id ? "none" : "1px solid #E2E8F0",
+                borderRadius: "10px",
+              }}
               onClick={() => setSelectedCategory(cat.id)}
-              className="gap-1.5"
               data-testid={`pricing-tab-${cat.id}`}
+              onMouseEnter={(e) => {
+                if (selectedCategory !== cat.id) e.currentTarget.style.backgroundColor = "#F1F5F9";
+              }}
+              onMouseLeave={(e) => {
+                if (selectedCategory !== cat.id) e.currentTarget.style.backgroundColor = "transparent";
+              }}
             >
               <cat.icon className="w-4 h-4" />
               {cat.label}
@@ -1313,53 +1545,82 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
           ))}
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" style={{ gap: "20px" }}>
           {plans.map((plan) => (
-            <Card
+            <div
               key={plan.name}
-              className={`relative flex flex-col ${
-                plan.popular ? "border-primary shadow-lg scale-[1.02]" : ""
-              }`}
+              className={`relative flex flex-col ${plan.popular ? "scale-[1.02]" : ""}`}
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderRadius: "18px",
+                border: plan.enterprise ? "2px solid #2563EB" : "1px solid #E2E8F0",
+                padding: "36px",
+                boxShadow: plan.popular ? "0 20px 50px rgba(0,0,0,0.12)" : "0 6px 16px rgba(0,0,0,0.05)",
+              }}
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge className="bg-primary text-primary-foreground px-3">
-                    <Star className="w-3 h-3 mr-1" />
+                  <Badge
+                    className="px-3 flex items-center gap-1"
+                    style={{
+                      backgroundColor: "#22D3EE",
+                      color: "#0F172A",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    <Star className="w-3 h-3" />
                     Most Popular
                   </Badge>
                 </div>
               )}
-              <CardContent className="p-6 flex flex-col flex-1">
-                <div className="space-y-2 mb-6">
-                  <h3 className="text-xl font-semibold">{plan.name}</h3>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold">{plan.price}</span>
-                    <span className="text-muted-foreground text-sm">
-                      {plan.period}
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {plan.description}
-                  </p>
+              <div className="space-y-2 mb-6">
+                <h3 className="text-xl font-semibold" style={{ color: "#0F172A" }}>{plan.name}</h3>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold" style={{ color: "#0F172A" }}>{plan.price}</span>
+                  <span className="text-sm" style={{ color: "#64748B" }}>
+                    {plan.period}
+                  </span>
                 </div>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  variant={plan.variant}
-                  className="w-full"
-                  onClick={onGetStarted}
-                  data-testid={`button-plan-${plan.name.toLowerCase()}`}
-                >
-                  {plan.cta}
-                </Button>
-              </CardContent>
-            </Card>
+                <p className="text-sm" style={{ color: "#64748B" }}>
+                  {plan.description}
+                </p>
+              </div>
+              <ul className="space-y-3 mb-8 flex-1">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#10B981" }} />
+                    <span style={{ color: "#475569" }}>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                className="w-full py-3 font-semibold transition-colors tracking-[0.4px]"
+                style={{
+                  backgroundColor: plan.variant === "default" ? "#2563EB" : "transparent",
+                  color: plan.variant === "default" ? "#FFFFFF" : "#2563EB",
+                  border: plan.variant === "default" ? "none" : "1px solid #E2E8F0",
+                  borderRadius: "10px",
+                }}
+                onClick={onGetStarted}
+                data-testid={`button-plan-${plan.name.toLowerCase()}`}
+                onMouseEnter={(e) => {
+                  if (plan.variant === "default") {
+                    e.currentTarget.style.backgroundColor = "#1D4ED8";
+                  } else {
+                    e.currentTarget.style.backgroundColor = "#F1F5F9";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (plan.variant === "default") {
+                    e.currentTarget.style.backgroundColor = "#2563EB";
+                  } else {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                  }
+                }}
+              >
+                {plan.cta}
+              </button>
+            </div>
           ))}
         </div>
       </div>
@@ -1373,61 +1634,77 @@ function TestimonialsSection() {
       icon: GraduationCap,
       role: "Educator",
       quote: "Smarthinkerz Studio saved me hours of editing. My lessons now look cinematic.",
-      color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
     },
     {
       icon: PenTool,
       role: "Content Creator",
       quote: "I scaled my social content from 10 posts a week to 200 in minutes.",
-      color: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
     },
     {
       icon: Briefcase,
       role: "Business Trainer",
       quote: "Our onboarding guides are now visual and engaging. Employees love them.",
-      color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
     },
     {
       icon: Megaphone,
       role: "Marketer",
       quote: "Campaign visuals that used to take days now take minutes.",
-      color: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
     },
     {
       icon: BookOpen,
       role: "Author",
       quote: "My book chapters now have professional illustrations without hiring a designer.",
-      color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
     },
   ];
 
   return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section
+      className="py-[100px]"
+      style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)" }}
+    >
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+          <h2
+            className="text-3xl sm:text-4xl font-bold"
+            style={{ color: "#0F172A", lineHeight: 1.1 }}
+          >
             What Our Users Say
           </h2>
-          <p className="text-muted-foreground mt-3 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Trusted by professionals across industries.
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" style={{ gap: "20px" }}>
           {testimonials.map((item) => (
-            <Card key={item.role} className="hover-elevate transition-all duration-200">
-              <CardContent className="p-5 space-y-4">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
-                  <item.icon className="w-5 h-5" />
-                </div>
+            <div
+              key={item.role}
+              className="transition-all duration-200"
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderRadius: "18px",
+                padding: "24px",
+                boxShadow: "0 12px 30px rgba(0,0,0,0.05)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 12px 30px rgba(0,0,0,0.05)";
+              }}
+            >
+              <div className="space-y-4">
                 <div className="relative">
-                  <Quote className="w-4 h-4 text-muted-foreground/30 absolute -top-1 -left-1" />
-                  <p className="text-sm text-muted-foreground leading-relaxed italic pl-4">
+                  <Quote className="w-5 h-5 absolute -top-1 -left-1" style={{ color: "#22D3EE", opacity: 0.6 }} />
+                  <p className="text-sm leading-relaxed italic pl-5" style={{ color: "#475569", lineHeight: 1.6 }}>
                     {item.quote}
                   </p>
                 </div>
-                <p className="text-xs font-semibold text-foreground">&mdash; {item.role}</p>
-              </CardContent>
-            </Card>
+                <p className="text-xs font-bold" style={{ color: "#0F172A" }}>&mdash; {item.role}</p>
+                <p className="text-xs" style={{ color: "#64748B" }}>{item.role}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -1437,23 +1714,37 @@ function TestimonialsSection() {
 
 function CTASection({ onGetStarted }: { onGetStarted: () => void }) {
   return (
-    <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
+    <section
+      className="py-[100px]"
+      style={{
+        background: "linear-gradient(135deg, #22D3EE 0%, #2563EB 60%, #1E293B 100%)",
+      }}
+    >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-6">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+        <h2
+          className="text-3xl sm:text-4xl font-bold text-white"
+          style={{ lineHeight: 1.1 }}
+        >
           Your AI Powered Media Studio
         </h2>
-        <p className="text-lg text-muted-foreground leading-relaxed">
+        <p className="text-lg leading-relaxed" style={{ color: "#E2E8F0", lineHeight: 1.6 }}>
           Start creating today and bring your ideas to life with stunning visuals and videos.
         </p>
-        <Button
-          size="lg"
-          className="text-base px-10 py-6"
+        <button
+          className="text-base px-10 py-4 font-semibold transition-colors tracking-[0.4px]"
+          style={{
+            backgroundColor: "#FFFFFF",
+            color: "#1E293B",
+            borderRadius: "12px",
+            boxShadow: "0 12px 30px rgba(0,0,0,0.2)",
+          }}
           onClick={onGetStarted}
           data-testid="button-cta-get-started"
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F1F5F9"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#FFFFFF"; }}
         >
           Get Started Now
-          <ArrowRight className="w-5 h-5 ml-2" />
-        </Button>
+        </button>
       </div>
     </section>
   );
@@ -1461,78 +1752,140 @@ function CTASection({ onGetStarted }: { onGetStarted: () => void }) {
 
 function FooterSection() {
   return (
-    <footer className="border-t border-[#bfc6d6] bg-[#d9dde9] py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <footer
+      className="py-12"
+      style={{
+        backgroundColor: "#0F172A",
+        borderTop: "1px solid #1F2937",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
             <div className="flex items-start">
               <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-24 w-auto" />
             </div>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm leading-relaxed" style={{ color: "#9CA3AF", lineHeight: 1.6 }}>
               Turn lessons, posts, and campaigns into stunning media automatically. Your AI powered creative partner.
             </p>
           </div>
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm text-gray-900">Product</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
+            <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Product</h4>
+            <ul className="space-y-2 text-sm" style={{ color: "#9CA3AF" }}>
               <li>
-                <a href="#use-cases" className="hover:text-gray-900 transition-colors" data-testid="link-use-cases">
+                <a
+                  href="#use-cases"
+                  className="transition-colors"
+                  style={{ color: "#9CA3AF" }}
+                  data-testid="link-use-cases"
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                >
                   Use Cases
                 </a>
               </li>
               <li>
-                <a href="#pricing" className="hover:text-gray-900 transition-colors" data-testid="link-pricing">
+                <a
+                  href="#pricing"
+                  className="transition-colors"
+                  style={{ color: "#9CA3AF" }}
+                  data-testid="link-pricing"
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                >
                   Pricing
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-900 transition-colors" data-testid="link-api-docs">
+                <a
+                  href="#"
+                  className="transition-colors"
+                  style={{ color: "#9CA3AF" }}
+                  data-testid="link-api-docs"
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                >
                   API Docs
                 </a>
               </li>
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm text-gray-900">Company</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
+            <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Company</h4>
+            <ul className="space-y-2 text-sm" style={{ color: "#9CA3AF" }}>
               <li>
-                <a href="#" className="hover:text-gray-900 transition-colors" data-testid="link-about">
+                <a
+                  href="#"
+                  className="transition-colors"
+                  style={{ color: "#9CA3AF" }}
+                  data-testid="link-about"
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                >
                   About
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-900 transition-colors" data-testid="link-contact">
+                <a
+                  href="#"
+                  className="transition-colors"
+                  style={{ color: "#9CA3AF" }}
+                  data-testid="link-contact"
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                >
                   Contact
                 </a>
               </li>
               <li>
-                <a href="/blog" className="hover:text-gray-900 transition-colors" data-testid="link-blog">
+                <a
+                  href="/blog"
+                  className="transition-colors"
+                  style={{ color: "#9CA3AF" }}
+                  data-testid="link-blog"
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                >
                   Blog
                 </a>
               </li>
             </ul>
           </div>
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm text-gray-900">Legal</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
+            <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Legal</h4>
+            <ul className="space-y-2 text-sm" style={{ color: "#9CA3AF" }}>
               <li>
-                <a href="#" className="hover:text-gray-900 transition-colors" data-testid="link-privacy">
+                <a
+                  href="#"
+                  className="transition-colors"
+                  style={{ color: "#9CA3AF" }}
+                  data-testid="link-privacy"
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                >
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-gray-900 transition-colors" data-testid="link-terms">
+                <a
+                  href="#"
+                  className="transition-colors"
+                  style={{ color: "#9CA3AF" }}
+                  data-testid="link-terms"
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                >
                   Terms of Service
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-[#bfc6d6] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-600">
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: "1px solid #1F2937" }}>
+          <p className="text-sm" style={{ color: "#9CA3AF" }}>
             Smart thinking, stunning media.
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs" style={{ color: "#64748B" }}>
             &copy; {new Date().getFullYear()} Smarthinkerz Studio. All rights reserved.
           </p>
         </div>
@@ -1549,54 +1902,88 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 border-b border-[#c5c8d5]" style={{ background: 'linear-gradient(to bottom, #E8E6E9 0%, #E0DFE5 25%, #D3D9E5 50%, #CFD2E1 75%, #D1D4E3 100%)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen" style={{ backgroundColor: "#FFFFFF" }}>
+      <nav
+        className="sticky top-0 z-50"
+        style={{
+          background: "linear-gradient(180deg, #0F172A 0%, #1E293B 100%)",
+          borderBottom: "1px solid #1F2937",
+          height: "80px",
+        }}
+      >
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
           <div className="flex items-center shrink-0">
-            <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-24 w-auto" />
+            <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-16 w-auto" />
           </div>
           <div className="hidden md:flex flex-1 justify-center px-4">
-            <span className="text-[22px] font-bold text-gray-700 text-center">Transforming Structured Content into Scalable Media</span>
+            <span
+              className="text-[22px] font-bold text-center"
+              style={{ color: "#22D3EE", letterSpacing: "0.3px" }}
+            >
+              Transforming Structured Content into Scalable Media
+            </span>
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm shrink-0">
             <a
               href="#use-cases"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+              className="font-medium transition-colors"
+              style={{ color: "#CBD5E1" }}
               data-testid="nav-link-use-cases"
+              onMouseEnter={(e) => { e.currentTarget.style.color = "#FFFFFF"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "#CBD5E1"; }}
             >
               Use Cases
             </a>
             <a
               href="#pricing"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+              className="font-medium transition-colors"
+              style={{ color: "#CBD5E1" }}
               data-testid="nav-link-pricing"
+              onMouseEnter={(e) => { e.currentTarget.style.color = "#FFFFFF"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "#CBD5E1"; }}
             >
               Pricing
             </a>
             <a
               href="/blog"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+              className="font-medium transition-colors"
+              style={{ color: "#CBD5E1" }}
               data-testid="nav-link-blog"
+              onMouseEnter={(e) => { e.currentTarget.style.color = "#FFFFFF"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "#CBD5E1"; }}
             >
               Blog
             </a>
-            <Button
-              size="sm"
-              className="bg-[#3a4a6b] hover:bg-[#2d3b56] text-white font-semibold"
+            <button
+              className="font-semibold text-sm tracking-[0.4px] transition-colors"
+              style={{
+                backgroundColor: "#2563EB",
+                color: "#FFFFFF",
+                padding: "12px 22px",
+                borderRadius: "10px",
+                boxShadow: "0 6px 20px rgba(37, 99, 235, 0.25)",
+              }}
               onClick={handleGetStarted}
               data-testid="nav-button-get-started"
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1D4ED8"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#2563EB"; }}
             >
               Get Started
-            </Button>
+            </button>
           </div>
-          <Button
-            size="sm"
-            className="sm:hidden bg-[#3a4a6b] hover:bg-[#2d3b56] text-white font-semibold"
+          <button
+            className="sm:hidden font-semibold text-sm"
+            style={{
+              backgroundColor: "#2563EB",
+              color: "#FFFFFF",
+              padding: "10px 18px",
+              borderRadius: "10px",
+            }}
             onClick={handleGetStarted}
             data-testid="nav-button-get-started-mobile"
           >
             Get Started
-          </Button>
+          </button>
         </div>
       </nav>
 

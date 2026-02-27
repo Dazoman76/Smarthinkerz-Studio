@@ -89,6 +89,20 @@ A full-stack web application that serves as an AI-powered media generation agent
 - Session-based auth via express-session + passport-local
 - Protected admin routes require authentication + appropriate role
 
+## Design System (Landing Page)
+- **Font**: Lato, sans-serif (300 Light / 400 Regular / 600 SemiBold / 700 Bold)
+- **Nav**: Dark gradient #0F172A→#1E293B, 80px height, tagline #22D3EE, links #CBD5E1 hover #FFFFFF, button #2563EB
+- **Hero**: Gradient #1E3A8A→#2563EB→#1E293B, radial cyan glow, white headings, #E2E8F0 subtext, CTA #22D3EE
+- **Section Rhythm**: Dark Hero → Light (#F8FAFC) → White → Light → White → ... → Dark CTA → Dark Footer
+- **Cards**: White bg, 1px solid #E2E8F0, radius 16px, shadow 0 10px 30px rgba(0,0,0,0.05), hover translateY(-6px)
+- **Use Case Accent Bars**: Education #2563EB, Creators #7C3AED, Business #F59E0B, Marketers #F43F5E, Authors #10B981
+- **Tables**: Border #E2E8F0, header text #0F172A, check #10B981, negative #94A3B8
+- **Pricing**: White cards, radius 18px, Most Popular badge #22D3EE, button #2563EB, Enterprise border 2px solid #2563EB
+- **CTA**: Gradient #22D3EE→#2563EB→#1E293B, white heading, white button
+- **Footer**: Dark #0F172A, headings #FFFFFF, links #9CA3AF, hover #22D3EE, copyright #64748B
+- **Border Radius**: Buttons 10-12px, Cards 16px, Pricing 18px, Badges 20px
+- **Max Width**: 1200px, Section padding 100px vertical, Card gap 32px
+
 ## Important Notes
 - Image size: 1536x1024 (OpenAI supported landscape format)
 - Video: 6-second MP4 with 10 motion presets cycled by dayId, fade-in/out, sliding text animations
