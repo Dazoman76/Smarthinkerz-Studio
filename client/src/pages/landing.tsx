@@ -8,6 +8,7 @@ import sarahMitchellVideo from "@assets/Sarah_Mitchell_1772176519292.mp4";
 import timesetDataImg from "@assets/timeset_data_1772184316994.jpg";
 import lookingDownImg from "@assets/looking_down_49918d40-21fc-4f6b-84ba-f61688311d1a_1772184775446.jpg";
 import timeMachineImg from "@assets/time_2026-02-27_132116_1772184664718.png";
+import timeMachineImg2 from "@assets/time_2026-02-27_132116_1772184870867.png";
 import {
   Zap,
   Upload,
@@ -57,7 +58,7 @@ const sampleImages = [
   { src: timeMachineImg, style: "Illustrated" },
   { src: "/generated/images/day_6.png", style: "Photorealistic" },
   { src: "/generated/images/day_8.png", style: "Illustrated" },
-  { src: "/generated/images/day_10.png", style: "Photorealistic" },
+  { src: timeMachineImg2, style: "Photorealistic" },
   { src: "/generated/images/day_12.png", style: "Illustrated" },
 ];
 
