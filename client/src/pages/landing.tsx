@@ -11,6 +11,7 @@ import timeMachineImg2 from "@assets/time_2026-02-27_132116_1772184870867.png";
 import libraryImg from "@assets/library_1772185221264.jpg";
 import contentScalesImg from "@assets/download_1772185736859.jfif";
 import aiMediaEngineImg from "@assets/AI_Media_Engine_1772185877375.jpg";
+import aiMediaEngineVideo from "@assets/2-AI_Media_Engine_1772186482382.mp4";
 import {
   Zap,
   Upload,
@@ -323,6 +324,111 @@ function ProblemSection() {
   );
 }
 
+function SolutionVideoCard() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(() => {
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
+      });
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    setIsPlaying(false);
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, []);
+
+  const handleClick = useCallback(() => {
+    if (videoRef.current) {
+      if (isPlaying && !videoRef.current.muted) {
+        videoRef.current.muted = true;
+        videoRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        videoRef.current.muted = false;
+        videoRef.current.play().catch(() => {});
+        setIsPlaying(true);
+      }
+    }
+  }, [isPlaying]);
+
+  return (
+    <div
+      className="max-w-2xl mx-auto cursor-pointer transition-all duration-300"
+      style={{
+        borderRadius: "16px",
+        overflow: "hidden",
+        boxShadow: isHovered ? "0 20px 40px rgba(0,0,0,0.12)" : "0 12px 30px rgba(0,0,0,0.08)",
+        transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+      data-testid="video-ai-media-engine"
+    >
+      <div className="relative">
+        <video
+          ref={videoRef}
+          src={aiMediaEngineVideo}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="w-full h-auto"
+          style={{
+            filter: isHovered ? "brightness(1.05)" : "brightness(1)",
+            transition: "filter 0.3s ease",
+          }}
+        />
+        {!isHovered && (
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
+          >
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "rgba(255,255,255,0.9)" }}
+            >
+              <div
+                className="w-0 h-0 ml-1"
+                style={{
+                  borderTop: "8px solid transparent",
+                  borderBottom: "8px solid transparent",
+                  borderLeft: "14px solid #0F172A",
+                }}
+              />
+            </div>
+          </div>
+        )}
+        {isHovered && !isPlaying && (
+          <div
+            className="absolute bottom-3 right-3 px-3 py-1.5 rounded-lg text-xs font-semibold"
+            style={{ backgroundColor: "rgba(0,0,0,0.6)", color: "#FFFFFF" }}
+          >
+            Click for sound
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function SolutionSection() {
   return (
     <section className="py-[100px]" style={{ backgroundColor: "#F8FAFC" }}>
@@ -336,15 +442,7 @@ function SolutionSection() {
         <p className="text-lg font-semibold" style={{ color: "#475569", lineHeight: 1.6 }}>
           Upload once and generate at scale.
         </p>
-        <div className="max-w-2xl mx-auto">
-          <img
-            src={aiMediaEngineImg}
-            alt="AI Media Engine for Structured Content"
-            className="w-full h-auto rounded-2xl"
-            style={{ boxShadow: "0 12px 30px rgba(0,0,0,0.08)" }}
-            data-testid="img-ai-media-engine"
-          />
-        </div>
+        <SolutionVideoCard />
         <p style={{ color: "#475569", lineHeight: 1.6 }}>
           Smarthinkerz Studio automatically extracts sections, understands context, generates professional images, creates HD videos per section, maintains style consistency, and processes hundreds of sections reliably.
         </p>
