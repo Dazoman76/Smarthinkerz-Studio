@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
 import logoImage from "@assets/smarthinkerzstudio__1772109413138.gif";
+import logoNoBk from "@assets/logo_no_bk_1772176208956.png";
+import sarahMitchellVideo from "@assets/Sarah_Mitchell_1772176519292.mp4";
 import {
   Zap,
   Upload,
@@ -42,7 +44,7 @@ import dashboardImg from "@assets/Dashboard_b02c1996-6b6a-4580-bd3e-95a54e79f941
 import integrationImg from "@assets/Integration-Ready_1772106673102.jpg";
 
 const sampleImages = [
-  { src: "/generated/images/day_1.png", style: "Photorealistic" },
+  { src: "/generated/images/day_14.png", style: "Photorealistic" },
   { src: "/generated/images/day_3.png", style: "Illustrated" },
   { src: "/generated/images/day_5.png", style: "Photorealistic" },
   { src: "/generated/images/day_7.png", style: "Illustrated" },
@@ -103,17 +105,9 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
           />
         ))}
       </div>
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-[120px] pb-[140px] relative z-10">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-[80px] pb-[140px] relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <Badge
-              className="px-4 py-1.5 text-sm border-0"
-              style={{ backgroundColor: "#1E293B", color: "#22D3EE" }}
-              data-testid="badge-hero"
-            >
-              <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-              Structured Content. Scalable Media.
-            </Badge>
             <h1
               className="text-[32px] sm:text-[42px] lg:text-[56px] font-bold text-white"
               style={{ lineHeight: 1.1 }}
@@ -1628,13 +1622,122 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
   );
 }
 
+function TestimonialVideoCard() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    setIsPlaying(false);
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, []);
+
+  const handleClick = useCallback(() => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.muted = true;
+        videoRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        videoRef.current.muted = false;
+        videoRef.current.play().catch(() => {});
+        setIsPlaying(true);
+      }
+    }
+  }, [isPlaying]);
+
+  return (
+    <div
+      className="transition-all duration-300 cursor-pointer"
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderRadius: "18px",
+        padding: "24px",
+        boxShadow: isHovered ? "0 20px 40px rgba(0,0,0,0.08)" : "0 12px 30px rgba(0,0,0,0.05)",
+        transform: isHovered ? "translateY(-6px)" : "translateY(0)",
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+      data-testid="card-testimonial-educator"
+    >
+      <div className="space-y-4">
+        <div
+          className="relative overflow-hidden"
+          style={{ borderRadius: "12px", aspectRatio: "16/9" }}
+        >
+          <video
+            ref={videoRef}
+            src={sarahMitchellVideo}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover"
+            style={{
+              filter: isHovered ? "brightness(1.05)" : "brightness(1)",
+              transition: "filter 0.3s ease",
+            }}
+            data-testid="video-testimonial-educator"
+          />
+          {!isHovered && (
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
+            >
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: "rgba(255,255,255,0.9)" }}
+              >
+                <div
+                  className="w-0 h-0 ml-1"
+                  style={{
+                    borderTop: "6px solid transparent",
+                    borderBottom: "6px solid transparent",
+                    borderLeft: "10px solid #0F172A",
+                  }}
+                />
+              </div>
+            </div>
+          )}
+          {isHovered && !isPlaying && (
+            <div
+              className="absolute bottom-2 right-2 px-2 py-1 rounded text-[10px] font-semibold"
+              style={{ backgroundColor: "rgba(0,0,0,0.6)", color: "#FFFFFF" }}
+            >
+              Click for sound
+            </div>
+          )}
+        </div>
+        <p className="text-xs font-bold" style={{ color: "#0F172A" }}>Sarah Mitchell</p>
+        <p className="text-xs" style={{ color: "#64748B" }}>Educator</p>
+        <div className="relative">
+          <Quote className="w-5 h-5 absolute -top-1 -left-1" style={{ color: "#22D3EE", opacity: 0.6 }} />
+          <p className="text-sm leading-relaxed italic pl-5" style={{ color: "#475569", lineHeight: 1.6 }}>
+            Smarthinkerz Studio saved me hours of editing. My lessons now look cinematic.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function TestimonialsSection() {
   const testimonials = [
-    {
-      icon: GraduationCap,
-      role: "Educator",
-      quote: "Smarthinkerz Studio saved me hours of editing. My lessons now look cinematic.",
-    },
     {
       icon: PenTool,
       role: "Content Creator",
@@ -1675,6 +1778,7 @@ function TestimonialsSection() {
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" style={{ gap: "20px" }}>
+          <TestimonialVideoCard />
           {testimonials.map((item) => (
             <div
               key={item.role}
@@ -1763,7 +1867,7 @@ function FooterSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
             <div className="flex items-start">
-              <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-24 w-auto" />
+              <img src={logoNoBk} alt="Smarthinkerz Studio" className="h-24 w-auto" data-testid="img-footer-logo" />
             </div>
             <p className="text-sm leading-relaxed" style={{ color: "#9CA3AF", lineHeight: 1.6 }}>
               Turn lessons, posts, and campaigns into stunning media automatically. Your AI powered creative partner.
