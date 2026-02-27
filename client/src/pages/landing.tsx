@@ -162,10 +162,11 @@ function WelcomeModal() {
             Welcome to Smarthinkerz Studio
           </h2>
           <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
-            Hover over select visuals to preview short video motion.
+            Hover over select visuals to preview short video motion.<br />
+            Click the video again to pause playback.
           </p>
           <p className="text-xs" style={{ color: "#94A3B8" }}>
-            Use <span className="font-medium">Disable previews</span> if you prefer a static experience.
+            You can disable hover previews anytime in settings.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <Button
