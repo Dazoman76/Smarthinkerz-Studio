@@ -12,6 +12,13 @@ import libraryImg from "@assets/library_1772185221264.jpg";
 import contentScalesImg from "@assets/download_1772185736859.jfif";
 import aiMediaEngineImg from "@assets/AI_Media_Engine_1772185877375.jpg";
 import aiMediaEngineVideo from "@assets/2-AI_Media_Engine_1772186482382.mp4";
+import stylePhotorealistic from "@assets/Ultra_realistic_photography_1772204337728.jfif";
+import styleIllustration from "@assets/illiustrater_digital_74a87921-c9ee-47a4-a70d-f4fdaa35b973_1772204337725.jpg";
+import styleCartoon from "@assets/cartoon_1772204337722.jpg";
+import style3DRender from "@assets/Polished_3D_visualiz_1772204337727.png";
+import styleWatercolor from "@assets/Watercolor-2_1772204337729.jpg";
+import styleMinimalist from "@assets/Minimalist_Clean_design_1772204337726.jpg";
+import styleCinematic from "@assets/Cinematic_dramatic_film_1772204337724.jpg";
 import {
   Zap,
   Upload,
@@ -817,13 +824,13 @@ function UseCasesSection() {
 
 function StylesSection() {
   const styles = [
-    { name: "Photorealistic", description: "Ultra realistic photography with natural lighting" },
-    { name: "Illustration", description: "Professional digital artwork with clean lines" },
-    { name: "Cartoon", description: "Fun and colorful visuals with bold outlines" },
-    { name: "3D Render", description: "Polished 3D visualization with studio lighting" },
-    { name: "Watercolor", description: "Artistic visuals with soft brushstrokes" },
-    { name: "Minimalist", description: "Clean design with simple shapes and white space" },
-    { name: "Cinematic", description: "Dramatic film quality composition" },
+    { name: "Photorealistic", description: "Ultra realistic photography with natural lighting", image: stylePhotorealistic },
+    { name: "Illustration", description: "Professional digital artwork with clean lines", image: styleIllustration },
+    { name: "Cartoon", description: "Fun and colorful visuals with bold outlines", image: styleCartoon },
+    { name: "3D Render", description: "Polished 3D visualization with studio lighting", image: style3DRender },
+    { name: "Watercolor", description: "Artistic visuals with soft brushstrokes", image: styleWatercolor },
+    { name: "Minimalist", description: "Clean design with simple shapes and white space", image: styleMinimalist },
+    { name: "Cinematic", description: "Dramatic film quality composition", image: styleCinematic },
   ];
 
   return (
@@ -843,21 +850,41 @@ function StylesSection() {
             Choose the perfect look for your content. Every style is optimized for professional results.
           </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7" style={{ gap: "32px" }}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7" style={{ gap: "20px" }}>
           {styles.map((style) => (
             <div
               key={style.name}
-              className="p-4 text-center space-y-2 transition-all duration-200 cursor-pointer"
+              className="text-center transition-all duration-200 cursor-pointer overflow-hidden"
               style={{
                 border: "1px solid #E2E8F0",
                 borderRadius: "16px",
                 backgroundColor: "#FFFFFF",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#22D3EE"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#E2E8F0"; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#22D3EE";
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow = "0 12px 30px rgba(0,0,0,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#E2E8F0";
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+              data-testid={`card-style-${style.name.toLowerCase().replace(/\s/g, "-")}`}
             >
-              <h3 className="text-sm font-semibold" style={{ color: "#0F172A" }}>{style.name}</h3>
-              <p className="text-xs leading-relaxed" style={{ color: "#475569", lineHeight: 1.4 }}>{style.description}</p>
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={style.image}
+                  alt={style.name}
+                  className="w-full h-full object-cover transition-transform duration-300"
+                  onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = "scale(1.05)"; }}
+                  onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = "scale(1)"; }}
+                />
+              </div>
+              <div className="p-3 space-y-1">
+                <h3 className="text-sm font-semibold" style={{ color: "#0F172A" }}>{style.name}</h3>
+                <p className="text-xs leading-relaxed" style={{ color: "#475569", lineHeight: 1.4 }}>{style.description}</p>
+              </div>
             </div>
           ))}
         </div>
