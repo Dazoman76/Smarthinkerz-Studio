@@ -9,6 +9,8 @@ import timesetDataImg from "@assets/timeset_data_1772184316994.jpg";
 import lookingDownImg from "@assets/looking_down_49918d40-21fc-4f6b-84ba-f61688311d1a_1772184775446.jpg";
 import timeMachineImg2 from "@assets/time_2026-02-27_132116_1772184870867.png";
 import libraryImg from "@assets/library_1772185221264.jpg";
+import contentScalesImg from "@assets/download_1772185736859.jfif";
+import aiMediaEngineImg from "@assets/AI_Media_Engine_1772185877375.jpg";
 import {
   Zap,
   Upload,
@@ -297,7 +299,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
 function ProblemSection() {
   return (
     <section className="py-[100px]" style={{ backgroundColor: "#FFFFFF" }}>
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center space-y-6">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center space-y-8">
         <h2
           className="text-3xl sm:text-4xl font-bold"
           style={{ color: "#0F172A", lineHeight: 1.1 }}
@@ -307,6 +309,15 @@ function ProblemSection() {
         <p className="text-lg leading-relaxed" style={{ color: "#475569", lineHeight: 1.6 }}>
           Teams create structured content every day. Turning that content into visuals and videos takes time, designers, revisions, and coordination. Visual production becomes the bottleneck that slows learning, marketing, and training.
         </p>
+        <div className="max-w-2xl mx-auto">
+          <img
+            src={contentScalesImg}
+            alt="Content Scales Visual Production"
+            className="w-full h-auto rounded-2xl"
+            style={{ boxShadow: "0 12px 30px rgba(0,0,0,0.08)" }}
+            data-testid="img-content-scales"
+          />
+        </div>
       </div>
     </section>
   );
@@ -315,7 +326,7 @@ function ProblemSection() {
 function SolutionSection() {
   return (
     <section className="py-[100px]" style={{ backgroundColor: "#F8FAFC" }}>
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center space-y-6">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center space-y-8">
         <h2
           className="text-3xl sm:text-4xl font-bold"
           style={{ color: "#0F172A", lineHeight: 1.1 }}
@@ -325,6 +336,15 @@ function SolutionSection() {
         <p className="text-lg font-semibold" style={{ color: "#475569", lineHeight: 1.6 }}>
           Upload once and generate at scale.
         </p>
+        <div className="max-w-2xl mx-auto">
+          <img
+            src={aiMediaEngineImg}
+            alt="AI Media Engine for Structured Content"
+            className="w-full h-auto rounded-2xl"
+            style={{ boxShadow: "0 12px 30px rgba(0,0,0,0.08)" }}
+            data-testid="img-ai-media-engine"
+          />
+        </div>
         <p style={{ color: "#475569", lineHeight: 1.6 }}>
           Smarthinkerz Studio automatically extracts sections, understands context, generates professional images, creates HD videos per section, maintains style consistency, and processes hundreds of sections reliably.
         </p>
