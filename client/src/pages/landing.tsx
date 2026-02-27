@@ -5,6 +5,7 @@ import { useLocation } from "wouter";
 import logoImage from "@assets/smarthinkerzstudio__1772109413138.gif";
 import logoNoBk from "@assets/logo_no_bk_1772176208956.png";
 import sarahMitchellVideo from "@assets/Sarah_Mitchell_1772176519292.mp4";
+import timesetDataImg from "@assets/timeset_data_1772184316994.jpg";
 import {
   Zap,
   Upload,
@@ -44,7 +45,7 @@ import dashboardImg from "@assets/Dashboard_b02c1996-6b6a-4580-bd3e-95a54e79f941
 import integrationImg from "@assets/Integration-Ready_1772106673102.jpg";
 
 const sampleImages = [
-  { src: "/generated/images/day_14.png", style: "Photorealistic" },
+  { src: timesetDataImg, style: "Photorealistic" },
   { src: "/generated/images/day_3.png", style: "Illustrated" },
   { src: "/generated/images/day_5.png", style: "Photorealistic" },
   { src: "/generated/images/day_7.png", style: "Illustrated" },
@@ -1631,8 +1632,15 @@ function TestimonialVideoCard() {
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
     if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.play().catch(() => {});
+      videoRef.current.muted = false;
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(() => {
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
+      });
     }
   }, []);
 
@@ -1648,7 +1656,7 @@ function TestimonialVideoCard() {
 
   const handleClick = useCallback(() => {
     if (videoRef.current) {
-      if (isPlaying) {
+      if (isPlaying && !videoRef.current.muted) {
         videoRef.current.muted = true;
         videoRef.current.pause();
         setIsPlaying(false);
@@ -1689,6 +1697,7 @@ function TestimonialVideoCard() {
             preload="metadata"
             className="w-full h-full object-cover"
             style={{
+              objectPosition: "center 70%",
               filter: isHovered ? "brightness(1.05)" : "brightness(1)",
               transition: "filter 0.3s ease",
             }}
