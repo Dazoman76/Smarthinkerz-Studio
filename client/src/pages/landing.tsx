@@ -19,6 +19,7 @@ import style3DRender from "@assets/Polished_3D_visualiz_1772204337727.png";
 import styleWatercolor from "@assets/Watercolor-2_1772204337729.jpg";
 import styleMinimalist from "@assets/Minimalist_Clean_design_1772204337726.jpg";
 import styleCinematic from "@assets/Cinematic_dramatic_film_1772204337724.jpg";
+import transparentLogo from "@assets/Transperent_logo_1772222553233.png";
 import {
   Zap,
   Upload,
@@ -2027,7 +2028,7 @@ function FooterSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
             <div className="flex items-start">
-              <img src={logoNoBk} alt="Smarthinkerz Studio" className="h-24 w-auto" data-testid="img-footer-logo" />
+              <img src={transparentLogo} alt="Smarthinkerz Studio" className="h-24 w-auto" data-testid="img-footer-logo" />
             </div>
             <p className="text-sm leading-relaxed" style={{ color: "#9CA3AF", lineHeight: 1.6 }}>
               Turn lessons, posts, and campaigns into stunning media automatically. Your AI powered creative partner.
@@ -2177,7 +2178,7 @@ export default function Landing() {
       >
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
           <div className="flex items-center shrink-0">
-            <video src="/generated/media/logo_video_transparent.webm" autoPlay loop muted playsInline className="h-16 w-auto" />
+            <img src={transparentLogo} alt="Smarthinkerz Studio" className="h-16 w-auto" data-testid="img-nav-logo" />
           </div>
           <div className="hidden md:flex flex-1 justify-center px-4">
             <span
