@@ -300,6 +300,8 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   const [currentImage, setCurrentImage] = useState(0);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
   const { enabled: hoverPreviewsEnabled } = useHoverPreview();
+  const [heroPlaying, setHeroPlaying] = useState(false);
+  const [heroMuted, setHeroMuted] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -307,6 +309,29 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
     }, 3000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleHeroClick = useCallback(() => {
+    if (!heroVideoRef.current) return;
+    if (!hoverPreviewsEnabled) {
+      if (heroPlaying) {
+        if (heroMuted) {
+          heroVideoRef.current.muted = false;
+          setHeroMuted(false);
+        } else {
+          heroVideoRef.current.pause();
+          heroVideoRef.current.muted = true;
+          setHeroPlaying(false);
+          setHeroMuted(true);
+        }
+      } else {
+        heroVideoRef.current.currentTime = 0;
+        heroVideoRef.current.muted = true;
+        setHeroMuted(true);
+        heroVideoRef.current.play().catch(() => {});
+        setHeroPlaying(true);
+      }
+    }
+  }, [hoverPreviewsEnabled, heroPlaying, heroMuted]);
 
   return (
     <section
@@ -370,21 +395,26 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
               </p>
             </div>
             <div
-              className="rounded-xl overflow-hidden max-w-lg cursor-pointer"
+              className="rounded-xl overflow-hidden max-w-lg cursor-pointer relative"
               style={{ boxShadow: "0 12px 30px rgba(0,0,0,0.3)" }}
               onMouseEnter={() => {
                 if (heroVideoRef.current && hoverPreviewsEnabled) {
                   heroVideoRef.current.currentTime = 0;
                   heroVideoRef.current.muted = false;
                   heroVideoRef.current.play().catch(() => {});
+                  setHeroPlaying(true);
+                  setHeroMuted(false);
                 }
               }}
               onMouseLeave={() => {
-                if (heroVideoRef.current) {
+                if (heroVideoRef.current && hoverPreviewsEnabled) {
                   heroVideoRef.current.pause();
                   heroVideoRef.current.muted = true;
+                  setHeroPlaying(false);
+                  setHeroMuted(true);
                 }
               }}
+              onClick={handleHeroClick}
             >
               <video
                 ref={heroVideoRef}
@@ -395,6 +425,34 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
                 className="w-full h-auto"
                 data-testid="video-hero-showcase"
               />
+              {!hoverPreviewsEnabled && !heroPlaying && (
+                <div
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
+                >
+                  <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: "rgba(255,255,255,0.9)" }}
+                  >
+                    <div
+                      className="w-0 h-0 ml-1"
+                      style={{
+                        borderTop: "8px solid transparent",
+                        borderBottom: "8px solid transparent",
+                        borderLeft: "14px solid #0F172A",
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+              {!hoverPreviewsEnabled && heroPlaying && heroMuted && (
+                <div
+                  className="absolute bottom-3 right-3 px-3 py-1.5 rounded-lg text-xs font-semibold"
+                  style={{ backgroundColor: "rgba(0,0,0,0.6)", color: "#FFFFFF" }}
+                >
+                  Click for sound
+                </div>
+              )}
             </div>
             <div className="flex flex-col sm:flex-row gap-5">
               <Button
@@ -552,6 +610,7 @@ function SolutionVideoCard() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const { enabled: hoverPreviewsEnabled } = useHoverPreview();
 
   const handleMouseEnter = useCallback(() => {
@@ -560,10 +619,12 @@ function SolutionVideoCard() {
       videoRef.current.muted = false;
       videoRef.current.play().then(() => {
         setIsPlaying(true);
+        setIsMuted(false);
       }).catch(() => {
         if (videoRef.current) {
           videoRef.current.muted = true;
           videoRef.current.play().catch(() => {});
+          setIsMuted(true);
         }
       });
     }
@@ -571,27 +632,54 @@ function SolutionVideoCard() {
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-    setIsPlaying(false);
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+    if (hoverPreviewsEnabled) {
+      setIsPlaying(false);
+      setIsMuted(true);
+      if (videoRef.current) {
+        videoRef.current.muted = true;
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
     }
-  }, []);
+  }, [hoverPreviewsEnabled]);
 
   const handleClick = useCallback(() => {
-    if (videoRef.current) {
+    if (!videoRef.current) return;
+    if (!hoverPreviewsEnabled) {
+      if (isPlaying) {
+        if (isMuted) {
+          videoRef.current.muted = false;
+          setIsMuted(false);
+        } else {
+          videoRef.current.pause();
+          videoRef.current.muted = true;
+          setIsPlaying(false);
+          setIsMuted(true);
+        }
+      } else {
+        videoRef.current.currentTime = 0;
+        videoRef.current.muted = true;
+        setIsMuted(true);
+        videoRef.current.play().catch(() => {});
+        setIsPlaying(true);
+      }
+    } else {
       if (isPlaying && !videoRef.current.muted) {
         videoRef.current.muted = true;
         videoRef.current.pause();
         setIsPlaying(false);
+        setIsMuted(true);
       } else {
         videoRef.current.muted = false;
         videoRef.current.play().catch(() => {});
         setIsPlaying(true);
+        setIsMuted(false);
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, isMuted, hoverPreviewsEnabled]);
+
+  const showPlayButton = hoverPreviewsEnabled ? !isHovered : !isPlaying;
+  const showClickForSound = hoverPreviewsEnabled ? (isHovered && !isPlaying) : (isPlaying && isMuted);
 
   return (
     <div
@@ -621,7 +709,7 @@ function SolutionVideoCard() {
             transition: "filter 0.3s ease",
           }}
         />
-        {!isHovered && (
+        {showPlayButton && (
           <div
             className="absolute inset-0 flex items-center justify-center"
             style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
@@ -641,7 +729,7 @@ function SolutionVideoCard() {
             </div>
           </div>
         )}
-        {isHovered && !isPlaying && (
+        {showClickForSound && (
           <div
             className="absolute bottom-3 right-3 px-3 py-1.5 rounded-lg text-xs font-semibold"
             style={{ backgroundColor: "rgba(0,0,0,0.6)", color: "#FFFFFF" }}
@@ -1996,6 +2084,7 @@ function TestimonialVideoCard() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const { enabled: hoverPreviewsEnabled } = useHoverPreview();
 
   const handleMouseEnter = useCallback(() => {
@@ -2004,10 +2093,12 @@ function TestimonialVideoCard() {
       videoRef.current.muted = false;
       videoRef.current.play().then(() => {
         setIsPlaying(true);
+        setIsMuted(false);
       }).catch(() => {
         if (videoRef.current) {
           videoRef.current.muted = true;
           videoRef.current.play().catch(() => {});
+          setIsMuted(true);
         }
       });
     }
@@ -2015,27 +2106,54 @@ function TestimonialVideoCard() {
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-    setIsPlaying(false);
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+    if (hoverPreviewsEnabled) {
+      setIsPlaying(false);
+      setIsMuted(true);
+      if (videoRef.current) {
+        videoRef.current.muted = true;
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
     }
-  }, []);
+  }, [hoverPreviewsEnabled]);
 
   const handleClick = useCallback(() => {
-    if (videoRef.current) {
+    if (!videoRef.current) return;
+    if (!hoverPreviewsEnabled) {
+      if (isPlaying) {
+        if (isMuted) {
+          videoRef.current.muted = false;
+          setIsMuted(false);
+        } else {
+          videoRef.current.pause();
+          videoRef.current.muted = true;
+          setIsPlaying(false);
+          setIsMuted(true);
+        }
+      } else {
+        videoRef.current.currentTime = 0;
+        videoRef.current.muted = true;
+        setIsMuted(true);
+        videoRef.current.play().catch(() => {});
+        setIsPlaying(true);
+      }
+    } else {
       if (isPlaying && !videoRef.current.muted) {
         videoRef.current.muted = true;
         videoRef.current.pause();
         setIsPlaying(false);
+        setIsMuted(true);
       } else {
         videoRef.current.muted = false;
         videoRef.current.play().catch(() => {});
         setIsPlaying(true);
+        setIsMuted(false);
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, isMuted, hoverPreviewsEnabled]);
+
+  const showPlayButton = hoverPreviewsEnabled ? !isHovered : !isPlaying;
+  const showClickForSound = hoverPreviewsEnabled ? (isHovered && !isPlaying) : (isPlaying && isMuted);
 
   return (
     <div
@@ -2072,7 +2190,7 @@ function TestimonialVideoCard() {
             }}
             data-testid="video-testimonial-educator"
           />
-          {!isHovered && (
+          {showPlayButton && (
             <div
               className="absolute inset-0 flex items-center justify-center"
               style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
@@ -2092,7 +2210,7 @@ function TestimonialVideoCard() {
               </div>
             </div>
           )}
-          {isHovered && !isPlaying && (
+          {showClickForSound && (
             <div
               className="absolute bottom-2 right-2 px-2 py-1 rounded text-[10px] font-semibold"
               style={{ backgroundColor: "rgba(0,0,0,0.6)", color: "#FFFFFF" }}
