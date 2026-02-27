@@ -110,22 +110,24 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
         ))}
       </div>
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-[80px] pb-[140px] relative z-10">
+        <div className="text-center mb-12">
+          <h1
+            className="text-[32px] sm:text-[42px] lg:text-[56px] font-bold text-white"
+            style={{ lineHeight: 1.1 }}
+            data-testid="heading-hero"
+          >
+            Turn Structured Content<br />
+            Into Production Ready Media Instantly
+          </h1>
+          <p
+            className="text-[20px] font-light max-w-[720px] mx-auto mt-6"
+            style={{ color: "#E2E8F0", lineHeight: 1.6, textAlign: "justify" }}
+          >
+            Upload lesson plans, training manuals, marketing briefs, or manuscripts. Smarthinkerz Studio transforms every section into high resolution visuals and HD video at scale.
+          </p>
+        </div>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <h1
-              className="text-[32px] sm:text-[42px] lg:text-[56px] font-bold text-white text-center"
-              style={{ lineHeight: 1.1 }}
-              data-testid="heading-hero"
-            >
-              Turn Structured Content<br />
-              Into Production Ready Media Instantly
-            </h1>
-            <p
-              className="text-[20px] font-light max-w-[720px]"
-              style={{ color: "#E2E8F0", lineHeight: 1.6 }}
-            >
-              Upload lesson plans, training manuals, marketing briefs, or manuscripts. Smarthinkerz Studio transforms every section into high resolution visuals and HD video at scale.
-            </p>
             <div className="space-y-1 text-[18px]" style={{ color: "#F1F5F9" }}>
               <p className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5" style={{ color: "#10B981" }} />
