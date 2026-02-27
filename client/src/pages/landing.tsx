@@ -113,11 +113,12 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <h1
-              className="text-[32px] sm:text-[42px] lg:text-[56px] font-bold text-white"
+              className="text-[32px] sm:text-[42px] lg:text-[56px] font-bold text-white text-center"
               style={{ lineHeight: 1.1 }}
               data-testid="heading-hero"
             >
-              Turn Structured Content Into Production Ready Media Instantly
+              Turn Structured Content<br />
+              Into Production Ready Media Instantly
             </h1>
             <p
               className="text-[20px] font-light max-w-[720px]"
