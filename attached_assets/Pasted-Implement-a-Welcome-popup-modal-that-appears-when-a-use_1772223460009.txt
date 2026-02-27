@@ -1,0 +1,59 @@
+Implement a “Welcome” popup modal that appears when a user first lands on the homepage.
+
+Goal
+Inform visitors that the website is interactive and that some images play a short video preview on hover.
+
+Popup Content
+Title: Welcome to Smarthinkerz Studio
+Body: Hover over select visuals to preview short video motion.
+Footnote: Use Disable previews if you prefer a static experience.
+Buttons:
+1) Got it
+2) Disable previews
+
+Behavior Requirements
+1) Show the popup automatically on first visit only.
+   - Use localStorage key: smarthinkerz_welcome_seen = "true"
+   - If key exists, do not show the popup again.
+2) Add a slight delay before showing: 900ms after page load.
+3) The modal should have a close icon X in the top right that behaves the same as “Got it”.
+4) Clicking outside the modal closes it and behaves the same as “Got it”.
+5) Pressing Escape closes it and behaves the same as “Got it”.
+6) The “Got it” button:
+   - Closes the modal
+   - Sets localStorage smarthinkerz_welcome_seen = "true"
+   - Leaves hover video previews enabled
+7) The “Disable previews” button:
+   - Closes the modal
+   - Sets localStorage smarthinkerz_welcome_seen = "true"
+   - Sets localStorage smarthinkerz_hover_previews = "off"
+   - Immediately disables all hover video autoplay behavior across the site
+
+Hover Video Preview Requirements
+1) Some visual cards contain a hidden muted looping MP4 preview (or short WebM).
+2) On desktop hover:
+   - If smarthinkerz_hover_previews is not "off", fade from image to video and play.
+   - On mouse leave, pause video and fade back to image.
+3) On mobile:
+   - Do not autoplay on hover.
+   - Show a Play icon overlay and on tap open the video in a lightweight inline modal or expand within the card.
+4) Add a small Play icon overlay on any card that supports hover video preview.
+5) Add a global toggle in the footer or settings area:
+   - Label: Hover previews
+   - Options: On / Off
+   - Persist using localStorage smarthinkerz_hover_previews.
+
+Design Requirements
+1) Modal style must match the site theme:
+   - Rounded corners, soft shadow, clean spacing, modern SaaS look.
+2) Keep the text minimal and readable.
+3) Use primary CTA styling for “Got it” and secondary outline styling for “Disable previews”.
+4) Ensure accessibility:
+   - Focus trap inside modal
+   - ARIA role="dialog" and aria-modal="true"
+   - Proper button labels
+
+Deliverables
+- Provide the HTML/CSS/JS (or React component) implementation for the welcome popup modal.
+- Implement hover video preview behavior for supported cards.
+- Implement persistence via localStorage and the global toggle.

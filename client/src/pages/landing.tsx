@@ -43,8 +43,222 @@ import {
   PenTool,
   BarChart3,
   Quote,
+  X,
+  Mail,
+  Globe,
+  Shield,
+  FileText,
+  CreditCard,
+  ChevronRight,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, createContext, useContext } from "react";
+
+const HoverPreviewContext = createContext<{ enabled: boolean; toggle: () => void }>({ enabled: true, toggle: () => {} });
+
+function useHoverPreview() {
+  return useContext(HoverPreviewContext);
+}
+
+function HoverPreviewProvider({ children }: { children: React.ReactNode }) {
+  const [enabled, setEnabled] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("smarthinkerz_hover_previews") !== "off";
+    }
+    return true;
+  });
+
+  const toggle = useCallback(() => {
+    setEnabled((prev) => {
+      const next = !prev;
+      localStorage.setItem("smarthinkerz_hover_previews", next ? "on" : "off");
+      return next;
+    });
+  }, []);
+
+  return (
+    <HoverPreviewContext.Provider value={{ enabled, toggle }}>
+      {children}
+    </HoverPreviewContext.Provider>
+  );
+}
+
+function WelcomeModal() {
+  const [show, setShow] = useState(false);
+  const { toggle } = useHoverPreview();
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (localStorage.getItem("smarthinkerz_welcome_seen") === "true") return;
+    const timer = setTimeout(() => setShow(true), 900);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!show) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleGotIt();
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [show]);
+
+  const handleGotIt = useCallback(() => {
+    localStorage.setItem("smarthinkerz_welcome_seen", "true");
+    setShow(false);
+  }, []);
+
+  const handleDisable = useCallback(() => {
+    localStorage.setItem("smarthinkerz_welcome_seen", "true");
+    localStorage.setItem("smarthinkerz_hover_previews", "off");
+    toggle();
+    setShow(false);
+  }, [toggle]);
+
+  if (!show) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center"
+      style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
+      onClick={(e) => { if (e.target === e.currentTarget) handleGotIt(); }}
+      data-testid="modal-welcome-overlay"
+    >
+      <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Welcome to Smarthinkerz Studio"
+        className="relative w-full max-w-md mx-4"
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderRadius: "20px",
+          padding: "36px",
+          boxShadow: "0 25px 60px rgba(0,0,0,0.3)",
+        }}
+        data-testid="modal-welcome"
+      >
+        <button
+          className="absolute top-4 right-4 p-1 rounded-full transition-colors"
+          style={{ color: "#94A3B8" }}
+          onClick={handleGotIt}
+          aria-label="Close"
+          data-testid="button-welcome-close"
+          onMouseEnter={(e) => { e.currentTarget.style.color = "#0F172A"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "#94A3B8"; }}
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <div className="text-center space-y-5">
+          <div
+            className="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center"
+            style={{ backgroundColor: "#EFF6FF" }}
+          >
+            <Play className="w-7 h-7" style={{ color: "#2563EB" }} />
+          </div>
+          <h2 className="text-xl font-bold" style={{ color: "#0F172A" }}>
+            Welcome to Smarthinkerz Studio
+          </h2>
+          <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
+            Hover over select visuals to preview short video motion.
+          </p>
+          <p className="text-xs" style={{ color: "#94A3B8" }}>
+            Use <span className="font-medium">Disable previews</span> if you prefer a static experience.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <Button
+              className="flex-1 font-semibold border-0"
+              style={{
+                backgroundColor: "#2563EB",
+                color: "#FFFFFF",
+                borderRadius: "12px",
+                padding: "12px 24px",
+              }}
+              onClick={handleGotIt}
+              data-testid="button-welcome-got-it"
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1D4ED8"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#2563EB"; }}
+            >
+              Got it
+            </Button>
+            <Button
+              className="flex-1 font-semibold bg-transparent"
+              style={{
+                border: "2px solid #E2E8F0",
+                color: "#475569",
+                borderRadius: "12px",
+                padding: "12px 24px",
+              }}
+              onClick={handleDisable}
+              data-testid="button-welcome-disable"
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#CBD5E1"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#E2E8F0"; }}
+            >
+              Disable previews
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FooterPopupModal({ isOpen, onClose, title, children }: { isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleEscape);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[90] flex items-center justify-center"
+      style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        className="relative w-full max-w-2xl mx-4 max-h-[80vh] overflow-y-auto"
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderRadius: "20px",
+          padding: "36px",
+          boxShadow: "0 25px 60px rgba(0,0,0,0.3)",
+        }}
+      >
+        <button
+          className="absolute top-4 right-4 p-1 rounded-full transition-colors sticky float-right"
+          style={{ color: "#94A3B8", top: 0 }}
+          onClick={onClose}
+          aria-label="Close"
+          onMouseEnter={(e) => { e.currentTarget.style.color = "#0F172A"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "#94A3B8"; }}
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <h2 className="text-2xl font-bold mb-6" style={{ color: "#0F172A" }}>{title}</h2>
+        <div className="prose-sm" style={{ color: "#475569", lineHeight: 1.7 }}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
 import educationImg from "@assets/lesson_upload_image_1772019754863.jpg";
 import contentCreatorImg from "@assets/content_creator_image_1772019754862.jpg";
 import businessesImg from "@assets/Training_and_onboarding_1772019754860.jpg";
@@ -84,6 +298,7 @@ const accentColors = {
 function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
   const [currentImage, setCurrentImage] = useState(0);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const { enabled: hoverPreviewsEnabled } = useHoverPreview();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -157,7 +372,7 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
               className="rounded-xl overflow-hidden max-w-lg cursor-pointer"
               style={{ boxShadow: "0 12px 30px rgba(0,0,0,0.3)" }}
               onMouseEnter={() => {
-                if (heroVideoRef.current) {
+                if (heroVideoRef.current && hoverPreviewsEnabled) {
                   heroVideoRef.current.currentTime = 0;
                   heroVideoRef.current.muted = false;
                   heroVideoRef.current.play().catch(() => {});
@@ -336,10 +551,11 @@ function SolutionVideoCard() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { enabled: hoverPreviewsEnabled } = useHoverPreview();
 
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
-    if (videoRef.current) {
+    if (videoRef.current && hoverPreviewsEnabled) {
       videoRef.current.muted = false;
       videoRef.current.play().then(() => {
         setIsPlaying(true);
@@ -350,7 +566,7 @@ function SolutionVideoCard() {
         }
       });
     }
-  }, []);
+  }, [hoverPreviewsEnabled]);
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
@@ -1778,12 +1994,12 @@ function PricingSection({ onGetStarted }: { onGetStarted: () => void }) {
 function TestimonialVideoCard() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-
   const [isPlaying, setIsPlaying] = useState(false);
+  const { enabled: hoverPreviewsEnabled } = useHoverPreview();
 
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
-    if (videoRef.current) {
+    if (videoRef.current && hoverPreviewsEnabled) {
       videoRef.current.muted = false;
       videoRef.current.play().then(() => {
         setIsPlaying(true);
@@ -1794,7 +2010,7 @@ function TestimonialVideoCard() {
         }
       });
     }
-  }, []);
+  }, [hoverPreviewsEnabled]);
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
@@ -2015,147 +2231,256 @@ function CTASection({ onGetStarted }: { onGetStarted: () => void }) {
   );
 }
 
-function FooterSection() {
+function FooterLink({ children, onClick, testId }: { children: React.ReactNode; onClick: () => void; testId: string }) {
   return (
-    <footer
-      className="py-12"
-      style={{
-        backgroundColor: "#0F172A",
-        borderTop: "1px solid #1F2937",
-      }}
-    >
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          <div className="space-y-3">
-            <div className="flex items-start">
-              <img src={transparentLogo} alt="Smarthinkerz Studio" className="h-24 w-auto" data-testid="img-footer-logo" />
+    <li>
+      <button
+        className="transition-colors text-left"
+        style={{ color: "#9CA3AF" }}
+        data-testid={testId}
+        onClick={onClick}
+        onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+      >
+        {children}
+      </button>
+    </li>
+  );
+}
+
+function FooterSection() {
+  const [activePopup, setActivePopup] = useState<string | null>(null);
+  const { enabled: hoverPreviewsEnabled, toggle: togglePreviews } = useHoverPreview();
+  const close = useCallback(() => setActivePopup(null), []);
+
+  return (
+    <>
+      <FooterPopupModal isOpen={activePopup === "use-cases"} onClose={close} title="Use Cases">
+        <p className="mb-4">Smarthinkerz Studio transforms structured content into scalable visual media systems for education, enterprise, marketing, and publishing environments.</p>
+        <p className="mb-4">Smarthinkerz Studio is designed to eliminate the bottlenecks between structured documentation and visual production. Organizations across industries create large volumes of structured content every day. The challenge is not content creation. The challenge is converting that content into engaging, consistent, high quality visual media at scale.</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Education and Academic Institutions</h3>
+        <p className="mb-3">Educational institutions produce structured lesson plans, course modules, semester outlines, and instructional documentation on a continuous basis. Smarthinkerz Studio enables institutions to upload full lesson plans and automatically generate:</p>
+        <ul className="list-disc pl-5 mb-3 space-y-1"><li>Daily lesson visuals</li><li>Curriculum diagrams</li><li>Course thumbnails</li><li>Animated explainer segments</li><li>Visual summaries</li><li>Structured study guides</li></ul>
+        <p className="mb-3">Entire semesters can be transformed into production ready visual ecosystems in minutes instead of weeks.</p>
+        <p className="mb-4 text-sm" style={{ color: "#64748B" }}>Applicable to: Primary education, Secondary education, Higher education, Online academies, Corporate learning divisions</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Enterprise Training and Human Resources</h3>
+        <p className="mb-3">Organizations rely on internal documentation for onboarding, compliance, safety procedures, and operational consistency. Smarthinkerz Studio converts structured internal documentation into:</p>
+        <ul className="list-disc pl-5 mb-3 space-y-1"><li>Onboarding walkthrough visuals</li><li>Policy explanation videos</li><li>Compliance training sequences</li><li>Standard operating procedure summaries</li><li>Product knowledge visual systems</li></ul>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Marketing and Campaign Operations</h3>
+        <p className="mb-3">Marketing departments generate structured briefs, campaign outlines, scripts, and messaging frameworks. Smarthinkerz Studio transforms structured marketing documents into:</p>
+        <ul className="list-disc pl-5 mb-3 space-y-1"><li>Campaign visual rollouts</li><li>Ad creative systems</li><li>Social media content batches</li><li>Script to storyboard visualizations</li><li>Branded product explainer assets</li></ul>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Publishing and Content Development</h3>
+        <p className="mb-3">Authors, publishers, and content creators can convert manuscripts and structured content into scalable illustrated media.</p>
+        <ul className="list-disc pl-5 mb-3 space-y-1"><li>Chapter illustrations</li><li>Visual abstracts</li><li>Companion learning guides</li><li>Educational supplements</li></ul>
+      </FooterPopupModal>
+
+      <FooterPopupModal isOpen={activePopup === "api-docs"} onClose={close} title="API Documentation">
+        <p className="mb-4">The Smarthinkerz Studio API enables enterprise clients to integrate automated media generation directly into their operational systems.</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Architecture Overview</h3>
+        <p className="mb-3">The API supports:</p>
+        <ul className="list-disc pl-5 mb-3 space-y-1"><li>Structured document ingestion</li><li>Automated section parsing</li><li>Image generation endpoints</li><li>Video generation endpoints</li><li>Style selection parameters</li><li>Branding overlays</li><li>Batch export retrieval</li></ul>
+        <p className="mb-4">All endpoints operate over secure HTTPS connections and require authenticated access tokens.</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Authentication</h3>
+        <p className="mb-4">Enterprise API access requires secure token authentication. Tokens are managed through enterprise dashboards and can be rotated or revoked at any time.</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Supported Inputs</h3>
+        <p className="mb-3">PDF, DOCX, TXT, CSV, Markdown</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Supported Outputs</h3>
+        <p className="mb-3">PNG, JPG, MP4, ZIP archives</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Enterprise Features</h3>
+        <ul className="list-disc pl-5 mb-3 space-y-1"><li>White label deployment</li><li>Custom style configurations</li><li>Dedicated support</li><li>Service level agreements</li><li>Advanced usage analytics</li></ul>
+      </FooterPopupModal>
+
+      <FooterPopupModal isOpen={activePopup === "about"} onClose={close} title="About Smarthinkerz Studio">
+        <p className="mb-4">Smarthinkerz Studio is redefining how structured documents become scalable visual media infrastructure.</p>
+        <p className="mb-4">Smarthinkerz Studio was created to solve a structural inefficiency in digital production workflows. Organizations produce structured documentation daily. However, converting that documentation into professional visual media requires manual design processes that limit scale and increase cost.</p>
+        <p className="mb-4">Our platform replaces manual production with automated media infrastructure.</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Mission</h3>
+        <p className="mb-4">To eliminate visual production bottlenecks and convert structured content into scalable media systems.</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Vision</h3>
+        <p className="mb-4">To enable any document to instantly become high quality visual media without manual intervention.</p>
+        <h3 className="text-lg font-bold mt-6 mb-3" style={{ color: "#0F172A" }}>Differentiation</h3>
+        <p className="mb-4">Smarthinkerz Studio is not a single prompt creative tool. It is structured content automation infrastructure built for operational scale.</p>
+      </FooterPopupModal>
+
+      <FooterPopupModal isOpen={activePopup === "contact"} onClose={close} title="Contact Us">
+        <p className="mb-6">For support, partnerships, and enterprise inquiries.</p>
+        <div className="space-y-4 mb-8">
+          <div className="flex items-center gap-3">
+            <Mail className="w-5 h-5" style={{ color: "#2563EB" }} />
+            <a href="mailto:support@smarthinkerz.com" className="font-medium" style={{ color: "#2563EB" }}>support@smarthinkerz.com</a>
+          </div>
+          <div className="flex items-center gap-3">
+            <Globe className="w-5 h-5" style={{ color: "#2563EB" }} />
+            <a href="mailto:enterprise@smarthinkerz.com" className="font-medium" style={{ color: "#2563EB" }}>enterprise@smarthinkerz.com</a>
+          </div>
+        </div>
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold" style={{ color: "#0F172A" }}>Send us a message</h3>
+          <input type="text" placeholder="Your name" className="w-full px-4 py-3 text-sm rounded-xl" style={{ border: "1px solid #E2E8F0", outline: "none" }} data-testid="input-contact-name" />
+          <input type="email" placeholder="Your email" className="w-full px-4 py-3 text-sm rounded-xl" style={{ border: "1px solid #E2E8F0", outline: "none" }} data-testid="input-contact-email" />
+          <textarea placeholder="Your message" rows={4} className="w-full px-4 py-3 text-sm rounded-xl resize-none" style={{ border: "1px solid #E2E8F0", outline: "none" }} data-testid="input-contact-message" />
+          <button
+            className="w-full py-3 font-semibold text-sm rounded-xl"
+            style={{ backgroundColor: "#2563EB", color: "#FFFFFF" }}
+            data-testid="button-contact-submit"
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1D4ED8"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#2563EB"; }}
+          >
+            Send Message
+          </button>
+        </div>
+      </FooterPopupModal>
+
+      <FooterPopupModal isOpen={activePopup === "privacy"} onClose={close} title="Privacy Policy">
+        <p className="text-xs mb-4" style={{ color: "#94A3B8" }}>Last Updated: February 2026</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>1. Introduction</h3>
+        <p className="mb-3">This Privacy Policy governs the collection, use, processing, storage, and protection of personal data by Smarthinkerz Studio in connection with its website, platform, API services, and related offerings. By accessing or using the services, users acknowledge and agree to the practices described herein.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>2. Scope</h3>
+        <p className="mb-3">This policy applies globally to all users, including website visitors, account holders, API users, enterprise clients, and trial participants.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>3. Data Collection</h3>
+        <p className="mb-2">We may collect the following categories of data:</p>
+        <p className="font-semibold mb-1" style={{ color: "#0F172A" }}>Personal Identification Data</p>
+        <ul className="list-disc pl-5 mb-2 space-y-0.5"><li>Name</li><li>Email address</li><li>Company affiliation</li></ul>
+        <p className="font-semibold mb-1" style={{ color: "#0F172A" }}>Technical Data</p>
+        <ul className="list-disc pl-5 mb-2 space-y-0.5"><li>IP address</li><li>Device information</li><li>Browser type</li><li>Session logs</li></ul>
+        <p className="font-semibold mb-1" style={{ color: "#0F172A" }}>Usage Data</p>
+        <ul className="list-disc pl-5 mb-2 space-y-0.5"><li>Platform interaction logs</li><li>Feature usage statistics</li><li>Generation activity</li></ul>
+        <p className="font-semibold mb-1" style={{ color: "#0F172A" }}>Uploaded Content</p>
+        <ul className="list-disc pl-5 mb-3 space-y-0.5"><li>Documents</li><li>Branding assets</li><li>Structured content files</li></ul>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>4. Legal Basis</h3>
+        <p className="mb-3">Processing is performed under lawful bases including contractual necessity, legitimate interest, compliance with legal obligations, and user consent where applicable.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>5. Data Retention</h3>
+        <p className="mb-3">Data is retained only as long as necessary to provide services, comply with legal requirements, resolve disputes, and enforce agreements. Inactive accounts may be subject to data deletion protocols.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>6. Security Measures</h3>
+        <p className="mb-3">We implement encryption in transit, secure cloud hosting, access controls, monitoring systems, and administrative safeguards to protect user data.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>7. User Rights</h3>
+        <p className="mb-3">Users may request access, correction, deletion, restriction, objection, or portability of personal data subject to applicable laws. Requests may be submitted to privacy@smarthinkerz.com.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>8. International Transfers</h3>
+        <p className="mb-3">Data may be processed in jurisdictions outside the user's country. We implement safeguards consistent with international data protection standards.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>9. Updates</h3>
+        <p className="mb-3">We reserve the right to modify this Privacy Policy. Continued use constitutes acceptance.</p>
+      </FooterPopupModal>
+
+      <FooterPopupModal isOpen={activePopup === "terms"} onClose={close} title="Terms of Service">
+        <p className="text-xs mb-4" style={{ color: "#94A3B8" }}>Last Updated: February 2026</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>1. Acceptance</h3>
+        <p className="mb-3">By accessing or using Smarthinkerz Studio services, you agree to be bound by these Terms.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>2. Services</h3>
+        <p className="mb-3">Smarthinkerz Studio provides AI driven structured media generation services. We reserve the right to modify features at our discretion.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>3. User Responsibilities</h3>
+        <p className="mb-3">Users are responsible for safeguarding credentials and ensuring compliance with these Terms.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>4. Acceptable Use</h3>
+        <p className="mb-3">Users may not upload content that violates laws, infringes intellectual property, contains malicious code, or is harmful. Violation may result in suspension or termination.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>5. Intellectual Property</h3>
+        <p className="mb-3">Users retain ownership of uploaded content. Smarthinkerz Studio retains ownership of its software, algorithms, and infrastructure.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>6. Billing and Subscription</h3>
+        <p className="mb-3">Subscriptions renew automatically unless canceled. Failure to pay may result in suspension.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>7. Limitation of Liability</h3>
+        <p className="mb-3">To the maximum extent permitted by law, Smarthinkerz Studio shall not be liable for indirect or consequential damages. Total liability shall not exceed the amount paid in the previous twelve months.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>8. Indemnification</h3>
+        <p className="mb-3">Users agree to indemnify Smarthinkerz Studio from claims arising from misuse or violation.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>9. Termination</h3>
+        <p className="mb-3">We may suspend or terminate accounts that violate these Terms.</p>
+        <h3 className="text-base font-bold mt-4 mb-2" style={{ color: "#0F172A" }}>10. Governing Principles</h3>
+        <p className="mb-3">These Terms are governed by applicable international commercial law principles unless otherwise specified.</p>
+      </FooterPopupModal>
+
+      <FooterPopupModal isOpen={activePopup === "refund"} onClose={close} title="Refund Policy">
+        <p className="mb-4">Subscriptions may be canceled at any time.</p>
+        <p className="mb-3">Refunds may be granted for:</p>
+        <ul className="list-disc pl-5 mb-4 space-y-1"><li>Duplicate billing</li><li>Billing errors</li><li>Verified technical service failures</li></ul>
+        <p className="mb-3">Refund eligibility is evaluated case by case.</p>
+        <p>Enterprise agreements follow contractual refund terms.</p>
+      </FooterPopupModal>
+
+      <footer
+        className="py-12"
+        style={{
+          backgroundColor: "#0F172A",
+          borderTop: "1px solid #1F2937",
+        }}
+      >
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            <div className="space-y-3">
+              <div className="flex items-start">
+                <img src={transparentLogo} alt="Smarthinkerz Studio" className="h-24 w-auto" data-testid="img-footer-logo" />
+              </div>
+              <p className="text-sm leading-relaxed" style={{ color: "#9CA3AF", lineHeight: 1.6 }}>
+                Turn lessons, posts, and campaigns into stunning media automatically. Your AI powered creative partner.
+              </p>
             </div>
-            <p className="text-sm leading-relaxed" style={{ color: "#9CA3AF", lineHeight: 1.6 }}>
-              Turn lessons, posts, and campaigns into stunning media automatically. Your AI powered creative partner.
+            <div className="space-y-3">
+              <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Product</h4>
+              <ul className="space-y-2 text-sm">
+                <FooterLink testId="link-use-cases" onClick={() => setActivePopup("use-cases")}>Use Cases</FooterLink>
+                <li>
+                  <a
+                    href="#pricing"
+                    className="transition-colors"
+                    style={{ color: "#9CA3AF" }}
+                    data-testid="link-pricing"
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                  >
+                    Pricing
+                  </a>
+                </li>
+                <FooterLink testId="link-api-docs" onClick={() => setActivePopup("api-docs")}>API Docs</FooterLink>
+              </ul>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Company</h4>
+              <ul className="space-y-2 text-sm">
+                <FooterLink testId="link-about" onClick={() => setActivePopup("about")}>About</FooterLink>
+                <FooterLink testId="link-contact" onClick={() => setActivePopup("contact")}>Contact</FooterLink>
+                <li>
+                  <a
+                    href="/blog"
+                    className="transition-colors"
+                    style={{ color: "#9CA3AF" }}
+                    data-testid="link-blog"
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
+                  >
+                    Blog
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <FooterLink testId="link-privacy" onClick={() => setActivePopup("privacy")}>Privacy Policy</FooterLink>
+                <FooterLink testId="link-terms" onClick={() => setActivePopup("terms")}>Terms of Service</FooterLink>
+                <FooterLink testId="link-refund" onClick={() => setActivePopup("refund")}>Refund Policy</FooterLink>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: "1px solid #1F2937" }}>
+            <p className="text-sm" style={{ color: "#9CA3AF" }}>
+              Smart thinking, stunning media.
             </p>
-          </div>
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Product</h4>
-            <ul className="space-y-2 text-sm" style={{ color: "#9CA3AF" }}>
-              <li>
-                <a
-                  href="#use-cases"
-                  className="transition-colors"
-                  style={{ color: "#9CA3AF" }}
-                  data-testid="link-use-cases"
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
-                >
-                  Use Cases
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#pricing"
-                  className="transition-colors"
-                  style={{ color: "#9CA3AF" }}
-                  data-testid="link-pricing"
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
-                >
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="transition-colors"
-                  style={{ color: "#9CA3AF" }}
-                  data-testid="link-api-docs"
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
-                >
-                  API Docs
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Company</h4>
-            <ul className="space-y-2 text-sm" style={{ color: "#9CA3AF" }}>
-              <li>
-                <a
-                  href="#"
-                  className="transition-colors"
-                  style={{ color: "#9CA3AF" }}
-                  data-testid="link-about"
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="transition-colors"
-                  style={{ color: "#9CA3AF" }}
-                  data-testid="link-contact"
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
-                >
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/blog"
-                  className="transition-colors"
-                  style={{ color: "#9CA3AF" }}
-                  data-testid="link-blog"
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
-                >
-                  Blog
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-3">
-            <h4 className="font-semibold text-sm" style={{ color: "#FFFFFF" }}>Legal</h4>
-            <ul className="space-y-2 text-sm" style={{ color: "#9CA3AF" }}>
-              <li>
-                <a
-                  href="#"
-                  className="transition-colors"
-                  style={{ color: "#9CA3AF" }}
-                  data-testid="link-privacy"
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
-                >
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="transition-colors"
-                  style={{ color: "#9CA3AF" }}
-                  data-testid="link-terms"
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#9CA3AF"; }}
-                >
-                  Terms of Service
-                </a>
-              </li>
-            </ul>
+            <div className="flex items-center gap-4">
+              <button
+                className="flex items-center gap-2 text-xs transition-colors"
+                style={{ color: "#64748B" }}
+                onClick={togglePreviews}
+                data-testid="toggle-hover-previews"
+                onMouseEnter={(e) => { e.currentTarget.style.color = "#22D3EE"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "#64748B"; }}
+              >
+                {hoverPreviewsEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                Hover previews: {hoverPreviewsEnabled ? "On" : "Off"}
+              </button>
+              <p className="text-xs" style={{ color: "#64748B" }}>
+                &copy; {new Date().getFullYear()} Smarthinkerz Studio. All rights reserved.
+              </p>
+            </div>
           </div>
         </div>
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderTop: "1px solid #1F2937" }}>
-          <p className="text-sm" style={{ color: "#9CA3AF" }}>
-            Smart thinking, stunning media.
-          </p>
-          <p className="text-xs" style={{ color: "#64748B" }}>
-            &copy; {new Date().getFullYear()} Smarthinkerz Studio. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }
 
