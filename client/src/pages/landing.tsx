@@ -2794,11 +2794,15 @@ export default function Landing() {
       <HeroSection onGetStarted={handleGetStarted} />
       <ProblemSection />
       <SolutionSection />
+      <ShowcaseSection />
       <HowItWorksSection />
       <UseCasesSection />
       <StylesSection />
       <CompetitiveTable />
       <CostComparisonTable />
+      <FeaturesSection />
+      <CapabilitiesSection />
+      <WhyUpgradeTable />
       <PricingSection onGetStarted={handleGetStarted} />
       <TestimonialsSection />
       <CTASection onGetStarted={handleGetStarted} />
