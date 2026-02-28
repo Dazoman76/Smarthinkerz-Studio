@@ -52,6 +52,7 @@ import {
   ChevronRight,
   Volume2,
   VolumeX,
+  ScanLine,
 } from "lucide-react";
 import type React from "react";
 import { useState, useEffect, useRef, useCallback, createContext, useContext } from "react";
@@ -1211,13 +1212,21 @@ function HowItWorksSection() {
     },
     {
       step: "2",
+      title: "Structured Content Engine",
+      description:
+        "Your content is automatically standardized, organized, and prepared for high-quality output.",
+      icon: ScanLine,
+      expanded: true,
+    },
+    {
+      step: "3",
       title: "AI analyzes and generates",
       description:
         "Our engine extracts sections, understands context, and generates high resolution images and HD videos automatically.",
       icon: Sparkles,
     },
     {
-      step: "3",
+      step: "4",
       title: "Download and deploy",
       description:
         "Bulk export your media and deploy instantly into LMS platforms, social channels, presentations, or internal systems.",
@@ -1233,13 +1242,13 @@ function HowItWorksSection() {
             className="text-3xl sm:text-4xl font-bold"
             style={{ color: "#0F172A", lineHeight: 1.1 }}
           >
-            Three Simple Steps
+            How It Works
           </h2>
           <p className="mt-3 text-lg max-w-2xl mx-auto" style={{ color: "#475569" }}>
             Ready to download in minutes instead of weeks.
           </p>
         </div>
-        <div className="grid md:grid-cols-3" style={{ gap: "32px" }}>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4" style={{ gap: "24px" }}>
           {steps.map((item) => (
             <div
               key={item.step}
@@ -1251,6 +1260,7 @@ function HowItWorksSection() {
                 padding: "28px",
                 boxShadow: "0 6px 16px rgba(0,0,0,0.05)",
               }}
+              data-testid={`card-how-it-works-${item.step}`}
             >
               <span
                 className="text-[72px] font-bold absolute top-2 right-4"
@@ -1270,6 +1280,88 @@ function HowItWorksSection() {
               </p>
             </div>
           ))}
+        </div>
+
+        <div
+          className="mt-16"
+          style={{
+            backgroundColor: "#FFFFFF",
+            borderRadius: "20px",
+            border: "1px solid #E2E8F0",
+            padding: "40px",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+          }}
+          data-testid="section-structured-content-engine"
+        >
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className="w-10 h-10 flex items-center justify-center"
+                  style={{ backgroundColor: "#E0F2FE", borderRadius: "10px" }}
+                >
+                  <ScanLine className="w-5 h-5" style={{ color: "#2563EB" }} />
+                </div>
+                <h3 className="text-2xl font-bold" style={{ color: "#0F172A" }}>
+                  Structured Content Engine
+                </h3>
+              </div>
+              <p className="text-base mb-4" style={{ color: "#475569", lineHeight: 1.7 }}>
+                Before media is generated, your content needs structure.
+              </p>
+              <p className="text-base mb-6" style={{ color: "#475569", lineHeight: 1.7 }}>
+                The Structured Content Engine automatically standardizes, organizes, and prepares your documents for high-quality image and video output.
+              </p>
+              <p className="text-sm font-semibold mb-3" style={{ color: "#0F172A" }}>
+                Upload your Word, PDF, or structured document and the system will:
+              </p>
+              <ul className="space-y-2 mb-6">
+                {[
+                  "Normalize heading hierarchy",
+                  "Clean inconsistent spacing and formatting",
+                  "Standardize bullet structures",
+                  "Segment content into optimized sections",
+                  "Remove formatting noise",
+                  "Prepare documents for accurate visual extraction",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "#475569" }}>
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" style={{ color: "#10B981" }} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="space-y-6">
+              <p className="text-base" style={{ color: "#475569", lineHeight: 1.7 }}>
+                This ensures that every section of your content is media-ready before generation begins.
+              </p>
+              <div className="space-y-2">
+                {[
+                  "No manual cleanup.",
+                  "No reformatting.",
+                  "No structural errors affecting output quality.",
+                ].map((item, i) => (
+                  <p key={i} className="flex items-center gap-2 text-sm font-medium" style={{ color: "#0F172A" }}>
+                    <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: "#2563EB" }} />
+                    {item}
+                  </p>
+                ))}
+              </div>
+              <div
+                className="p-5"
+                style={{
+                  backgroundColor: "#F0F9FF",
+                  borderRadius: "14px",
+                  border: "1px solid #BAE6FD",
+                }}
+              >
+                <p className="text-sm font-semibold mb-1" style={{ color: "#0F172A" }}>Result</p>
+                <p className="text-sm" style={{ color: "#475569", lineHeight: 1.7 }}>
+                  Cleaner extraction, better visual consistency, and more reliable large-scale generation.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2700,18 +2792,14 @@ export default function Landing() {
       </nav>
 
       <HeroSection onGetStarted={handleGetStarted} />
-      <ShowcaseSection />
       <ProblemSection />
       <SolutionSection />
+      <HowItWorksSection />
       <UseCasesSection />
       <StylesSection />
-      <HowItWorksSection />
-      <FeaturesSection />
-      <CapabilitiesSection />
       <CompetitiveTable />
       <CostComparisonTable />
       <PricingSection onGetStarted={handleGetStarted} />
-      <WhyUpgradeTable />
       <TestimonialsSection />
       <CTASection onGetStarted={handleGetStarted} />
       <FooterSection />
