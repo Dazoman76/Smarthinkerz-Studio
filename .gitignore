@@ -9,3 +9,11 @@ vite.config.ts.*
 *.db-wal
 
 *.db-shm
+
+# Replit local state (never commit)
+.local/
+# SQLite temp files
+*.db
+*.db-shm
+*.db-wal
+
