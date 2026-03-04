@@ -1,0 +1,415 @@
+[
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Transperent_logo_1772222553233.png",
+        "alt": "Smarthinkerz Studio",
+        "class": "h-16 w-auto",
+        "parentSection": "flex items-center shrink-0"
+    },
+    {
+        "tag": "video",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/media/smarthinkerz_hero.mp4",
+        "alt": null,
+        "class": "w-full h-auto",
+        "parentSection": "rounded-xl overflow-hidden max-w-lg cursor-pointer relative"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/timeset_data_1772184316994.jpg",
+        "alt": "Photorealistic sample 1",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-100",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_3.png",
+        "alt": "Illustrated sample 2",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_5.png",
+        "alt": "Photorealistic sample 3",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_7.png",
+        "alt": "Illustrated sample 4",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/looking_down_49918d40-21fc-4f6b-84ba-f61688311d1a_1772184775446.jpg",
+        "alt": "Photorealistic sample 5",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_11.png",
+        "alt": "Illustrated sample 6",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_2.png",
+        "alt": "Photorealistic sample 7",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/library_1772185221264.jpg",
+        "alt": "Illustrated sample 8",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_6.png",
+        "alt": "Photorealistic sample 9",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_8.png",
+        "alt": "Illustrated sample 10",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/time_2026-02-27_132116_1772184870867.png",
+        "alt": "Photorealistic sample 11",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_12.png",
+        "alt": "Illustrated sample 12",
+        "class": "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0",
+        "parentSection": "relative aspect-video bg-[#1E293B]"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/timeset_data_1772184316994.jpg",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "w-8 h-8 overflow-hidden cursor-pointer transition-all ring-2 scale-110"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_3.png",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "w-8 h-8 overflow-hidden cursor-pointer transition-all opacity-70"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_5.png",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "w-8 h-8 overflow-hidden cursor-pointer transition-all opacity-70"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_7.png",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "w-8 h-8 overflow-hidden cursor-pointer transition-all opacity-70"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/looking_down_49918d40-21fc-4f6b-84ba-f61688311d1a_1772184775446.jpg",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "w-8 h-8 overflow-hidden cursor-pointer transition-all opacity-70"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_11.png",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "w-8 h-8 overflow-hidden cursor-pointer transition-all opacity-70"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/download_1772185736859.jfif",
+        "alt": "Content Scales Visual Production",
+        "class": "w-full h-auto rounded-2xl",
+        "parentSection": "max-w-2xl mx-auto"
+    },
+    {
+        "tag": "video",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/2-AI_Media_Engine_1772186482382.mp4",
+        "alt": null,
+        "class": "w-full h-auto",
+        "parentSection": "relative"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/timeset_data_1772184316994.jpg",
+        "alt": "Photorealistic - Sample 1",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_3.png",
+        "alt": "Illustrated - Sample 2",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_5.png",
+        "alt": "Photorealistic - Sample 3",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_7.png",
+        "alt": "Illustrated - Sample 4",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/looking_down_49918d40-21fc-4f6b-84ba-f61688311d1a_1772184775446.jpg",
+        "alt": "Photorealistic - Sample 5",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_11.png",
+        "alt": "Illustrated - Sample 6",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_2.png",
+        "alt": "Photorealistic - Sample 7",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/library_1772185221264.jpg",
+        "alt": "Illustrated - Sample 8",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_6.png",
+        "alt": "Photorealistic - Sample 9",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_8.png",
+        "alt": "Illustrated - Sample 10",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/time_2026-02-27_132116_1772184870867.png",
+        "alt": "Photorealistic - Sample 11",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_12.png",
+        "alt": "Illustrated - Sample 12",
+        "class": "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500",
+        "parentSection": "group relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "video",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/media/education_usecase.mp4",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-[16/10] overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/content_creator_image_1772019754862.jpg",
+        "alt": "Content Creators",
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-[16/10] overflow-hidden"
+    },
+    {
+        "tag": "video",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/media/onboarding_business.mp4",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-[16/10] overflow-hidden"
+    },
+    {
+        "tag": "video",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/media/marketers_usecase.mp4",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-[16/10] overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/3_Authors_and_Publishers_1772019754858.jpg",
+        "alt": "Authors & Publishers",
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-[16/10] overflow-hidden"
+    },
+    {
+        "tag": "video",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/media/your_usecase.mp4",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-[16/10] overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Ultra_realistic_photography_1772204337728.jfif",
+        "alt": "Photorealistic",
+        "class": "w-full h-full object-cover transition-transform duration-300",
+        "parentSection": "aspect-square overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/illiustrater_digital_74a87921-c9ee-47a4-a70d-f4fdaa35b973_1772204337725.jpg",
+        "alt": "Illustration",
+        "class": "w-full h-full object-cover transition-transform duration-300",
+        "parentSection": "aspect-square overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/cartoon_1772204337722.jpg",
+        "alt": "Cartoon",
+        "class": "w-full h-full object-cover transition-transform duration-300",
+        "parentSection": "aspect-square overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Polished_3D_visualiz_1772204337727.png",
+        "alt": "3D Render",
+        "class": "w-full h-full object-cover transition-transform duration-300",
+        "parentSection": "aspect-square overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Watercolor-2_1772204337729.jpg",
+        "alt": "Watercolor",
+        "class": "w-full h-full object-cover transition-transform duration-300",
+        "parentSection": "aspect-square overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Minimalist_Clean_design_1772204337726.jpg",
+        "alt": "Minimalist",
+        "class": "w-full h-full object-cover transition-transform duration-300",
+        "parentSection": "aspect-square overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Cinematic_dramatic_film_1772204337724.jpg",
+        "alt": "Cinematic",
+        "class": "w-full h-full object-cover transition-transform duration-300",
+        "parentSection": "aspect-square overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/IMG_6414_1772099235676.jpeg",
+        "alt": "Bulk Content Uploads",
+        "class": "w-full h-40 object-cover object-center",
+        "parentSection": "p-6 space-y-4"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/IMG_6413_1772099055969.jpeg",
+        "alt": "Automatic Image Generation",
+        "class": "w-full h-40 object-cover object-center",
+        "parentSection": "p-6 space-y-4"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/IMG_6415_1772099436218.jpeg",
+        "alt": "HD Video Generation",
+        "class": "w-full h-40 object-cover object-center",
+        "parentSection": "p-6 space-y-4"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/brand_ea55fa52-81e5-4578-bdbe-9dc2de1da18f_1772106356531.jpg",
+        "alt": "Branding Options",
+        "class": "w-full h-40 object-cover object-center",
+        "parentSection": "p-6 space-y-4"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Integration-Ready_1772106673102.jpg",
+        "alt": "Integration Ready",
+        "class": "w-full h-40 object-cover object-center",
+        "parentSection": "p-6 space-y-4"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Dashboard_b02c1996-6b6a-4580-bd3e-95a54e79f941_1772106541282.jpg",
+        "alt": "Analytics Dashboard",
+        "class": "w-full h-40 object-cover object-center",
+        "parentSection": "p-6 space-y-4"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/looking_down_49918d40-21fc-4f6b-84ba-f61688311d1a_1772184775446.jpg",
+        "alt": "Photorealistic 1",
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_11.png",
+        "alt": "Illustrated 2",
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/generated/images/day_2.png",
+        "alt": "Photorealistic 3",
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/library_1772185221264.jpg",
+        "alt": "Illustrated 4",
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative aspect-video overflow-hidden"
+    },
+    {
+        "tag": "video",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Sarah_Mitchell_1772176519292.mp4",
+        "alt": null,
+        "class": "w-full h-full object-cover",
+        "parentSection": "relative overflow-hidden"
+    },
+    {
+        "tag": "img",
+        "src": "https://0de20c77-7951-416e-8579-8bb49c7d92ea-00-3svcykl1i8p81.janeway.replit.dev/@fs/home/runner/workspace/attached_assets/Transperent_logo_1772222553233.png",
+        "alt": "Smarthinkerz Studio",
+        "class": "h-24 w-auto",
+        "parentSection": "flex items-start"
+    }
+]
